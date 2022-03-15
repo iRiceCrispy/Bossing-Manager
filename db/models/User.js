@@ -8,11 +8,13 @@ module.exports = mongoose => {
         type: String,
         required: true,
         unique: true,
+        lowercase: true,
       },
       email: {
         type: String,
         required: true,
         unique: true,
+        lowercase: true,
       },
       hashedPassword: {
         type: String,
@@ -41,7 +43,12 @@ module.exports = mongoose => {
   };
 
   userSchema.statics.login = async function ({ credential, password }) {
-    const user = await this.findOne({ username: credential });
+    const user = await this.findOne({
+      $or: [
+        { username: new RegExp(credential, 'i') },
+        { email: new RegExp(credential, 'i') },
+      ],
+    });
 
     if (user && user.validatePassword(password)) return user;
     else return null;
