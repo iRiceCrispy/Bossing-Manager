@@ -1,9 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
+
 const basename = path.basename(__filename);
 const { environment } = require('../../config');
-const config = require(__dirname + '/../../config/database.js')[environment];
+const config = require('../../config/database.js')[environment];
+
 const db = {};
 
 db.init = () => {

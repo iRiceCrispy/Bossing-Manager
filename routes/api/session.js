@@ -1,7 +1,7 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
-const { setTokenCookie, restoreUser } = require('../../utils/auth');
 const { check } = require('express-validator');
+const { setTokenCookie, restoreUser } = require('../../utils/auth');
 const { handleValidationErrors } = require('../../utils/validation');
 const { User } = require('../../db/models');
 
@@ -25,7 +25,8 @@ router.get('/', restoreUser, (req, res) => {
     return res.json({
       user: user.toSafeObject(),
     });
-  } else return res.json({});
+  }
+  return res.json({});
 });
 
 // Log in

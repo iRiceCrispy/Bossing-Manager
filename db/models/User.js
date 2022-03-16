@@ -1,4 +1,3 @@
-'use strict';
 const bcrypt = require('bcryptjs');
 
 module.exports = mongoose => {
@@ -32,14 +31,12 @@ module.exports = mongoose => {
     if (!this.isModified('hashedPassword')) return next();
 
     this.hashedPassword = bcrypt.hashSync(this.password);
-    next();
   });
 
   userSchema.statics.signup = async function ({ username, email, password }) {
     const user = await this.create({ username, email, password });
 
-    if (user) return user;
-    else return null;
+    return user;
   };
 
   userSchema.statics.login = async function ({ credential, password }) {
@@ -51,7 +48,7 @@ module.exports = mongoose => {
     });
 
     if (user && user.validatePassword(password)) return user;
-    else return null;
+    return null;
   };
 
   userSchema.methods.toSafeObject = function () {

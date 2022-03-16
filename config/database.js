@@ -1,10 +1,11 @@
 const { db } = require('./index');
-const { mongo_url, mongo_dev_url } = db;
+
+const { mongoUrl, mongoDevUrl } = db;
 
 module.exports = {
   development: {
     database: {
-      url: mongo_dev_url,
+      url: mongoDevUrl,
       options: {
         useNewUrlParser: true,
       },
@@ -12,7 +13,7 @@ module.exports = {
   },
   production: {
     database: {
-      url: mongo_url,
+      url: mongoUrl,
       options: {
         useNewUrlParser: true,
         dbName: 'boss_manager',

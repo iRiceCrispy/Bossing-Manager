@@ -1,7 +1,5 @@
-'use strict';
-
 module.exports = {
-  up: async (models, mongoose) => {
+  up: async models => {
     const users = [
       {
         username: 'demouser1',
@@ -13,7 +11,7 @@ module.exports = {
     await models.User.insertMany(users);
   },
 
-  down: async (models, mongoose) => {
+  down: async models => {
     await models.User.collection.drop();
   },
 };
