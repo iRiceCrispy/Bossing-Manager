@@ -1,20 +1,17 @@
 module.exports = mongoose => {
   const partySchema = new mongoose.Schema({
-    leaderId: {
-      type: mongoose.ObjectId,
-      required: true,
-    },
     name: {
       type: String,
+      required: true,
+    },
+    leaderId: {
+      type: mongoose.ObjectId,
       required: true,
     },
     members: [{
       type: mongoose.ObjectId,
       ref: 'User',
     }],
-    hashedPassword: {
-      type: String,
-    },
   }, {
     timestamps: true,
     versionKey: false,
