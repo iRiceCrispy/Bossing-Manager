@@ -11,16 +11,12 @@ const db = {};
 db.init = () => {
   if (config.database.url) {
     mongoose.connect(config.database.url, config.database.options);
-  } else if (config.database.config.dbName) {
-    mongoose.connect(
-      `${config.database.protocol}://${config.database.username}:${config.database.password}@${config.database.host}:${config.database.port}`,
-      config.database.options
-    );
-  } else {
-    mongoose.connect(
-      `${config.database.protocol}://${config.database.username}:${config.database.password}@${config.database.host}:${config.database.port}/${config.database.name}`,
-      config.database.options
-    );
+  }
+  else if (config.database.config.dbName) {
+    mongoose.connect(`${config.database.protocol}://${config.database.username}:${config.database.password}@${config.database.host}:${config.database.port}`, config.database.options);
+  }
+  else {
+    mongoose.connect(`${config.database.protocol}://${config.database.username}:${config.database.password}@${config.database.host}:${config.database.port}/${config.database.name}`, config.database.options);
   }
 
   mongoose.connection.on('connected', () => {

@@ -7,11 +7,11 @@ const { secret, expiresIn } = jwtConfig;
 // Sends a JWT Cookie
 const setTokenCookie = (res, user) => {
   // Create the token.
-  const token = jwt.sign(
-    { data: user.toSafeObject() },
-    secret,
-    { expiresIn: parseInt(expiresIn) } // 604,800 seconds = 1 week
-  );
+  const token = jwt.sign({
+    data: user.toSafeObject(),
+  }, secret, {
+    expiresIn: parseInt(expiresIn), // 604,800 seconds = 1 week
+  });
 
   const isProduction = process.env.NODE_ENV === 'production';
 
@@ -38,7 +38,8 @@ const restoreUser = (req, res, next) => {
     try {
       const { id } = jwtPayload.data;
       req.user = await User.findById(id);
-    } catch (e) {
+    }
+    catch (e) {
       res.clearCookie('token');
       return next();
     }
