@@ -7,6 +7,8 @@
     "consistent-return": "off",
     "no-useless-return": "off",
     "no-trailing-spaces": "error",
+    "no-underscore-dangle": "off",
+    "no-param-reassign": "off",
     "no-unused-vars": [
       "warn",
       {

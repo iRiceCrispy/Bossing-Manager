@@ -42,6 +42,12 @@ module.exports = mongoose => {
   }, {
     timestamps: true,
     versionKey: false,
+    toJSON: {
+      virtuals: true,
+      transform(_data, ret) {
+        delete ret._id;
+      },
+    },
   });
 
   dropSchema.virtual('party', {

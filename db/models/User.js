@@ -22,6 +22,13 @@ module.exports = mongoose => {
   }, {
     timestamps: true,
     versionKey: false,
+    toJSON: {
+      virtuals: true,
+      transform(_doc, ret) {
+        delete ret._id;
+        delete ret.hashedPassword;
+      },
+    },
   });
 
   userSchema.pre('validate', function (next) {
