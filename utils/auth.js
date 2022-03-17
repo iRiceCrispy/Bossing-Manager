@@ -50,18 +50,24 @@ const restoreUser = (req, res, next) => {
   });
 };
 
+const unauthorizedError = new Error('Unauthorized');
+unauthorizedError.title = 'Unauthorized';
+unauthorizedError.errors = ['Unauthorized'];
+unauthorizedError.status = 401;
+
 // If there is no current user, return an error
 const requireAuth = [
   restoreUser,
   (req, _res, next) => {
     if (req.user) return next();
 
-    const err = new Error('Unauthorized');
-    err.title = 'Unauthorized';
-    err.errors = ['Unauthorized'];
-    err.status = 401;
-    return next(err);
+    return next(unauthorizedError);
   },
 ];
 
-module.exports = { setTokenCookie, restoreUser, requireAuth };
+module.exports = {
+  setTokenCookie,
+  restoreUser,
+  requireAuth,
+  unauthorizedError,
+};

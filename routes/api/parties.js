@@ -1,6 +1,6 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
-const { requireAuth } = require('../../utils/auth');
+const { requireAuth, unauthorizedError } = require('../../utils/auth');
 const { Party } = require('../../db/models');
 
 const router = express.Router();
@@ -21,6 +21,34 @@ router.post('/', asyncHandler(async (req, res) => {
   const { name, memberIds } = req.body;
 
   const party = await Party.create({ name, leaderId: user.id, members: memberIds });
+
+  res.json(party);
+}));
+
+router.put('/:id', asyncHandler(async (req, res, next) => {
+  const { user } = req;
+  const { id } = req.params;
+  const { name, memberIds } = req.body;
+
+  const party = await Party.findOne({ id });
+
+  if (party.leaderId !== user.id) return next(unauthorizedError);
+
+  if (name) party.name = name;
+  if (memberIds) party.members = memberIds;
+
+  res.json(party);
+}));
+
+router.delete('/:id', asyncHandler(async (req, res, next) => {
+  const { user } = req;
+  const { id } = req.params;
+
+  const party = await Party.findOne({ id });
+
+  if (party.leaderId !== user.id) return next(unauthorizedError);
+
+  await Party.deleteOne({ id });
 
   res.json(party);
 }));

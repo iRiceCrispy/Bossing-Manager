@@ -1,6 +1,6 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
-const { requireAuth } = require('../../utils/auth');
+const { requireAuth, unauthorizedError } = require('../../utils/auth');
 const {
   Drop, Party,
 } = require('../../db/models');
@@ -17,7 +17,7 @@ router.get('/', asyncHandler(async (req, res) => {
   res.json(drops);
 }));
 
-router.post('/', asyncHandler(async (req, res) => {
+router.post('/', asyncHandler(async (req, res, next) => {
   const { user } = req;
   const {
     bossName,
@@ -28,6 +28,9 @@ router.post('/', asyncHandler(async (req, res) => {
   } = req.body;
 
   const party = await Party.find({ leaderId: user.id });
+
+  if (party.leaderId !== user.id) return next(unauthorizedError);
+
   const drop = await Drop.create({
     partyId: party.id, bossName, itemName, image, saleImage, members,
   });
@@ -35,7 +38,7 @@ router.post('/', asyncHandler(async (req, res) => {
   res.json(drop);
 }));
 
-router.put('/:id', asyncHandler(async (req, res) => {
+router.put('/:id', asyncHandler(async (req, res, next) => {
   const { user } = req;
   const { id } = req.params;
   const {
@@ -48,7 +51,7 @@ router.put('/:id', asyncHandler(async (req, res) => {
 
   const drop = await Drop.findById(id).populate('party');
 
-  if (drop.party.leaderId !== user.id) return res.status(401).json({ error: 'Unauthorized' });
+  if (drop.party.leaderId !== user.id) return next(unauthorizedError);
 
   if (bossName) drop.bossName = bossName;
   if (itemName) drop.itemName = itemName;
@@ -61,8 +64,13 @@ router.put('/:id', asyncHandler(async (req, res) => {
   res.json(drop);
 }));
 
-router.delete('/:id', asyncHandler(async (req, res) => {
+router.delete('/:id', asyncHandler(async (req, res, next) => {
+  const { user } = req;
   const { id } = req.params;
+
+  const drop = await Drop.findById(id).populate('party');
+
+  if (drop.party.leaderId !== user.id) return next(unauthorizedError);
 
   await Drop.deleteOne({ id });
 
