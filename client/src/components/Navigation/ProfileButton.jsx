@@ -19,7 +19,10 @@ const DropDownMenu = () => {
         {' '}
         {user.email}
       </p>
-      <button type='button' onClick={() => dispatch(logout())}>Logout</button>
+      <div className='logout' role='button' tabIndex='0 ' onClick={() => dispatch(logout())}>
+        <FontAwesomeIcon icon='fas fa-arrow-right-from-bracket' />
+        Log Out
+      </div>
     </div>
   );
 };
@@ -40,12 +43,12 @@ const ProfileButton = () => {
   }, [showMenu]);
 
   return (
-    <>
-      <button type='button' onClick={() => !showMenu && setShowMenu(true)}>
-        <FontAwesomeIcon icon='fas fa-user-circle' />
+    <div className='profileContainer'>
+      <button className='btn transparent profile' type='button' onClick={() => !showMenu && setShowMenu(true)}>
+        <FontAwesomeIcon icon='fas fa-user' />
       </button>
       {showMenu && <DropDownMenu />}
-    </>
+    </div>
   );
 };
 

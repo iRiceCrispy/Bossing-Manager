@@ -9,25 +9,21 @@ const Navigation = () => {
 
   return (
     <nav>
-      <ul>
-        <li>
-          <Link to='/'>Home</Link>
-        </li>
-        {user ? (
-          <li>
+      <div className='navbar'>
+        <div className='home'>
+          <Link className='btn transparent' to='/'>Home</Link>
+        </div>
+        <div className='auth'>
+          {user ? (
             <ProfileButton user={user} />
-          </li>
-        ) : (
-          <>
-            <li>
-              <Link to='/login'>Login</Link>
-            </li>
-            <li>
-              <Link to='/signup'>Signup</Link>
-            </li>
-          </>
-        )}
-      </ul>
+          ) : (
+            <>
+              <Link className='btn transparent' to='/login'>Log In</Link>
+              <Link className='btn transparent' to='/signup'>Sign Up</Link>
+            </>
+          )}
+        </div>
+      </div>
     </nav>
   );
 };
