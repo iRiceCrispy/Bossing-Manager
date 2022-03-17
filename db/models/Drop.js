@@ -44,5 +44,12 @@ module.exports = mongoose => {
     versionKey: false,
   });
 
+  dropSchema.virtual('party', {
+    ref: 'Party',
+    localField: 'partyId',
+    foreignField: '_id',
+    justOne: true,
+  });
+
   return mongoose.model('Drop', dropSchema);
 };

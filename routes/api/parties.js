@@ -1,11 +1,11 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
-const { restoreUser } = require('../../utils/auth');
+const { requireAuth } = require('../../utils/auth');
 const { Party } = require('../../db/models');
 
 const router = express.Router();
 
-router.use(restoreUser);
+router.use(requireAuth);
 
 router.get('/', asyncHandler(async (req, res) => {
   const { user } = req;
