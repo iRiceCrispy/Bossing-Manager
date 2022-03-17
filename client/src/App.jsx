@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
-import * as sessionActions from './store/session';
+import { restoreUser } from './store/session';
 import LoginFormPage from './components/LoginFormPage';
 import SignupFormPage from './components/SignupFormPage';
 import Navigation from './components/Navigation';
 
-function App() {
+const App = () => {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
-    dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
+    (async () => {
+      await dispatch(restoreUser());
+      setIsLoaded(true);
+    })();
   }, [dispatch]);
-
-  const sessionUser = useSelector(state => state.session.user);
 
   return (
     isLoaded && (
       <>
         <Navigation />
-        <p>Welcome {sessionUser?.username || 'guest'}</p>
         <Switch>
           <Route path='/login'>
             <LoginFormPage />
@@ -31,6 +31,6 @@ function App() {
       </>
     )
   );
-}
+};
 
 export default App;

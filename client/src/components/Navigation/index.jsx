@@ -1,10 +1,11 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
 
 const Navigation = () => {
-  const sessionUser = useSelector(state => state.session.user);
+  const user = useSelector(state => state.session.user);
 
   return (
     <nav>
@@ -12,9 +13,9 @@ const Navigation = () => {
         <li>
           <Link to='/'>Home</Link>
         </li>
-        {sessionUser ? (
+        {user ? (
           <li>
-            <ProfileButton />
+            <ProfileButton user={user} />
           </li>
         ) : (
           <>
