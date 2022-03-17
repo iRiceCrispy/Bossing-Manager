@@ -74,7 +74,7 @@ export const removeParty = (id, data) => async dispatch => {
 const reducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD:
-      return action.data;
+      return action.parties;
     case CREATE:
       state.leaderOf[action.party.id] = action.party;
 
@@ -84,7 +84,7 @@ const reducer = (state = {}, action) => {
 
       return { ...state };
     case REMOVE:
-      delete state.leaderOf[action.party.id];
+      delete state.leaderOf[action.id];
 
       return { ...state };
     default:
