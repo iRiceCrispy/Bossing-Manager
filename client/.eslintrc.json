@@ -1,0 +1,45 @@
+{
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    "react-app",
+    "plugin:jsx-a11y/recommended"
+  ],
+  "rules": {
+    "no-console": "off",
+    "radix": "off",
+    "func-names": "off",
+    "consistent-return": "off",
+    "no-useless-return": "off",
+    "no-trailing-spaces": "error",
+    "no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "max-len": [
+      "error",
+      {
+        "code": 100,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true,
+        "ignoreRegExpLiterals": true
+      }
+    ],
+    "brace-style": [
+      "error",
+      "stroustrup",
+      {
+        "allowSingleLine": true
+      }
+    ],
+    "comma-dangle": ["error", "always-multiline"],
+    "function-call-argument-newline": ["error", "never"],
+    "function-paren-newline": ["error", "never"],
+    "arrow-parens": [2, "as-needed"],
+    "import/extensions": "off",
+    "import/no-dynamic-require": "off",
+    "global-require": "off"
+  }
+}
