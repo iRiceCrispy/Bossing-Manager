@@ -12,30 +12,41 @@ const logoutUser = () => ({
   type: LOGOUT,
 });
 
-export const login = user => async dispatch => {
-  const { credential, password } = user;
+export const login = data => async dispatch => {
+  const { credential, password } = data;
 
   const res = await csrfFetch('/api/session', {
     method: 'POST',
     body: JSON.stringify({ credential, password }),
   });
 
-  const data = await res.json();
-  dispatch(loginUser(data.user));
+  const user = await res.json();
+  dispatch(loginUser(user));
 
   return res;
 };
 
-export const signup = user => async dispatch => {
-  const { username, email, password } = user;
+export const demo = () => async dispatch => {
+  const res = await csrfFetch('/api/session/demo', {
+    method: 'POST',
+  });
+
+  const user = await res.json();
+  dispatch(loginUser(user));
+
+  return res;
+};
+
+export const signup = data => async dispatch => {
+  const { username, email, password } = data;
 
   const res = await csrfFetch('/api/users', {
     method: 'POST',
     body: JSON.stringify({ username, email, password }),
   });
 
-  const data = await res.json();
-  dispatch(loginUser(data.user));
+  const user = await res.json();
+  dispatch(loginUser(user));
 
   return res;
 };
@@ -43,8 +54,8 @@ export const signup = user => async dispatch => {
 export const restoreUser = () => async dispatch => {
   const res = await csrfFetch('/api/session');
 
-  const data = await res.json();
-  dispatch(loginUser(data.user));
+  const user = await res.json();
+  dispatch(loginUser(user));
 
   return res;
 };

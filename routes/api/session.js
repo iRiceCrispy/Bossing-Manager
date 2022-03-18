@@ -23,11 +23,9 @@ router.get('/', restoreUser, (req, res) => {
   const { user } = req;
 
   if (user) {
-    return res.json({
-      user: user.toSafeObject(),
-    });
+    return res.json(user.toSafeObject());
   }
-  return res.json({});
+  return res.json(null);
 });
 
 // Log in
@@ -46,9 +44,24 @@ router.post('/', validateLogin, asyncHandler(async (req, res, next) => {
 
   setTokenCookie(res, user);
 
-  return res.json({
-    user,
-  });
+  return res.json(user.toSafeObject());
+}));
+
+// Log in as demo
+router.post('/demo', asyncHandler(async (req, res, next) => {
+  const user = await User.login({ credential: 'demo1', password: 'password' });
+
+  if (!user) {
+    const err = new Error('Login failed');
+    err.status = 401;
+    err.title = 'Login failed';
+    err.errors = ['The provided credentials were invalid.'];
+    return next(err);
+  }
+
+  setTokenCookie(res, user);
+
+  return res.json(user.toSafeObject());
 }));
 
 // Log out

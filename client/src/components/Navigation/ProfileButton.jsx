@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { logout } from '../../store/session';
 
 const DropDownMenu = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const user = useSelector(state => state.session.user);
 
   return (
@@ -19,7 +21,15 @@ const DropDownMenu = () => {
         {' '}
         {user.email}
       </p>
-      <div className='logout' role='button' tabIndex='0 ' onClick={() => dispatch(logout())}>
+      <div
+        className='logout'
+        role='button'
+        tabIndex='0 '
+        onClick={async () => {
+          await dispatch(logout());
+          history.push('/login');
+        }}
+      >
         <FontAwesomeIcon icon='fas fa-arrow-right-from-bracket' />
         Log Out
       </div>

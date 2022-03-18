@@ -60,7 +60,9 @@ module.exports = mongoose => {
         { username: new RegExp(credential, 'i') },
         { email: new RegExp(credential, 'i') },
       ],
-    }).select('hashedPassword');
+    }).select('+hashedPassword');
+
+    console.log(user);
 
     if (user && user.validatePassword(password)) return user;
     return null;
