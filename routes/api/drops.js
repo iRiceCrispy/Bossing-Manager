@@ -1,9 +1,7 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
 const { requireAuth, unauthorizedError } = require('../../utils/auth');
-const {
-  Drop, Party,
-} = require('../../db/models');
+const { Drop, Party } = require('../../db/models');
 
 const router = express.Router();
 

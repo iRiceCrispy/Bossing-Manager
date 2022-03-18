@@ -4,6 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "seed": "node -e 'require(\"./db/seeders/index.js\").up()'",
+    "unseed": "node -e 'require(\"./db/seeders/index.js\").down()'",
+    "seed:all": "dotenv npm run seed",
+    "seed:undo": "dotenv npm run unseed",
     "start": "per-env",
     "start:development": "dotenv nodemon ./bin/www",
     "start:production": "./bin/www",
@@ -20,7 +24,6 @@
     "helmet": "^5.0.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.6",
-    "mongoosejs-cli": "^1.0.7",
     "morgan": "^1.10.0",
     "per-env": "^1.0.2"
   },

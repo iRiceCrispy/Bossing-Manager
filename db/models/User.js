@@ -31,10 +31,20 @@ module.exports = mongoose => {
     },
   });
 
-  userSchema.pre('validate', function (next) {
+  userSchema.pre('save', function (next) {
     if (!this.isModified('hashedPassword')) return next();
 
     this.hashedPassword = bcrypt.hashSync(this.password);
+    return next();
+  });
+
+  userSchema.pre('insertMany', (next, docs) => {
+    docs.forEach(doc => {
+      doc.hashedPassword = bcrypt.hashSync(doc.password);
+      delete doc.password;
+    });
+
+    return next();
   });
 
   userSchema.statics.signup = async function ({ username, email, password }) {

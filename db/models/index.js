@@ -39,4 +39,6 @@ fs.readdirSync(__dirname)
     db[model.modelName] = model;
   });
 
+db.mongoose = mongoose;
+
 module.exports = db;
