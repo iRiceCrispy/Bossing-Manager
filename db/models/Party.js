@@ -1,3 +1,5 @@
+const autopopulate = require('mongoose-autopopulate');
+
 module.exports = mongoose => {
   const partySchema = new mongoose.Schema({
     name: {
@@ -11,6 +13,7 @@ module.exports = mongoose => {
     members: [{
       type: mongoose.ObjectId,
       ref: 'User',
+      autopopulate: true,
     }],
   }, {
     timestamps: true,
@@ -28,7 +31,10 @@ module.exports = mongoose => {
     localField: 'leaderId',
     foreignField: '_id',
     justOne: true,
+    autopopulate: true,
   });
+
+  partySchema.plugin(autopopulate);
 
   return mongoose.model('Party', partySchema);
 };

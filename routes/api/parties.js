@@ -10,10 +10,9 @@ router.use(requireAuth);
 router.get('/', asyncHandler(async (req, res) => {
   const { user } = req;
 
-  const partiesL = await Party.find({ leaderId: user.id });
-  const partiesM = await Party.find({ members: { $in: user.id } });
+  const parties = await Party.find({ members: { $in: user.id } });
 
-  res.json({ leaderOf: partiesL, memberOf: partiesM });
+  res.json(parties);
 }));
 
 router.post('/', asyncHandler(async (req, res) => {

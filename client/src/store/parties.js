@@ -76,15 +76,15 @@ const reducer = (state = {}, action) => {
     case LOAD:
       return action.parties;
     case CREATE:
-      state.leaderOf[action.party.id] = action.party;
+      state[action.party.id] = action.party;
 
       return { ...state };
     case EDIT:
-      state.leaderOf[action.party.id] = { ...state.leaderOf[action.party.id], ...action.party };
+      state[action.party.id] = { ...state[action.party.id], ...action.party };
 
       return { ...state };
     case REMOVE:
-      delete state.leaderOf[action.id];
+      delete state[action.id];
 
       return { ...state };
     default:
