@@ -1,24 +1,28 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Modal from '../Modal';
-import Party from './Party';
 import PartyForm from '../Forms/PartyForm';
+import Party from './Party';
 import './Parties.css';
 
 const Parties = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [showCreate, setShowCreate] = useState(false);
   const sessionUser = useSelector(state => state.session.user);
   const parties = Object.values(useSelector(state => state.parties));
 
   const [partiesL, partiesM] = parties.reduce(([l, m], party) => (
-    party.leaderId === sessionUser.id ? [[...l, party], m] : [l, [...m, party]]
+    party.leader.id === sessionUser.id ? [[...l, party], m] : [l, [...m, party]]
   ), [[], []]);
 
   return (
     <div className='partiesContainer'>
-      {showModal
-        ? (<Modal setShowModal={setShowModal}><PartyForm setShowModal={setShowModal} /></Modal>)
-        : (<button type='button' onClick={() => setShowModal(true)}>Create new party</button>)}
+      {showCreate
+        ? (
+          <Modal showModal={setShowCreate}>
+            <PartyForm showForm={setShowCreate} />
+          </Modal>
+        )
+        : (<button type='button' onClick={() => setShowCreate(true)}>Create new party</button>)}
       {partiesL.length > 0 && (
         <div className='leaderOf'>
           {partiesL.map(party => (

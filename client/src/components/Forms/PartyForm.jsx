@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { createParty } from '../../store/parties';
+import { createParty, editParty } from '../../store/parties';
 
 const Tags = ({ username, setMembers }) => (
   <div className='tag'>
@@ -29,10 +29,10 @@ const SearchMenu = ({ matches, addMember }) => (
   </div>
 );
 
-const PartyForm = ({ setShowModal }) => {
+const PartyForm = ({ showForm, party, edit }) => {
   const dispatch = useDispatch();
-  const [name, setName] = useState('');
-  const [members, setMembers] = useState([]);
+  const [name, setName] = useState(edit ? party.name : '');
+  const [members, setMembers] = useState(edit ? party.members : []);
   const [input, setInput] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const sessionUser = useSelector(state => state.session.user);
@@ -56,18 +56,30 @@ const PartyForm = ({ setShowModal }) => {
   const submitForm = e => {
     e.preventDefault();
 
-    const party = {
-      name,
-      leaderId: sessionUser.id,
-      memberIds: members.map(member => member.id),
-    };
+    if (!edit) {
+      const newParty = {
+        name,
+        leaderId: sessionUser.id,
+        memberIds: members.map(member => member.id),
+      };
 
-    dispatch(createParty(party));
-    setShowModal(false);
+      dispatch(createParty(newParty));
+    }
+    else {
+      const editedParty = {
+        name,
+        memberIds: members.map(member => member.id),
+      };
+
+      dispatch(editParty(party.id, editedParty));
+    }
+
+    showForm(false);
   };
 
   return (
     <div className='formContainer'>
+      <h2 className='formTitle'>{edit ? `Edit for ${name}` : 'Create new a party'}</h2>
       <form onSubmit={submitForm}>
         <label>
           Name
@@ -98,7 +110,7 @@ const PartyForm = ({ setShowModal }) => {
             {input && showSearch && <SearchMenu matches={matches} addMember={addMember} />}
           </div>
         </div>
-        <button type='submit'>Create Party</button>
+        <button type='submit'>{edit ? 'Confirm' : 'Create Party'}</button>
       </form>
     </div>
   );

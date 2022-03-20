@@ -10,10 +10,8 @@ module.exports = mongoose => {
       type: mongoose.ObjectId,
       required: true,
     },
-    members: [{
+    memberIds: [{
       type: mongoose.ObjectId,
-      ref: 'User',
-      autopopulate: true,
     }],
   }, {
     timestamps: true,
@@ -22,8 +20,16 @@ module.exports = mongoose => {
       virtuals: true,
       transform(_data, ret) {
         delete ret._id;
+        delete ret.leaderId;
+        delete ret.memberIds;
       },
     },
+  });
+
+  partySchema.post('save', async (doc, next) => {
+    await doc.populate('members');
+
+    return next();
   });
 
   partySchema.virtual('leader', {
@@ -31,6 +37,13 @@ module.exports = mongoose => {
     localField: 'leaderId',
     foreignField: '_id',
     justOne: true,
+    autopopulate: true,
+  });
+
+  partySchema.virtual('members', {
+    ref: 'User',
+    localField: 'memberIds',
+    foreignField: '_id',
     autopopulate: true,
   });
 

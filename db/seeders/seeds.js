@@ -30,15 +30,15 @@ const seed = async () => {
   await Party.insertMany([{
     name: 'Party 1',
     leaderId: users[0].id,
-    members: users.map(user => user.id),
+    memberIds: users.map(user => user.id),
   }, {
     name: 'Party 2',
     leaderId: users[1].id,
-    members: users.map(user => user.id),
+    memberIds: users.map(user => user.id),
   }, {
     name: 'Party 3',
     leaderId: users[3].id,
-    members: users.map(user => user.id),
+    memberIds: users.map(user => user.id),
   }]);
 };
 

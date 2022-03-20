@@ -10,7 +10,7 @@ router.use(requireAuth);
 router.get('/', asyncHandler(async (req, res) => {
   const { user } = req;
 
-  const parties = await Party.find({ members: { $in: user.id } });
+  const parties = await Party.find({ members: { $in: user.id } }).populate('members');
 
   const data = parties.reduce((accum, party) => {
     accum[party.id] = party.toJSON();
@@ -40,7 +40,9 @@ router.put('/:id', asyncHandler(async (req, res, next) => {
   if (party.leaderId.toString() !== user.id) return next(unauthorizedError);
 
   if (name) party.name = name;
-  if (memberIds) party.members = memberIds;
+  if (memberIds) party.memberIds = memberIds;
+
+  await party.save();
 
   res.json(party);
 }));
@@ -58,29 +60,30 @@ router.delete('/:id', asyncHandler(async (req, res, next) => {
   res.json(party);
 }));
 
-router.post('/:id/members', asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const { memberId } = req.body;
+// Split party member invite/removal from party edit later
+// router.post('/:id/members', asyncHandler(async (req, res) => {
+//   const { id } = req.params;
+//   const { memberId } = req.body;
 
-  const party = await Party.findById(id);
+//   const party = await Party.findById(id);
 
-  party.members.push(memberId);
+//   party.members.push(memberId);
 
-  await party.save();
+//   await party.save();
 
-  res.json(party);
-}));
+//   res.json(party);
+// }));
 
-router.delete('/:partyId/members/:memberId', asyncHandler(async (req, res) => {
-  const { partyId, memberId } = req.params;
+// router.delete('/:partyId/members/:memberId', asyncHandler(async (req, res) => {
+//   const { partyId, memberId } = req.params;
 
-  const party = await Party.findById(partyId);
+//   const party = await Party.findById(partyId);
 
-  party.members.pull(memberId);
+//   party.members.pull(memberId);
 
-  await party.save();
+//   await party.save();
 
-  res.json(party);
-}));
+//   res.json(party);
+// }));
 
 module.exports = router;

@@ -1,14 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import Modal from '../Modal';
+import PartyForm from '../Forms/PartyForm';
 import { removeParty } from '../../store/parties';
 
 const Party = ({ party, sessionUser }) => {
   const dispatch = useDispatch();
+  const [showEdit, setShowEdit] = useState(false);
+  const isLeader = party.leader.id === sessionUser.id;
 
   return (
     <div className='partyContainer'>
-      {party.leaderId === sessionUser.id
-        && <button type='button' onClick={() => dispatch(removeParty(party.id))}>Delete party</button>}
+      {isLeader && (
+        <div className='buttons'>
+          <button type='button' onClick={() => dispatch(removeParty(party.id))}>Delete party</button>
+          {showEdit
+            ? (
+              <Modal showModal={setShowEdit}>
+                <PartyForm showForm={setShowEdit} party={party} edit />
+              </Modal>
+            )
+            : <button type='button' onClick={() => setShowEdit(true)}>Edit Party</button>}
+
+        </div>
+      )}
       <p className='partyName'>
         Name:
         {' '}
