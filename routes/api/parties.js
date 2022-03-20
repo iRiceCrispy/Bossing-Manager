@@ -37,7 +37,7 @@ router.put('/:id', asyncHandler(async (req, res, next) => {
 
   const party = await Party.findById(id);
 
-  if (party.leaderId !== user.id) return next(unauthorizedError);
+  if (party.leaderId.toString() !== user.id) return next(unauthorizedError);
 
   if (name) party.name = name;
   if (memberIds) party.members = memberIds;
@@ -51,9 +51,9 @@ router.delete('/:id', asyncHandler(async (req, res, next) => {
 
   const party = await Party.findById(id);
 
-  if (party.leaderId !== user.id) return next(unauthorizedError);
+  if (party.leaderId.toString() !== user.id) return next(unauthorizedError);
 
-  await Party.deleteOne({ id });
+  await party.remove();
 
   res.json(party);
 }));

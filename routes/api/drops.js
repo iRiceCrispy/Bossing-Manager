@@ -27,7 +27,7 @@ router.post('/', asyncHandler(async (req, res, next) => {
 
   const party = await Party.find({ leaderId: user.id });
 
-  if (party.leaderId !== user.id) return next(unauthorizedError);
+  if (party.leaderId.toString() !== user.id) return next(unauthorizedError);
 
   const drop = await Drop.create({
     partyId: party.id, bossName, itemName, image, saleImage, members,
@@ -49,7 +49,7 @@ router.put('/:id', asyncHandler(async (req, res, next) => {
 
   const drop = await Drop.findById(id).populate('party');
 
-  if (drop.party.leaderId !== user.id) return next(unauthorizedError);
+  if (drop.party.leaderId.toString() !== user.id) return next(unauthorizedError);
 
   if (bossName) drop.bossName = bossName;
   if (itemName) drop.itemName = itemName;
@@ -68,9 +68,9 @@ router.delete('/:id', asyncHandler(async (req, res, next) => {
 
   const drop = await Drop.findById(id).populate('party');
 
-  if (drop.party.leaderId !== user.id) return next(unauthorizedError);
+  if (drop.party.leaderId.toString() !== user.id) return next(unauthorizedError);
 
-  await Drop.deleteOne({ id });
+  await drop.remove();
 
   res.json({ message: 'Sucessfully deleted drop.' });
 }));
