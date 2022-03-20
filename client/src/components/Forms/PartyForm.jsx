@@ -66,12 +66,15 @@ const PartyForm = ({ showForm, party, edit }) => {
       dispatch(createParty(newParty));
     }
     else {
-      const editedParty = {
-        name,
-        memberIds: members.map(member => member.id),
-      };
+      const editedParty = {};
+      const nameChanged = name !== party.name;
+      const membersChanged = JSON.stringify(members.map(member => member.id))
+        !== JSON.stringify(party.members.map(member => member.id));
 
-      dispatch(editParty(party.id, editedParty));
+      if (nameChanged) editedParty.name = name;
+      if (membersChanged) editedParty.memberIds = members.map(member => member.id);
+
+      if (nameChanged || membersChanged) dispatch(editParty(party.id, editedParty));
     }
 
     showForm(false);
