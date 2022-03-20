@@ -1,41 +1,17 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Modal from '../Modal';
+import Party from './Party';
 import PartyForm from '../Forms/PartyForm';
 import './Parties.css';
 
-const Party = ({ party, user }) => (
-  <div className='partyContainer'>
-    <p className='partyName'>
-      Name:
-      {' '}
-      {party.name}
-    </p>
-    <p className='partyLeader'>
-      Leader:
-      {' '}
-      {party.leader.username}
-    </p>
-    <p className='partyMembers'>
-      Members:
-    </p>
-    {party.members.map(member => (
-      <span className='partyMember' key={member.id}>
-        {member.username}
-        {' '}
-        {member.id === user.id ? '(yourself) ' : ''}
-      </span>
-    ))}
-  </div>
-);
-
 const Parties = () => {
   const [showModal, setShowModal] = useState(false);
-  const user = useSelector(state => state.session.user);
+  const sessionUser = useSelector(state => state.session.user);
   const parties = Object.values(useSelector(state => state.parties));
 
   const [partiesL, partiesM] = parties.reduce(([l, m], party) => (
-    party.leaderId === user.id ? [[...l, party], m] : [l, [...m, party]]
+    party.leaderId === sessionUser.id ? [[...l, party], m] : [l, [...m, party]]
   ), [[], []]);
 
   return (
@@ -46,14 +22,14 @@ const Parties = () => {
       {partiesL.length > 0 && (
         <div className='leaderOf'>
           {partiesL.map(party => (
-            <Party key={party.id} party={party} user={user} />
+            <Party key={party.id} party={party} sessionUser={sessionUser} />
           ))}
         </div>
       )}
       {partiesM.length > 0 && (
         <div className='memberOf'>
           {partiesM.map(party => (
-            <Party key={party.id} party={party} user={user} />
+            <Party key={party.id} party={party} sessionUser={sessionUser} />
           ))}
         </div>
       )}
