@@ -60,13 +60,11 @@ export const editParty = (id, data) => async dispatch => {
 
 export const removeParty = (id, data) => async dispatch => {
   const res = await csrfFetch(`/api/parties/${id}`, {
-    method: 'PUT',
-
-    body: JSON.stringify(data),
+    method: 'DELETE',
   });
 
   const party = await res.json();
-  dispatch(remove(party));
+  dispatch(remove(party.id));
 
   return res;
 };

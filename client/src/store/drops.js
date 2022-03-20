@@ -60,13 +60,11 @@ export const editDrop = (id, data) => async dispatch => {
 
 export const removeDrop = (id, data) => async dispatch => {
   const res = await csrfFetch(`/api/drops/${id}`, {
-    method: 'PUT',
-
-    body: JSON.stringify(data),
+    method: 'DELETE',
   });
 
   const drop = await res.json();
-  dispatch(remove(drop));
+  dispatch(remove(drop.id));
 
   return res;
 };
