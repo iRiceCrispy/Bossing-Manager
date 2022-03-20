@@ -12,7 +12,12 @@ router.get('/', asyncHandler(async (req, res) => {
 
   const parties = await Party.find({ members: { $in: user.id } });
 
-  res.json(parties);
+  const data = parties.reduce((accum, party) => {
+    accum[party.id] = party.toJSON();
+    return accum;
+  }, {});
+
+  res.json(data);
 }));
 
 router.post('/', asyncHandler(async (req, res) => {
@@ -20,8 +25,9 @@ router.post('/', asyncHandler(async (req, res) => {
   const { name, memberIds } = req.body;
 
   const party = await Party.create({ name, leaderId: user.id, members: memberIds });
+  const data = await Party.findById(party.id);
 
-  res.json(party);
+  res.json(data);
 }));
 
 router.put('/:id', asyncHandler(async (req, res, next) => {
@@ -29,7 +35,7 @@ router.put('/:id', asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   const { name, memberIds } = req.body;
 
-  const party = await Party.findOne({ id });
+  const party = await Party.findById(id);
 
   if (party.leaderId !== user.id) return next(unauthorizedError);
 
@@ -43,7 +49,7 @@ router.delete('/:id', asyncHandler(async (req, res, next) => {
   const { user } = req;
   const { id } = req.params;
 
-  const party = await Party.findOne({ id });
+  const party = await Party.findById(id);
 
   if (party.leaderId !== user.id) return next(unauthorizedError);
 
@@ -56,7 +62,7 @@ router.post('/:id/members', asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { memberId } = req.body;
 
-  const party = await Party.findOne({ id });
+  const party = await Party.findById(id);
 
   party.members.push(memberId);
 
@@ -68,7 +74,7 @@ router.post('/:id/members', asyncHandler(async (req, res) => {
 router.delete('/:partyId/members/:memberId', asyncHandler(async (req, res) => {
   const { partyId, memberId } = req.params;
 
-  const party = await Party.findOne({ id: partyId });
+  const party = await Party.findById(partyId);
 
   party.members.pull(memberId);
 

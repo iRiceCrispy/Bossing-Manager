@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { restoreUser } from './store/session';
+import { loadUsers } from './store/users';
 import LoginFormPage from './components/LoginFormPage';
 import SignupFormPage from './components/SignupFormPage';
 import Navigation from './components/Navigation';
@@ -15,6 +16,7 @@ const App = () => {
   useEffect(() => {
     (async () => {
       await dispatch(restoreUser());
+      await dispatch(loadUsers());
       setIsLoaded(true);
     })();
   }, [dispatch]);

@@ -10,7 +10,7 @@ const DropDownMenu = () => {
   const user = useSelector(state => state.session.user);
 
   return (
-    <div className='profileMenu' role='none' onClick={e => e.stopPropagation()}>
+    <div className='profileMenu' onClick={e => e.stopPropagation()}>
       <p>
         Username:
         {' '}
@@ -23,8 +23,6 @@ const DropDownMenu = () => {
       </p>
       <div
         className='logout'
-        role='button'
-        tabIndex='0 '
         onClick={async () => {
           await dispatch(logout());
           history.push('/login');

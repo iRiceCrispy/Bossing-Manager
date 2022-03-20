@@ -62,8 +62,6 @@ module.exports = mongoose => {
       ],
     }).select('+hashedPassword');
 
-    console.log(user);
-
     if (user && user.validatePassword(password)) return user;
     return null;
   };
