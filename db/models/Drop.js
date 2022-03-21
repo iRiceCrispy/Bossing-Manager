@@ -64,6 +64,7 @@ module.exports = mongoose => {
     localField: 'partyId',
     foreignField: '_id',
     justOne: true,
+    autopopulate: true,
   });
 
   dropSchema.virtual('members.user', {

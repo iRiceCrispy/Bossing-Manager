@@ -34,8 +34,8 @@ export const loadDrops = () => async dispatch => {
   return res;
 };
 
-export const createDrop = data => async dispatch => {
-  const res = await csrfFetch('/api/drops', {
+export const createDrop = (partyId, data) => async dispatch => {
+  const res = await csrfFetch(`/api/parties/${partyId}/drops`, {
     method: 'POST',
     body: JSON.stringify(data),
   });

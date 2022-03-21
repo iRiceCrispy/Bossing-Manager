@@ -1,41 +1,27 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
 const { requireAuth, unauthorizedError } = require('../../utils/auth');
-const { Drop, Party } = require('../../db/models');
+const { Drop } = require('../../db/models');
 
 const router = express.Router();
 
 router.use(requireAuth);
 
+// Get all drops that the current user belongs to
 router.get('/', asyncHandler(async (req, res) => {
   const { user } = req;
 
-  const drops = await Drop.find({ members: { user: user.id } });
+  const drops = await Drop.find({ members: { $in: { userId: user.id } } });
 
-  res.json(drops);
+  const data = drops.reduce((accum, drop) => {
+    accum[drop.id] = drop.toJSON();
+    return accum;
+  }, {});
+
+  res.json(data);
 }));
 
-router.post('/', asyncHandler(async (req, res, next) => {
-  const { user } = req;
-  const {
-    bossName,
-    itemName,
-    image,
-    saleImage,
-    members,
-  } = req.body;
-
-  const party = await Party.find({ leaderId: user.id });
-
-  if (party.leaderId.toString() !== user.id) return next(unauthorizedError);
-
-  const drop = await Drop.create({
-    partyId: party.id, bossName, itemName, image, saleImage, members,
-  });
-
-  res.json(drop);
-}));
-
+// Update a drop
 router.put('/:id', asyncHandler(async (req, res, next) => {
   const { user } = req;
   const { id } = req.params;
@@ -43,8 +29,7 @@ router.put('/:id', asyncHandler(async (req, res, next) => {
     bossName,
     itemName,
     image,
-    saleImage,
-    members,
+    memberIds,
   } = req.body;
 
   const drop = await Drop.findById(id).populate('party');
@@ -54,14 +39,14 @@ router.put('/:id', asyncHandler(async (req, res, next) => {
   if (bossName) drop.bossName = bossName;
   if (itemName) drop.itemName = itemName;
   if (image) drop.image = image;
-  if (saleImage) drop.saleImage = saleImage;
-  if (members) drop.members = members;
+  if (memberIds) drop.members = memberIds.map(memberId => ({ userId: memberId }));
 
   await drop.save();
 
   res.json(drop);
 }));
 
+// Delete a drop
 router.delete('/:id', asyncHandler(async (req, res, next) => {
   const { user } = req;
   const { id } = req.params;

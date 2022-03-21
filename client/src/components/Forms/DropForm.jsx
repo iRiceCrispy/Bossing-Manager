@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Tags from './Tags';
 import SearchMenu from './SearchMenu';
-import { createParty, editParty } from '../../store/parties';
+import { createDrop } from '../../store/drops';
 
-const PartyForm = ({ showForm, party, edit }) => {
+const DropForm = ({ showForm, party }) => {
   const dispatch = useDispatch();
-  const [name, setName] = useState(edit ? party.name : '');
-  const [members, setMembers] = useState(edit ? party.members : []);
+  const [bossName, setBossName] = useState('');
+  const [itemName, setItemName] = useState('');
+  const [image, setImage] = useState('');
+  const [members, setMembers] = useState(party.members);
   const [input, setInput] = useState('');
   const [showSearch, setShowSearch] = useState(false);
-  const sessionUser = useSelector(state => state.session.user);
-  const users = Object.values(useSelector(state => state.users));
 
-  const matches = users
+  const matches = party.members
     .filter(user => user.username.toLowerCase().includes(input.toLowerCase())
       && !members.some(member => member.username === user.username))
     .sort((a, b) => a.username.localeCompare(b.username))
@@ -31,37 +31,32 @@ const PartyForm = ({ showForm, party, edit }) => {
   const submitForm = e => {
     e.preventDefault();
 
-    if (!edit) {
-      const newParty = {
-        name,
-        leaderId: sessionUser.id,
-        memberIds: members.map(member => member.id),
-      };
+    const newDrop = {
+      bossName,
+      itemName,
+      memberIds: members.map(member => member.id),
+    };
 
-      dispatch(createParty(newParty));
-    }
-    else {
-      const editedParty = {};
-      const nameChanged = name !== party.name;
-      const membersChanged = JSON.stringify(members.map(member => member.id))
-        !== JSON.stringify(party.members.map(member => member.id));
-
-      if (nameChanged) editedParty.name = name;
-      if (membersChanged) editedParty.memberIds = members.map(member => member.id);
-
-      if (nameChanged || membersChanged) dispatch(editParty(party.id, editedParty));
-    }
+    dispatch(createDrop(party.id, newDrop));
 
     showForm(false);
   };
 
   return (
     <div className='formContainer'>
-      <h2 className='formTitle'>{edit ? `Edit for ${name}` : 'Create new a party'}</h2>
+      <h2 className='formTitle'>Add a drop</h2>
       <form onSubmit={submitForm}>
         <label>
-          Name
-          <input type='text' value={name} onChange={e => setName(e.target.value)} required />
+          Boss
+          <input type='text' value={bossName} onChange={e => setBossName(e.target.value)} required />
+        </label>
+        <label>
+          Item
+          <input type='text' value={itemName} onChange={e => setItemName(e.target.value)} required />
+        </label>
+        <label>
+          Image
+          <input type='text' value={image} onChange={e => setImage(e.target.value)} required />
         </label>
         <div>
           Members
@@ -88,10 +83,10 @@ const PartyForm = ({ showForm, party, edit }) => {
             {input && showSearch && <SearchMenu matches={matches} addMember={addMember} />}
           </div>
         </div>
-        <button type='submit'>{edit ? 'Confirm' : 'Create Party'}</button>
+        <button type='submit'>Create Drop</button>
       </form>
     </div>
   );
 };
 
-export default PartyForm;
+export default DropForm;

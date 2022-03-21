@@ -1,12 +1,13 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
 const { requireAuth, unauthorizedError } = require('../../utils/auth');
-const { Party } = require('../../db/models');
+const { Party, Drop } = require('../../db/models');
 
 const router = express.Router();
 
 router.use(requireAuth);
 
+// Get all parties that the current user belongs to
 router.get('/', asyncHandler(async (req, res) => {
   const { user } = req;
 
@@ -20,6 +21,7 @@ router.get('/', asyncHandler(async (req, res) => {
   res.json(data);
 }));
 
+// Create a new party, making the current user as party leader automatically
 router.post('/', asyncHandler(async (req, res) => {
   const { user } = req;
   const { name, memberIds } = req.body;
@@ -30,6 +32,7 @@ router.post('/', asyncHandler(async (req, res) => {
   res.json(data);
 }));
 
+// Update a party
 router.put('/:id', asyncHandler(async (req, res, next) => {
   const { user } = req;
   const { id } = req.params;
@@ -47,6 +50,7 @@ router.put('/:id', asyncHandler(async (req, res, next) => {
   res.json(party);
 }));
 
+// Delete a party
 router.delete('/:id', asyncHandler(async (req, res, next) => {
   const { user } = req;
   const { id } = req.params;
@@ -58,6 +62,33 @@ router.delete('/:id', asyncHandler(async (req, res, next) => {
   await party.remove();
 
   res.json(party);
+}));
+
+// Create a new drop for a party
+router.post('/:id/drops', asyncHandler(async (req, res, next) => {
+  const { user } = req;
+  const { id } = req.params;
+  const {
+    bossName,
+    itemName,
+    image,
+    memberIds,
+  } = req.body;
+
+  const party = await Party.findById(id);
+
+  if (party.leaderId.toString() !== user.id) return next(unauthorizedError);
+
+  const drop = await Drop.create({
+    partyId: party.id,
+    bossName,
+    itemName,
+    image,
+    members: memberIds.map(memberId => ({ userId: memberId })),
+  });
+  const data = await Drop.findById(drop.id);
+
+  res.json(data);
 }));
 
 // Split party member invite/removal from party edit later

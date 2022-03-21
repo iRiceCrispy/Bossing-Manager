@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Modal from '../Modal';
 import PartyForm from '../Forms/PartyForm';
+import DropForm from '../Forms/DropForm';
 import { removeParty } from '../../store/parties';
 
 const Party = ({ party, sessionUser }) => {
   const dispatch = useDispatch();
   const [showEdit, setShowEdit] = useState(false);
+  const [showDrop, setShowDrop] = useState(false);
   const isLeader = party.leader.id === sessionUser.id;
 
   return (
@@ -20,7 +22,14 @@ const Party = ({ party, sessionUser }) => {
                 <PartyForm showForm={setShowEdit} party={party} edit />
               </Modal>
             )
-            : <button type='button' onClick={() => setShowEdit(true)}>Edit Party</button>}
+            : <button type='button' onClick={() => setShowEdit(true)}>Edit party</button>}
+          {showDrop
+            ? (
+              <Modal showModal={setShowDrop}>
+                <DropForm showForm={setShowDrop} party={party} edit />
+              </Modal>
+            )
+            : <button type='button' onClick={() => setShowDrop(true)}>Add a drop</button>}
 
         </div>
       )}
