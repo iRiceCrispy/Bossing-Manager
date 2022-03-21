@@ -10,7 +10,7 @@ router.use(requireAuth);
 router.get('/', asyncHandler(async (req, res) => {
   const { user } = req;
 
-  const parties = await Party.find({ members: { $in: user.id } }).populate('members');
+  const parties = await Party.find({ memberIds: { $in: user.id } });
 
   const data = parties.reduce((accum, party) => {
     accum[party.id] = party.toJSON();
@@ -24,7 +24,7 @@ router.post('/', asyncHandler(async (req, res) => {
   const { user } = req;
   const { name, memberIds } = req.body;
 
-  const party = await Party.create({ name, leaderId: user.id, members: memberIds });
+  const party = await Party.create({ name, leaderId: user.id, memberIds });
   const data = await Party.findById(party.id);
 
   res.json(data);
