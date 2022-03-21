@@ -1,12 +1,22 @@
+const autopopulate = require('mongoose-autopopulate');
+
 module.exports = mongoose => {
   const memberSchema = new mongoose.Schema({
-    user: {
+    userId: {
       type: mongoose.ObjectId,
-      ref: 'User',
+      required: true,
     },
     isPaid: {
       type: Boolean,
       default: false,
+    },
+  }, {
+    _id: false,
+    toJSON: {
+      virtuals: true,
+      transform(_data, ret) {
+        delete ret.userId;
+      },
     },
   });
 
@@ -25,11 +35,9 @@ module.exports = mongoose => {
     },
     image: {
       type: String,
-      required: true,
     },
     saleImage: {
       type: String,
-      required: true,
     },
     price: {
       type: Number,
@@ -46,6 +54,7 @@ module.exports = mongoose => {
       virtuals: true,
       transform(_data, ret) {
         delete ret._id;
+        delete ret.partyId;
       },
     },
   });
@@ -56,6 +65,16 @@ module.exports = mongoose => {
     foreignField: '_id',
     justOne: true,
   });
+
+  dropSchema.virtual('members.user', {
+    ref: 'User',
+    localField: 'members.userId',
+    foreignField: '_id',
+    justOne: true,
+    autopopulate: true,
+  });
+
+  dropSchema.plugin(autopopulate);
 
   return mongoose.model('Drop', dropSchema);
 };
