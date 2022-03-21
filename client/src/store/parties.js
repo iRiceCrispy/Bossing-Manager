@@ -58,7 +58,7 @@ export const editParty = (id, data) => async dispatch => {
   return res;
 };
 
-export const removeParty = (id, data) => async dispatch => {
+export const removeParty = id => async dispatch => {
   const res = await csrfFetch(`/api/parties/${id}`, {
     method: 'DELETE',
   });

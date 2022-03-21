@@ -57,7 +57,7 @@ router.delete('/:id', asyncHandler(async (req, res, next) => {
 
   await drop.remove();
 
-  res.json({ message: 'Sucessfully deleted drop.' });
+  res.json(drop);
 }));
 
 module.exports = router;
