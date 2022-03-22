@@ -59,6 +59,12 @@ module.exports = mongoose => {
     },
   });
 
+  dropSchema.post('save', async (doc, next) => {
+    await doc.populate('members.user');
+
+    return next();
+  });
+
   dropSchema.virtual('party', {
     ref: 'Party',
     localField: 'partyId',

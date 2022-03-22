@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Tags from './Tags';
 import SearchMenu from './SearchMenu';
-import { createDrop } from '../../store/drops';
+import { createDrop, editDrop } from '../../store/drops';
 
-const DropForm = ({ showForm, party }) => {
+const DropForm = ({ showForm, party, drop, edit }) => {
   const dispatch = useDispatch();
-  const [bossName, setBossName] = useState('');
-  const [itemName, setItemName] = useState('');
-  const [image, setImage] = useState('');
-  const [members, setMembers] = useState(party.members);
+  const [bossName, setBossName] = useState(edit ? drop.bossName : '');
+  const [itemName, setItemName] = useState(edit ? drop.itemName : '');
+  const [image, setImage] = useState(edit ? drop.image : '');
+  const [members, setMembers] = useState(edit ? drop.members.map(mem => mem.user) : party.members);
   const [input, setInput] = useState('');
   const [showSearch, setShowSearch] = useState(false);
 
-  const matches = party.members
+  const matches = (edit ? drop.party.members : party.members)
     .filter(user => user.username.toLowerCase().includes(input.toLowerCase())
       && !members.some(member => member.username === user.username))
     .sort((a, b) => a.username.localeCompare(b.username))
@@ -31,20 +31,40 @@ const DropForm = ({ showForm, party }) => {
   const submitForm = e => {
     e.preventDefault();
 
-    const newDrop = {
-      bossName,
-      itemName,
-      memberIds: members.map(member => member.id),
-    };
+    if (!edit) {
+      const newDrop = {
+        bossName,
+        itemName,
+        image,
+        memberIds: members.map(member => member.id),
+      };
 
-    dispatch(createDrop(party.id, newDrop));
+      dispatch(createDrop(party.id, newDrop));
+    }
+    else {
+      const editedDrop = {};
+      const bossChanged = bossName !== drop.bossName;
+      const itemChanged = itemName !== drop.itemName;
+      const imageChanged = image !== drop.image;
+      const membersChanged = JSON.stringify(members.map(member => member.id))
+        !== JSON.stringify(drop.members.map(member => member.user.id));
+
+      if (bossChanged) editedDrop.bossName = bossName;
+      if (itemChanged) editedDrop.itemName = itemName;
+      if (imageChanged) editedDrop.image = image;
+      if (membersChanged) editedDrop.memberIds = members.map(member => member.id);
+
+      if (bossChanged || itemChanged || imageChanged || membersChanged) {
+        dispatch(editDrop(drop.id, editedDrop));
+      }
+    }
 
     showForm(false);
   };
 
   return (
     <div className='formContainer'>
-      <h2 className='formTitle'>Add a drop</h2>
+      <h2 className='formTitle'>{edit ? 'Edit drop' : 'Add a drop'}</h2>
       <form onSubmit={submitForm}>
         <label>
           Boss
@@ -83,7 +103,7 @@ const DropForm = ({ showForm, party }) => {
             {input && showSearch && <SearchMenu matches={matches} addMember={addMember} />}
           </div>
         </div>
-        <button type='submit'>Create Drop</button>
+        <button type='submit'>{edit ? 'Confirm' : 'Create Drop'}</button>
       </form>
     </div>
   );

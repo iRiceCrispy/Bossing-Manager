@@ -26,7 +26,7 @@ const Party = ({ party, sessionUser }) => {
           {showDrop
             ? (
               <Modal showModal={setShowDrop}>
-                <DropForm showForm={setShowDrop} party={party} edit />
+                <DropForm showForm={setShowDrop} party={party} />
               </Modal>
             )
             : <button type='button' onClick={() => setShowDrop(true)}>Add a drop</button>}

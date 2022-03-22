@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import Party from './Party';
 import Modal from '../Modal';
 import PartyForm from '../Forms/PartyForm';
-import Party from './Party';
 import './Parties.css';
 
 const Parties = () => {
