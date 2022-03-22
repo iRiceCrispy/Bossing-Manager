@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { restoreUser } from './store/session';
 import { loadUsers } from './store/users';
-import LoginFormPage from './components/LoginFormPage';
-import SignupFormPage from './components/SignupFormPage';
-import Navigation from './components/Navigation';
+import MainWrapper from './components/MainWrapper';
+import Login from './components/Auth/Login';
+import Signup from './components/Auth/Signup';
 import Dashboard from './components/Dashboard';
 
 const App = () => {
@@ -23,18 +23,19 @@ const App = () => {
 
   return isLoaded && (
     <div className='app'>
-      <Navigation />
-      <Switch>
-        <Route exact path='/'>
-          {user ? <Dashboard /> : 'HELLO'}
-        </Route>
-        <Route exact path='/login'>
-          <LoginFormPage />
-        </Route>
-        <Route exact path='/signup'>
-          <SignupFormPage />
-        </Route>
-      </Switch>
+      <MainWrapper>
+        <Switch>
+          <Route exact path='/'>
+            {user ? <Dashboard /> : 'HELLO'}
+          </Route>
+          <Route exact path='/login'>
+            <Login />
+          </Route>
+          <Route exact path='/signup'>
+            <Signup />
+          </Route>
+        </Switch>
+      </MainWrapper>
     </div>
   );
 };

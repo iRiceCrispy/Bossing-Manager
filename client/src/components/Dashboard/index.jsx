@@ -4,6 +4,7 @@ import { loadParties } from '../../store/parties';
 import { loadDrops } from '../../store/drops';
 import Parties from '../Parties';
 import Drops from '../Drops';
+import './Dashboard.css';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -19,10 +20,10 @@ const Dashboard = () => {
   }, [dispatch]);
 
   return isLoaded && (
-    <main>
+    <div className='dashboardContainer'>
       <Parties />
       <Drops />
-    </main>
+    </div>
   );
 };
 
