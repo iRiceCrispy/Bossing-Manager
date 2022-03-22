@@ -4,7 +4,10 @@
   --color-text: rgb(238, 238, 238);
 }
 
-html, body, #root, .app {
+html,
+body,
+#root,
+.app {
   height: 100%;
   width: 100%;
   margin: 0;
@@ -29,7 +32,6 @@ body * {
 nav {
   width: 100%;
   min-height: 64px;
-  /* position: relative; */
 }
 
 main {
@@ -59,16 +61,20 @@ input {
   cursor: pointer;
   user-select: none;
   padding: 8px 16px;
-  color: var(--color-text);
-  background-color: var(--color-base2);
+  width: fit-content;
   border: none;
   border-radius: 4px;
 }
 
 .btn:hover {
-  opacity: .75;
+  opacity: 0.75;
+}
+
+.btn.filled {
+  color: var(--color-text);
+  background-color: var(--color-base2);
 }
 
 .btn.transparent {
-  background-color: inherit;
+  background-color: transparent;
 }

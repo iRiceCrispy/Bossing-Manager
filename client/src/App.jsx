@@ -4,8 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import { restoreUser } from './store/session';
 import { loadUsers } from './store/users';
 import MainWrapper from './components/MainWrapper';
-import Login from './components/Auth/Login';
-import Signup from './components/Auth/Signup';
+import Auth from './components/Auth';
 import Dashboard from './components/Dashboard';
 
 const App = () => {
@@ -23,19 +22,19 @@ const App = () => {
 
   return isLoaded && (
     <div className='app'>
-      <MainWrapper>
-        <Switch>
+      <Switch>
+        <Route exact path='/login'>
+          <Auth type='login' />
+        </Route>
+        <Route exact path='/signup'>
+          <Auth type='signup' />
+        </Route>
+        <MainWrapper>
           <Route exact path='/'>
             {user ? <Dashboard /> : 'HELLO'}
           </Route>
-          <Route exact path='/login'>
-            <Login />
-          </Route>
-          <Route exact path='/signup'>
-            <Signup />
-          </Route>
-        </Switch>
-      </MainWrapper>
+        </MainWrapper>
+      </Switch>
     </div>
   );
 };
