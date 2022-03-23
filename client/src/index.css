@@ -60,7 +60,7 @@ input {
   cursor: pointer;
   user-select: none;
   padding: 8px 16px;
-  width: fit-content;
+  width: max-content;
   border: none;
   border-radius: 4px;
 }

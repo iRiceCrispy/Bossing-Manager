@@ -5,7 +5,7 @@ import Party from './Party';
 import PartyForm from '../Forms/PartyForm';
 import './Parties.css';
 
-const Parties = () => {
+const Parties = ({ setSelected, selected }) => {
   const [showCreate, setShowCreate] = useState(false);
   const sessionUser = useSelector(state => state.session.user);
   const parties = Object.values(useSelector(state => state.parties));
@@ -26,14 +26,25 @@ const Parties = () => {
       {partiesL.length > 0 && (
         <div className='leaderOf'>
           {partiesL.map(party => (
-            <Party sessionUser={sessionUser} party={party} isLeader />
+            <Party
+              sessionUser={sessionUser}
+              party={party}
+              setSelected={setSelected}
+              selected={selected}
+              isLeader
+            />
           ))}
         </div>
       )}
       {partiesM.length > 0 && (
         <div className='memberOf'>
           {partiesM.map(party => (
-            <Party sessionUser={sessionUser} party={party} />
+            <Party
+              sessionUser={sessionUser}
+              party={party}
+              setSelected={setSelected}
+              selected={selected}
+            />
           ))}
         </div>
       )}

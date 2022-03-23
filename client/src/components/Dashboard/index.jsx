@@ -3,11 +3,13 @@ import { useDispatch } from 'react-redux';
 import { loadParties } from '../../store/parties';
 import { loadDrops } from '../../store/drops';
 import Parties from './Parties';
+import PartyDetails from '../PartyDetails';
 import './Dashboard.css';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [selected, setSelected] = useState({});
 
   useEffect(() => {
     (async () => {
@@ -21,10 +23,11 @@ const Dashboard = () => {
   return isLoaded && (
     <div className='dashboardContainer'>
       <nav>
-        <Parties />
+        <Parties setSelected={setSelected} selected={selected} />
       </nav>
       <div className='content'>
-        Hello
+        {Object.keys(selected).length > 0
+          && <PartyDetails party={selected} />}
       </div>
     </div>
   );

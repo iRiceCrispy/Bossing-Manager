@@ -8,12 +8,23 @@
 
 .party {
   cursor: pointer;
+  user-select: none;
   padding: 12px;
   border-radius: 4px;
 }
 
+.party.selected {
+  background-color: var(--color-base);
+}
+
 .party:hover {
   background-color: var(--color-base);
+  opacity: 0.75;
+}
+
+.party:active {
+  background-color: var(--color-base);
+  opacity: 1;
 }
 
 .leaderOf, .memberOf {
@@ -25,20 +36,20 @@
   border-bottom: 1px solid black;
 }
 
-.partyName {
+.party .partyName {
   margin: 0;
   margin-bottom: 12px;
   font-size: 18px;
   font-weight: 700;
 }
 
-.partyLeader {
+.party .partyLeader {
   margin: 0;
   margin-bottom: 12px;
   font-size: 15px;
   font-weight: 600;
 }
 
-.partyMembers {
+.party .partyMembers {
   font-size: 13px;
 }

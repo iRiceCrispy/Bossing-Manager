@@ -1,0 +1,54 @@
+.partyDetails {
+  width: 50%;
+  padding: 32px;
+}
+
+.partyDetails .details {
+  padding: 32px;
+  border: 1px solid black;
+  border-radius: 8px;
+}
+
+.partyDetails .details>* {
+  margin: 0;
+  padding: 12px 0;
+}
+
+.partyDetails .partyName {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.partyDetails .partyLeader {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.partyDetails .partyMembers {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.partyDetails .partyMember {
+  font-size: 16px;
+  padding: 6px 0;
+}
+
+.partyDetails .buttons {
+  display: grid;
+  grid-template-columns: min-content min-content auto min-content;
+  grid-column-gap: 5px;
+}
+
+.buttons .edit {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.buttons .delete {
+  grid-area: 1 / 2 / 2 / 3;
+}
+
+.buttons .add {
+  grid-area: 1 / 4 / 2 / 5;
+}
