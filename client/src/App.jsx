@@ -6,6 +6,7 @@ import { loadUsers } from './store/users';
 import MainWrapper from './components/MainWrapper';
 import Auth from './components/Auth';
 import Dashboard from './components/Dashboard';
+import Splash from './components/Splash';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -29,11 +30,11 @@ const App = () => {
         <Route exact path='/signup'>
           <Auth type='signup' />
         </Route>
-        <MainWrapper>
-          <Route exact path='/'>
-            {user ? <Dashboard /> : 'HELLO'}
-          </Route>
-        </MainWrapper>
+        <Route exact path='/'>
+          {user
+            ? (<MainWrapper><Dashboard /></MainWrapper>)
+            : <Splash />}
+        </Route>
       </Switch>
     </div>
   );
