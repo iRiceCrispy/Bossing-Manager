@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loadParties } from '../../store/parties';
 import { loadDrops } from '../../store/drops';
-import Parties from '../Parties';
-import Drops from '../Drops';
+import Parties from './Parties';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -21,8 +20,12 @@ const Dashboard = () => {
 
   return isLoaded && (
     <div className='dashboardContainer'>
-      <Parties />
-      <Drops />
+      <nav>
+        <Parties />
+      </nav>
+      <div className='content'>
+        Hello
+      </div>
     </div>
   );
 };
