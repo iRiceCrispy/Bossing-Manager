@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Tags from './Tags';
 import SearchMenu from './SearchMenu';
 import { createParty, editParty } from '../../store/parties';
+import './forms.css';
 
 const PartyForm = ({ showForm, party, edit }) => {
   const dispatch = useDispatch();
@@ -56,39 +57,46 @@ const PartyForm = ({ showForm, party, edit }) => {
   };
 
   return (
-    <div className='formContainer'>
-      <h2 className='formTitle'>{edit ? `Edit for ${name}` : 'Create new a party'}</h2>
+    <div className='formContainer partyForm'>
       <form onSubmit={submitForm}>
-        <label>
-          Name
-          <input type='text' value={name} onChange={e => setName(e.target.value)} required />
-        </label>
-        <div>
-          Members
-          <div className='memberSearch'>
-            <div className='tagsContainer'>
-              {members?.map(member => (
-                <Tags key={member.id} username={member.username} setMembers={setMembers} />
-              ))}
-              <input
-                type='search'
-                value={input}
-                onChange={e => {
-                  setInput(e.target.value);
-                  setShowSearch(true);
-                }}
-                onKeyDown={e => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    addMember();
-                  }
-                }}
-              />
+        <header>
+          <h2 className='formTitle'>{edit ? `Edit for ${name}` : 'Create new a party'}</h2>
+        </header>
+        <div className='formContent'>
+          <label>
+            Name
+            <input type='text' value={name} onChange={e => setName(e.target.value)} required />
+          </label>
+          <label htmlFor='search'>
+            Members
+            <div className='memberSearch'>
+              <div className='tagsContainer'>
+                {members?.map(member => (
+                  <Tags key={member.id} username={member.username} setMembers={setMembers} />
+                ))}
+                <input
+                  className='search'
+                  type='search'
+                  value={input}
+                  onChange={e => {
+                    setInput(e.target.value);
+                    setShowSearch(true);
+                  }}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      addMember();
+                    }
+                  }}
+                />
+                {input && showSearch && <SearchMenu matches={matches} addMember={addMember} />}
+              </div>
             </div>
-            {input && showSearch && <SearchMenu matches={matches} addMember={addMember} />}
-          </div>
+          </label>
         </div>
-        <button type='submit'>{edit ? 'Confirm' : 'Create Party'}</button>
+        <footer>
+          <button className='btn filled submit' type='submit'>{edit ? 'Confirm' : 'Create Party'}</button>
+        </footer>
       </form>
     </div>
   );

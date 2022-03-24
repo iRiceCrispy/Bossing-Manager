@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import Tags from './Tags';
 import SearchMenu from './SearchMenu';
 import { createDrop, editDrop } from '../../store/drops';
+import './forms.css';
 
 const DropForm = ({ showForm, party, drop, edit }) => {
   const dispatch = useDispatch();
@@ -63,7 +64,7 @@ const DropForm = ({ showForm, party, drop, edit }) => {
   };
 
   return (
-    <div className='formContainer'>
+    <div className='formContainer dropForm'>
       <h2 className='formTitle'>{edit ? 'Edit drop' : 'Add a drop'}</h2>
       <form onSubmit={submitForm}>
         <label>

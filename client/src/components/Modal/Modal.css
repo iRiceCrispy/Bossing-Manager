@@ -5,13 +5,29 @@
   top: 0;
   left: 0;
   z-index: 50;
-  background-color: var(--color-base2);
-  filter: brightness(80%);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .modal {
-  filter: brightness(120%);
+  min-width: max-content;
+  min-height: max-content;
+  padding: 48px;
+  background-color: var(--color-base2);
+  border-radius: 8px;
+  position: relative;
+}
+
+.closeModal {
+  font-size: 28px;
+  position: absolute;
+  top: -45px;
+  right: -45px;
+  padding: 0;
+}
+
+.closeModal:hover {
+  filter: brightness(75%);
 }
