@@ -9,18 +9,38 @@ const router = express.Router();
 
 const validateSignup = [
   check('email')
-    .exists({ checkFalsy: true })
     .isEmail()
-    .withMessage('Please provide a valid email.'),
+    .withMessage('Please provide a valid email.')
+    .custom(async email => {
+      const user = await User.findOne({ email });
+
+      if (user) throw new Error('Email already registered to another user.');
+    }),
   check('username')
-    .exists({ checkFalsy: true })
     .isLength({ min: 4 })
-    .withMessage('Please provide a username with at least 4 characters.'),
-  check('username').not().isEmail().withMessage('Username cannot be an email.'),
+    .withMessage('Please provide a username with at least 4 characters.')
+    .not()
+    .isEmail()
+    .withMessage('Username cannot be an email.')
+    .custom(async username => {
+      const user = await User.findOne({ username });
+
+      if (user) throw new Error('Username already in use.');
+      return true;
+    }),
   check('password')
-    .exists({ checkFalsy: true })
     .isLength({ min: 6 })
     .withMessage('Password must be 6 characters or more.'),
+  check('confirmPassword')
+    .exists({ checkFalsy: true })
+    .withMessage('Confirm Password field is required.')
+    .bail()
+    .custom((value, { req }) => {
+      if (value !== req.body.password) {
+        throw new Error('Password and Confirm Password must match.');
+      }
+      return true;
+    }),
   handleValidationErrors,
 ];
 
@@ -37,7 +57,13 @@ router.get('/', asyncHandler(async (req, res) => {
 
 // Sign up
 router.post('/', validateSignup, asyncHandler(async (req, res) => {
-  const { email, password, username } = req.body;
+  const {
+    email,
+    username,
+    password,
+    confirmPassword,
+  } = req.body;
+
   const user = await User.signup({ email, username, password });
 
   setTokenCookie(res, user);

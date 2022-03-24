@@ -74,15 +74,15 @@ const DropForm = ({ showForm, party, drop, edit }) => {
         <div className='formContent'>
           <label>
             Boss
-            <input type='text' value={bossName} onChange={e => setBossName(e.target.value)} required />
+            <input type='text' value={bossName} onChange={e => setBossName(e.target.value)} />
           </label>
           <label>
             Item
-            <input type='text' value={itemName} onChange={e => setItemName(e.target.value)} required />
+            <input type='text' value={itemName} onChange={e => setItemName(e.target.value)} />
           </label>
           <label>
             Image
-            <input type='text' value={image} onChange={e => setImage(e.target.value)} required />
+            <input type='text' value={image} onChange={e => setImage(e.target.value)} />
           </label>
           <div>
             Members

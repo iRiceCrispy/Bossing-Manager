@@ -1,3 +1,14 @@
+.errors {
+  margin: 12px 0;
+  height: 100px;
+  color: red;
+  list-style-type: none;
+}
+
+.errors .error {
+  padding: 1px 0;
+}
+
 .auth.content {
   display: flex;
   align-items: center;
@@ -62,11 +73,19 @@
 }
 
 .auth.content .form.content {
-  margin-top: 64px;
-  margin-bottom: 32px;
+  margin: 32px 0;
+}
+
+.auth.content footer .buttons {
+  margin-bottom: 24px;
 }
 
 .auth.content footer a {
   text-decoration: underline;
   font-weight: 600;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
 }

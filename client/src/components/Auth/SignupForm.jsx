@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { signup } from '../../../store/session';
+import { signup } from '../../store/session';
 
 const SignupForm = () => {
   const dispatch = useDispatch();
@@ -17,34 +17,29 @@ const SignupForm = () => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    if (password === confirmPassword) {
-      setErrors([]);
-
-      return dispatch(signup({ email, username, password })).catch(async res => {
-        const data = await res.json();
-        if (data && data.errors) setErrors(data.errors);
-      });
-    }
-
-    return setErrors(['Confirm Password field must be the same as the Password field']);
+    return dispatch(signup({ email, username, password, confirmPassword })).catch(async res => {
+      const data = await res.json();
+      if (data && data.errors) setErrors(data.errors);
+      else setErrors([]);
+    });
   };
 
   return (
     <form className='signupForm' onSubmit={handleSubmit}>
       <header><h2>Sign Up</h2></header>
-      <ul>
+      <ul className='errors'>
         {errors.map((error, idx) => (
-          <li key={idx}>{error}</li>
+          <li className='error' key={idx}>{error}</li>
         ))}
       </ul>
       <div className='form content'>
         <label>
           Email
-          <input type='text' value={email} onChange={e => setEmail(e.target.value)} required />
+          <input type='text' value={email} onChange={e => setEmail(e.target.value)} />
         </label>
         <label>
           Username
-          <input type='text' value={username} onChange={e => setUsername(e.target.value)} required />
+          <input type='text' value={username} onChange={e => setUsername(e.target.value)} />
         </label>
         <label>
           Password
@@ -52,7 +47,6 @@ const SignupForm = () => {
             type='password'
             value={password}
             onChange={e => setPassword(e.target.value)}
-            required
           />
         </label>
         <label>
@@ -61,12 +55,13 @@ const SignupForm = () => {
             type='password'
             value={confirmPassword}
             onChange={e => setConfirmPassword(e.target.value)}
-            required
           />
         </label>
       </div>
       <footer>
-        <button className='btn filled' type='submit'>Sign Up</button>
+        <div className='buttons'>
+          <button className='btn filled' type='submit'>Sign Up</button>
+        </div>
         <p>
           Already registered?
           {' '}

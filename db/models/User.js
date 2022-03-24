@@ -57,8 +57,8 @@ module.exports = mongoose => {
   userSchema.statics.login = async function ({ credential, password }) {
     const user = await this.findOne({
       $or: [
-        { username: new RegExp(credential, 'i') },
-        { email: new RegExp(credential, 'i') },
+        { username: new RegExp(`^${credential}$`, 'i') },
+        { email: new RegExp(`^${credential}$`, 'i') },
       ],
     }).select('+hashedPassword');
 

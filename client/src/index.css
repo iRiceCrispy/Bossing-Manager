@@ -6,6 +6,7 @@
 
 * {
   margin: 0;
+  padding: 0;
   box-sizing: border-box;
   color: inherit;
 }
@@ -60,6 +61,7 @@ label, label * {
 
 input {
   margin: 8px 0;
+  padding: 0 8px;
   color: black;
 }
 

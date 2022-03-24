@@ -68,7 +68,7 @@ const PartyForm = ({ showForm, party, edit }) => {
         <div className='formContent'>
           <label>
             Name
-            <input type='text' value={name} onChange={e => setName(e.target.value)} required />
+            <input type='text' value={name} onChange={e => setName(e.target.value)} />
           </label>
           <label htmlFor='search'>
             Members
