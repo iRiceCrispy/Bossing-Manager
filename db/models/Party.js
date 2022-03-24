@@ -32,6 +32,12 @@ module.exports = mongoose => {
     return next();
   });
 
+  partySchema.pre('remove', async function (next) {
+    await mongoose.models.Drop.deleteMany({ partyId: this.id });
+
+    return next();
+  });
+
   partySchema.virtual('leader', {
     ref: 'User',
     localField: 'leaderId',
