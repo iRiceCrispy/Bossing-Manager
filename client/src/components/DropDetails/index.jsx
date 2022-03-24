@@ -35,6 +35,7 @@ const DropDetails = ({ drop, setDrop }) => {
             {' '}
           </p>
         ))}
+        <img src={drop.image} alt='' />
       </div>
       {isLeader && (
       <div className='buttons'>
