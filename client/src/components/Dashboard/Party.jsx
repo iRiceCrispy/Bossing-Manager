@@ -1,12 +1,15 @@
 import React from 'react';
 
-const Party = ({ sessionUser, party, isLeader, setSelected, selected }) => {
+const Party = ({ sessionUser, party, isLeader, selected, setSelected, setSelectedDrop }) => {
   const { name, leader, members } = party;
   members.sort((a, b) => (b.id === sessionUser.id) - (a.id === sessionUser.id));
   const isSelected = selected?.id === party.id;
 
   return (
-    <div className={`party${isSelected ? ' selected' : ''}`} onClick={() => (isSelected ? setSelected({}) : setSelected(party))}>
+    <div
+      className={`party${isSelected ? ' selected' : ''}`}
+      onClick={() => setSelected(party)}
+    >
       <p className='partyName'>
         {name}
       </p>

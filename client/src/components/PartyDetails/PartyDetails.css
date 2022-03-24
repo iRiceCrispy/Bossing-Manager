@@ -1,6 +1,10 @@
 .partyDetails {
+  min-width: max-content;
   width: 50%;
-  padding: 32px;
+}
+
+.partyDetails * {
+  margin: 0;
 }
 
 .partyDetails .details {
@@ -10,7 +14,6 @@
 }
 
 .partyDetails .details>* {
-  margin: 0;
   padding: 12px 0;
 }
 
@@ -20,7 +23,7 @@
   margin-bottom: 12px;
 }
 
-.partyDetails .partyLeader {
+.partyDetails .partyLeader, .dropListContainer>p {
   font-size: 24px;
   font-weight: 700;
 }
@@ -51,4 +54,33 @@
 
 .buttons .add {
   grid-area: 1 / 4 / 2 / 5;
+}
+
+.partyDetails .dropListContainer {
+  margin-top: 36px;
+}
+
+.partyDetails .dropListContainer .heading {
+  margin-bottom: 36px;
+}
+
+.partyDetails .drop {
+  padding: 12px;
+  margin-bottom: 12px;
+  background-color: var(--color-base2);
+  border-radius: 4px;
+}
+
+.partyDetails .drop:hover {
+  cursor: pointer;
+  user-select: none;
+  opacity: 0.75;
+}
+
+.partyDetails .bossName, .partyDetails .itemName {
+  padding: 12px 0
+}
+
+.partyDetails .bossName {
+  font-weight: 700;
 }

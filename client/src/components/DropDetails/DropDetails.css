@@ -1,0 +1,53 @@
+.dropDetails {
+  min-width: max-content;
+  width: 50%;
+}
+
+.dropDetails * {
+  margin: 0;
+}
+
+.dropDetails .details {
+  padding: 32px;
+  border: 1px solid black;
+  border-radius: 8px;
+}
+
+.dropDetails .details>* {
+  padding: 12px 0;
+}
+
+.dropDetails .bossName {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.dropDetails .itemName {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.dropDetails .partyMembers {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.dropDetails .partyMember {
+  font-size: 16px;
+  padding: 6px 0;
+}
+
+.dropDetails .buttons {
+  display: grid;
+  grid-template-columns: min-content min-content auto min-content;
+  grid-column-gap: 5px;
+}
+
+.buttons .edit {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.buttons .delete {
+  grid-area: 1 / 2 / 2 / 3;
+}

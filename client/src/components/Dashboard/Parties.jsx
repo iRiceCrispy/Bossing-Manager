@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import Modal from '../Modal';
 import Party from './Party';
-import PartyForm from '../Forms/PartyForm';
 import './Parties.css';
 
-const Parties = ({ setSelected, selected }) => {
-  const [showCreate, setShowCreate] = useState(false);
+const Parties = ({ selected, setSelected, setSelectedDrop }) => {
   const sessionUser = useSelector(state => state.session.user);
   const parties = Object.values(useSelector(state => state.parties));
 
@@ -16,21 +13,17 @@ const Parties = ({ setSelected, selected }) => {
 
   return (
     <div className='partiesContainer'>
-      {showCreate
-        ? (
-          <Modal showModal={setShowCreate}>
-            <PartyForm showForm={setShowCreate} />
-          </Modal>
-        )
-        : (<button className='btn createParty' type='button' onClick={() => setShowCreate(true)}>Create new party</button>)}
       {partiesL.length > 0 && (
         <div className='leaderOf'>
+          <p className='heading'>Parties you lead</p>
           {partiesL.map(party => (
             <Party
+              key={party.id}
               sessionUser={sessionUser}
               party={party}
-              setSelected={setSelected}
               selected={selected}
+              setSelected={setSelected}
+              setSelectedDrop={setSelectedDrop}
               isLeader
             />
           ))}
@@ -38,8 +31,10 @@ const Parties = ({ setSelected, selected }) => {
       )}
       {partiesM.length > 0 && (
         <div className='memberOf'>
+          <p className='heading'>Parties you are in</p>
           {partiesM.map(party => (
             <Party
+              key={party.id}
               sessionUser={sessionUser}
               party={party}
               setSelected={setSelected}
@@ -59,3 +54,11 @@ const Parties = ({ setSelected, selected }) => {
 };
 
 export default Parties;
+
+// {showCreate
+//   ? (
+//     <Modal showModal={setShowCreate}>
+//       <PartyForm showForm={setShowCreate} />
+//     </Modal>
+//   )
+//   : (<button className='btn createParty' type='button' onClick={() => setShowCreate(true)}>Create new party</button>)}

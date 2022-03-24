@@ -1,0 +1,36 @@
+.dropsContainer {
+  padding: 12px;
+}
+
+.dropsContainer .drop {
+  cursor: pointer;
+  user-select: none;
+  padding: 12px;
+  border-radius: 4px;
+}
+
+.dropsContainer .drop.selected {
+  background-color: var(--color-base);
+}
+
+.dropsContainer .drop:hover {
+  background-color: var(--color-base);
+  opacity: 0.75;
+}
+
+.dropsContainer .drop:active {
+  background-color: var(--color-base);
+  opacity: 1;
+}
+
+.dropsContainer .drop .bossName {
+  margin: 0;
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.dropsContainer .drop .itemName {
+  margin: 0;
+  font-size: 15px;
+}

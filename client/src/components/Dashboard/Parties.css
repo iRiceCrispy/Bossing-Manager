@@ -1,9 +1,12 @@
-.btn.createParty {
+/* .btn.createParty {
   width: 100%;
   background-color: var(--color-base);
   font-size: 16px;
   text-align: center;
   border-radius: 0;
+} */
+.partiesContainer {
+  padding: 12px;
 }
 
 .party {
@@ -25,11 +28,6 @@
 .party:active {
   background-color: var(--color-base);
   opacity: 1;
-}
-
-.leaderOf, .memberOf {
-  margin: 0 12px;
-  padding: 12px 0;
 }
 
 .leaderOf {
