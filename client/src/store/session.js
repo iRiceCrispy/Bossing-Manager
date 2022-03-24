@@ -20,8 +20,12 @@ export const login = data => async dispatch => {
     body: JSON.stringify({ credential, password }),
   });
 
-  const user = await res.json();
-  dispatch(loginUser(user));
+  if (res.ok) {
+    const user = await res.json();
+    dispatch(loginUser(user));
+
+    return user;
+  }
 
   return res;
 };
@@ -31,8 +35,12 @@ export const demo = () => async dispatch => {
     method: 'POST',
   });
 
-  const user = await res.json();
-  dispatch(loginUser(user));
+  if (res.ok) {
+    const user = await res.json();
+    dispatch(loginUser(user));
+
+    return user;
+  }
 
   return res;
 };
@@ -45,8 +53,12 @@ export const signup = data => async dispatch => {
     body: JSON.stringify({ username, email, password }),
   });
 
-  const user = await res.json();
-  dispatch(loginUser(user));
+  if (res.ok) {
+    const user = await res.json();
+    dispatch(loginUser(user));
+
+    return user;
+  }
 
   return res;
 };
@@ -54,8 +66,12 @@ export const signup = data => async dispatch => {
 export const restoreUser = () => async dispatch => {
   const res = await csrfFetch('/api/session');
 
-  const user = await res.json();
-  dispatch(loginUser(user));
+  if (res.ok) {
+    const user = await res.json();
+    dispatch(loginUser(user));
+
+    return user;
+  }
 
   return res;
 };
@@ -65,7 +81,11 @@ export const logout = () => async dispatch => {
     method: 'DELETE',
   });
 
-  dispatch(logoutUser());
+  if (res.ok) {
+    dispatch(logoutUser());
+
+    return res.json();
+  }
 
   return res;
 };

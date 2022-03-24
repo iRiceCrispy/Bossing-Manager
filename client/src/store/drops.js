@@ -40,8 +40,12 @@ export const createDrop = (partyId, data) => async dispatch => {
     body: JSON.stringify(data),
   });
 
-  const drop = await res.json();
-  dispatch(create(drop));
+  if (res.ok) {
+    const drop = await res.json();
+    dispatch(create(drop));
+
+    return drop;
+  }
 
   return res;
 };

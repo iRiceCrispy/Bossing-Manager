@@ -28,8 +28,12 @@ const remove = id => ({
 export const loadParties = () => async dispatch => {
   const res = await fetch('/api/parties');
 
-  const parties = await res.json();
-  dispatch(load(parties));
+  if (res.ok) {
+    const parties = await res.json();
+    dispatch(load(parties));
+
+    return parties;
+  }
 
   return res;
 };
@@ -40,8 +44,12 @@ export const createParty = data => async dispatch => {
     body: JSON.stringify(data),
   });
 
-  const party = await res.json();
-  dispatch(create(party));
+  if (res.ok) {
+    const party = await res.json();
+    dispatch(create(party));
+
+    return party;
+  }
 
   return res;
 };
@@ -52,8 +60,12 @@ export const editParty = (id, data) => async dispatch => {
     body: JSON.stringify(data),
   });
 
-  const party = await res.json();
-  dispatch(edit(party));
+  if (res.ok) {
+    const party = await res.json();
+    dispatch(edit(party));
+
+    return party;
+  }
 
   return res;
 };
@@ -63,8 +75,12 @@ export const removeParty = id => async dispatch => {
     method: 'DELETE',
   });
 
-  const party = await res.json();
-  dispatch(remove(party.id));
+  if (res.ok) {
+    const party = await res.json();
+    dispatch(remove(party.id));
+
+    return party;
+  }
 
   return res;
 };

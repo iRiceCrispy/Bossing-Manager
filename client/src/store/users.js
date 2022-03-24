@@ -8,8 +8,12 @@ const load = users => ({
 export const loadUsers = () => async dispatch => {
   const res = await fetch('/api/users');
 
-  const users = await res.json();
-  dispatch(load(users));
+  if (res.ok) {
+    const users = await res.json();
+    dispatch(load(users));
+
+    return users;
+  }
 
   return res;
 };
