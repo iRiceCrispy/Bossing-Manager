@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSelected } from '../../context/SelectedContext';
 import Tags from './Tags';
 import SearchMenu from './SearchMenu';
 import { createParty, editParty } from '../../store/parties';
@@ -10,6 +11,7 @@ const PartyForm = ({ showForm, party, edit }) => {
   const [name, setName] = useState(edit ? party.name : '');
   const [members, setMembers] = useState(edit ? party.members : []);
   const [input, setInput] = useState('');
+  const { setSelectedParty } = useSelected();
   const [showSearch, setShowSearch] = useState(false);
   const sessionUser = useSelector(state => state.session.user);
   const users = Object.values(useSelector(state => state.users));
@@ -39,7 +41,8 @@ const PartyForm = ({ showForm, party, edit }) => {
         memberIds: members.map(member => member.id),
       };
 
-      dispatch(createParty(newParty));
+      dispatch(createParty(newParty))
+        .then(pt => setSelectedParty(pt.id));
     }
     else {
       const editedParty = {};

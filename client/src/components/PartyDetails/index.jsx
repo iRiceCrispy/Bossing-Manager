@@ -9,7 +9,7 @@ import './PartyDetails.css';
 
 const PartyDetails = () => {
   const dispatch = useDispatch();
-  const { selectedParty, setSelectedDrop } = useSelected();
+  const { selectedParty, setSelectedParty, setSelectedDrop } = useSelected();
   const party = useSelector(state => state.parties[selectedParty]);
   const [showEdit, setShowEdit] = useState(false);
   const [showDrop, setShowDrop] = useState(false);
@@ -20,6 +20,11 @@ const PartyDetails = () => {
   const isLeader = party.leader.id === sessionUser.id;
   const { name, leader, members } = party;
   members.sort((a, b) => (b.id === sessionUser.id) - (a.id === sessionUser.id));
+
+  const deleteParty = () => {
+    dispatch(removeParty(party.id));
+    setSelectedParty('');
+  };
 
   return (
     <div className='partyDetails'>
@@ -51,7 +56,7 @@ const PartyDetails = () => {
               </Modal>
             )
             : <button className='btn filled edit' type='button' onClick={() => setShowEdit(true)}>Edit party</button>}
-          <button className='btn filled delete' type='button' onClick={() => dispatch(removeParty(party.id))}>Delete party</button>
+          <button className='btn filled delete' type='button' onClick={deleteParty}>Delete party</button>
           {showDrop
             ? (
               <Modal showModal={setShowDrop}>

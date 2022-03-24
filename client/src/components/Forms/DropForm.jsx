@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useSelected } from '../../context/SelectedContext';
 import Tags from './Tags';
 import SearchMenu from './SearchMenu';
 import { createDrop, editDrop } from '../../store/drops';
@@ -13,6 +14,7 @@ const DropForm = ({ showForm, party, drop, edit }) => {
   const [members, setMembers] = useState(edit ? drop.members.map(mem => mem.user) : party.members);
   const [input, setInput] = useState('');
   const [showSearch, setShowSearch] = useState(false);
+  const { setSelectedDrop } = useSelected();
 
   const matches = (edit ? drop.party.members : party.members)
     .filter(user => user.username.toLowerCase().includes(input.toLowerCase())
@@ -40,7 +42,7 @@ const DropForm = ({ showForm, party, drop, edit }) => {
         memberIds: members.map(member => member.id),
       };
 
-      dispatch(createDrop(party.id, newDrop));
+      dispatch(createDrop(party.id, newDrop)).then(drp => setSelectedDrop(drp.id));
     }
     else {
       const editedDrop = {};
