@@ -3,7 +3,7 @@
 ## Overview
 [Bossing-Manger](https://bossing-manager.herokuapp.com/) is a boss drop tracker app for a popular MMORPG game [Maplestory](https://maplestory.nexon.net/). Users can utilize this app to easily manage their boss drops within their parties by keeping track of what items are pending/sold, and which member in the party has recieved/waiting on their payment.
 
-## application Architecture
+## Application Architecture
 Bossing-Manager is built on a React frontend and an Express backend, using MongoDB as its database. Data is manually gathered from a [community wiki](https://maplestory.fandom.com/wiki/MapleStory_Wiki).
 
 ## Technologies Used
