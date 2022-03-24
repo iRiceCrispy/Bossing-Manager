@@ -65,46 +65,52 @@ const DropForm = ({ showForm, party, drop, edit }) => {
 
   return (
     <div className='formContainer dropForm'>
-      <h2 className='formTitle'>{edit ? 'Edit drop' : 'Add a drop'}</h2>
       <form onSubmit={submitForm}>
-        <label>
-          Boss
-          <input type='text' value={bossName} onChange={e => setBossName(e.target.value)} required />
-        </label>
-        <label>
-          Item
-          <input type='text' value={itemName} onChange={e => setItemName(e.target.value)} required />
-        </label>
-        <label>
-          Image
-          <input type='text' value={image} onChange={e => setImage(e.target.value)} required />
-        </label>
-        <div>
-          Members
-          <div className='memberSearch'>
-            <div className='tagsContainer'>
-              {members?.map(member => (
-                <Tags key={member.id} username={member.username} setMembers={setMembers} />
-              ))}
-              <input
-                type='search'
-                value={input}
-                onChange={e => {
-                  setInput(e.target.value);
-                  setShowSearch(true);
-                }}
-                onKeyDown={e => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    addMember();
-                  }
-                }}
-              />
+        <header>
+          <h2 className='formTitle'>{edit ? 'Edit drop' : 'Add a drop'}</h2>
+        </header>
+        <div className='formContent'>
+          <label>
+            Boss
+            <input type='text' value={bossName} onChange={e => setBossName(e.target.value)} required />
+          </label>
+          <label>
+            Item
+            <input type='text' value={itemName} onChange={e => setItemName(e.target.value)} required />
+          </label>
+          <label>
+            Image
+            <input type='text' value={image} onChange={e => setImage(e.target.value)} required />
+          </label>
+          <div>
+            Members
+            <div className='memberSearch'>
+              <div className='tagsContainer'>
+                {members?.map(member => (
+                  <Tags key={member.id} username={member.username} setMembers={setMembers} />
+                ))}
+                <input
+                  type='search'
+                  value={input}
+                  onChange={e => {
+                    setInput(e.target.value);
+                    setShowSearch(true);
+                  }}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      addMember();
+                    }
+                  }}
+                />
+              </div>
+              {input && showSearch && <SearchMenu matches={matches} addMember={addMember} />}
             </div>
-            {input && showSearch && <SearchMenu matches={matches} addMember={addMember} />}
           </div>
         </div>
-        <button type='submit'>{edit ? 'Confirm' : 'Create Drop'}</button>
+        <footer>
+          <button className='btn filled submit' type='submit'>{edit ? 'Confirm' : 'Create Drop'}</button>
+        </footer>
       </form>
     </div>
   );

@@ -14,7 +14,7 @@
 .modal {
   min-width: max-content;
   min-height: max-content;
-  padding: 48px;
+  padding: 80px;
   background-color: var(--color-base2);
   border-radius: 8px;
   position: relative;

@@ -1,12 +1,16 @@
 .partyForm, .dropForm {
-  width: 500px;
-  min-width: max-content;
+  width: 400px;
+  min-width: fit-content;
   min-height: max-content;
 }
 
+.formTitle {
+  font-size: 28px;
+}
+
 .formContent {
-  margin-top: 80px;
-  margin-bottom: 72px;
+  margin-top: 72px;
+  margin-bottom: 64px;
 }
 
 .btn.filled.submit {

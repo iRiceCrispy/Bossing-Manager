@@ -3,10 +3,6 @@
   width: 50%;
 }
 
-.partyDetails * {
-  margin: 0;
-}
-
 .partyDetails .details {
   padding: 32px;
   border: 1px solid black;

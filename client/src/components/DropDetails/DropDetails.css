@@ -3,10 +3,6 @@
   width: 50%;
 }
 
-.dropDetails * {
-  margin: 0;
-}
-
 .dropDetails .details {
   padding: 32px;
   border: 1px solid black;

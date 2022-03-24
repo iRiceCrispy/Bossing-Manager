@@ -44,7 +44,7 @@ section.main .content {
   gap: 64px;
 }
 
-.content h2 {
+.splash.content h2 {
   font-size: 42px;
   width: fit-content;
   line-height: 1.5em;

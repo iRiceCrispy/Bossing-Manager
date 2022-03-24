@@ -60,7 +60,7 @@ const PartyForm = ({ showForm, party, edit }) => {
     <div className='formContainer partyForm'>
       <form onSubmit={submitForm}>
         <header>
-          <h2 className='formTitle'>{edit ? `Edit for ${name}` : 'Create new a party'}</h2>
+          <h2 className='formTitle'>{edit ? 'Edit party' : 'Create new a party'}</h2>
         </header>
         <div className='formContent'>
           <label>
