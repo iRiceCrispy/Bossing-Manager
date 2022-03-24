@@ -26,6 +26,34 @@ const Splash = () => (
         <Link className='btn filled large' to='/signup'>Get started!</Link>
       </div>
     </section>
+    <footer>
+      <div className='tech'>
+        <p className='heading'>Technologies Used</p>
+        <div>
+          <div className='backend'>
+            <p className='heading2'>Backend</p>
+            <div>
+              <p>Express</p>
+              <p>MongoDB</p>
+            </div>
+          </div>
+          <div className='frontend'>
+            <p className='heading2'>Frontend</p>
+            <div>
+              <p>React</p>
+              <p>Redux</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className='about'>
+        <p className='heading'>About Me</p>
+        <div>
+          <a href='https://github.com/iRiceCrispy' target='_blank' rel='noreferrer'>Github</a>
+          <a href='https://www.linkedin.com/in/erichuang-97/' target='_blank' rel='noreferrer'>LinkedIn</a>
+        </div>
+      </div>
+    </footer>
   </div>
 );
 
