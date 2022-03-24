@@ -1,11 +1,28 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth, unauthorizedError } = require('../../utils/auth');
 const { Party, Drop } = require('../../db/models');
 
 const router = express.Router();
 
 router.use(requireAuth);
+
+const validateParty = [
+  check('name')
+    .exists({ checkFalsy: true })
+    .withMessage('Please provide a value for name.')
+    .bail()
+    .isLength({ min: 3 })
+    .withMessage('Name must be at least 3 characters long.')
+    .isLength({ max: 25 })
+    .withMessage('Name cannot be longer than 25 characters.'),
+  check('memberIds')
+    .isArray({ min: 2 })
+    .withMessage('Please include at least 2 members in the party, including yourself.'),
+  handleValidationErrors,
+];
 
 // Get all parties that the current user belongs to
 router.get('/', asyncHandler(async (req, res) => {
@@ -22,7 +39,7 @@ router.get('/', asyncHandler(async (req, res) => {
 }));
 
 // Create a new party, making the current user as party leader automatically
-router.post('/', asyncHandler(async (req, res) => {
+router.post('/', validateParty, asyncHandler(async (req, res) => {
   const { user } = req;
   const { name, memberIds } = req.body;
 
@@ -33,7 +50,7 @@ router.post('/', asyncHandler(async (req, res) => {
 }));
 
 // Update a party
-router.put('/:id', asyncHandler(async (req, res, next) => {
+router.put('/:id', validateParty, asyncHandler(async (req, res, next) => {
   const { user } = req;
   const { id } = req.params;
   const { name, memberIds } = req.body;

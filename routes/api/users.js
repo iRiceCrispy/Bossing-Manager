@@ -18,7 +18,10 @@ const validateSignup = [
     }),
   check('username')
     .isLength({ min: 4 })
-    .withMessage('Please provide a username with at least 4 characters.')
+    .withMessage('Username must be at least 4 characters long.')
+    .isLength({ max: 25 })
+    .withMessage('Username cannot be longer than 25 characters.')
+    .bail()
     .not()
     .isEmail()
     .withMessage('Username cannot be an email.')
@@ -61,7 +64,6 @@ router.post('/', validateSignup, asyncHandler(async (req, res) => {
     email,
     username,
     password,
-    confirmPassword,
   } = req.body;
 
   const user = await User.signup({ email, username, password });

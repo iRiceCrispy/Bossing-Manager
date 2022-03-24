@@ -11,8 +11,9 @@ const PartyForm = ({ showForm, party, edit }) => {
   const [name, setName] = useState(edit ? party.name : '');
   const [members, setMembers] = useState(edit ? party.members : []);
   const [input, setInput] = useState('');
-  const { setSelectedParty } = useSelected();
   const [showSearch, setShowSearch] = useState(false);
+  const [errors, setErrors] = useState([]);
+  const { setSelectedParty } = useSelected();
   const sessionUser = useSelector(state => state.session.user);
   const users = Object.values(useSelector(state => state.users));
 
@@ -33,6 +34,7 @@ const PartyForm = ({ showForm, party, edit }) => {
 
   const submitForm = e => {
     e.preventDefault();
+    setErrors([]);
 
     if (!edit) {
       const newParty = {
@@ -42,21 +44,37 @@ const PartyForm = ({ showForm, party, edit }) => {
       };
 
       dispatch(createParty(newParty))
-        .then(pt => setSelectedParty(pt.id));
+        .then(pt => {
+          setSelectedParty(pt.id);
+          showForm(false);
+        })
+        .catch(async res => {
+          const data = await res.json();
+
+          if (data?.errors) setErrors(data.errors);
+        });
     }
     else {
-      const editedParty = {};
       const nameChanged = name !== party.name;
       const membersChanged = JSON.stringify(members.map(member => member.id))
         !== JSON.stringify(party.members.map(member => member.id));
 
-      if (nameChanged) editedParty.name = name;
-      if (membersChanged) editedParty.memberIds = members.map(member => member.id);
+      if (nameChanged || membersChanged) {
+        const editedParty = {
+          name,
+          memberIds: members.map(member => member.id),
+        };
 
-      if (nameChanged || membersChanged) dispatch(editParty(party.id, editedParty));
+        dispatch(editParty(party.id, editedParty))
+          .then(() => showForm(false))
+          .catch(async res => {
+            const data = await res.json();
+
+            if (data?.errors) setErrors(data.errors);
+          });
+      }
+      else showForm(false);
     }
-
-    showForm(false);
   };
 
   return (
@@ -65,6 +83,11 @@ const PartyForm = ({ showForm, party, edit }) => {
         <header>
           <h2 className='formTitle'>{edit ? 'Edit party' : 'Create new a party'}</h2>
         </header>
+        <ul className='errors'>
+          {errors.map((error, idx) => (
+            <li className='error' key={idx}>{error}</li>
+          ))}
+        </ul>
         <div className='formContent'>
           <label>
             Name
