@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSelected } from '../../context/SelectedContext';
 import Modal from '../Modal';
 import DropForm from '../Forms/DropForm';
 import { removeDrop } from '../../store/drops';
 import './DropDetails.css';
 
-const DropDetails = ({ drop, setDrop }) => {
+const DropDetails = () => {
   const dispatch = useDispatch();
   const [showEdit, setShowEdit] = useState(false);
+  const { selectedDrop, setSelectedDrop } = useSelected();
   const sessionUser = useSelector(state => state.session.user);
+  const drop = useSelector(state => state.drops[selectedDrop]);
 
   const isLeader = drop.party.leader.id === sessionUser.id;
   const { bossName, itemName } = drop;
@@ -18,7 +21,7 @@ const DropDetails = ({ drop, setDrop }) => {
 
   const deleteDrop = () => {
     dispatch(removeDrop(drop.id));
-    setDrop({});
+    setSelectedDrop('');
   };
 
   return (

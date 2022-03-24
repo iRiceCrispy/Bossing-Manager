@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { restoreUser } from './store/session';
 import { loadUsers } from './store/users';
+import SelectedProvider from './context/SelectedContext';
 import MainWrapper from './components/MainWrapper';
 import Auth from './components/Auth';
 import Dashboard from './components/Dashboard';
@@ -32,7 +33,13 @@ const App = () => {
         </Route>
         <Route exact path='/'>
           {user
-            ? (<MainWrapper><Dashboard /></MainWrapper>)
+            ? (
+              <SelectedProvider>
+                <MainWrapper>
+                  <Dashboard />
+                </MainWrapper>
+              </SelectedProvider>
+            )
             : <Splash />}
         </Route>
       </Switch>

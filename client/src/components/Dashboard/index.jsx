@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { loadParties } from '../../store/parties';
 import { loadDrops } from '../../store/drops';
+import { useSelected } from '../../context/SelectedContext';
 import Parties from './Parties';
 import Drops from './Drops';
 import PartyDetails from '../PartyDetails';
@@ -12,10 +13,9 @@ import './Dashboard.css';
 const Dashboard = () => {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [selectedParty, setSelectedParty] = useState({});
-  const [selectedDrop, setSelectedDrop] = useState({});
-  const partySelected = Object.keys(selectedParty).length > 0;
-  const dropSelected = Object.keys(selectedDrop).length > 0;
+  const { selectedParty, setSelectedParty, selectedDrop, setSelectedDrop } = useSelected();
+  const partySelected = Boolean(selectedParty);
+  const dropSelected = Boolean(selectedDrop);
 
   useEffect(() => {
     (async () => {
@@ -29,18 +29,18 @@ const Dashboard = () => {
   let content;
 
   if (dropSelected) {
-    content = <DropDetails drop={selectedDrop} setDrop={setSelectedDrop} />;
+    content = <DropDetails />;
   }
   else if (partySelected) {
-    content = <PartyDetails party={selectedParty} setDrop={setSelectedDrop} />;
+    content = <PartyDetails />;
   }
   else content = 'Hello';
 
   const showBack = partySelected || dropSelected;
 
   const goBack = () => {
-    if (dropSelected) setSelectedDrop({});
-    else if (partySelected) setSelectedParty({});
+    if (dropSelected) setSelectedDrop('');
+    else if (partySelected) setSelectedParty('');
   };
 
   return isLoaded && (
@@ -58,17 +58,9 @@ const Dashboard = () => {
         </button>
         )}
         {dropSelected ? (
-          <Drops
-            party={selectedParty}
-            setSelected={setSelectedDrop}
-            selected={selectedDrop}
-          />
+          <Drops />
         ) : (
-          <Parties
-            setSelected={setSelectedParty}
-            setSelectedDrop={setSelectedDrop}
-            selected={selectedParty}
-          />
+          <Parties />
         )}
       </nav>
       <div className='content'>

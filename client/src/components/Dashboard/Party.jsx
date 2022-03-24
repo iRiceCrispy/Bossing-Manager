@@ -1,14 +1,16 @@
 import React from 'react';
+import { useSelected } from '../../context/SelectedContext';
 
-const Party = ({ sessionUser, party, isLeader, selected, setSelected, setSelectedDrop }) => {
+const Party = ({ sessionUser, party, isLeader }) => {
+  const { selectedParty, setSelectedParty } = useSelected();
   const { name, leader, members } = party;
   members.sort((a, b) => (b.id === sessionUser.id) - (a.id === sessionUser.id));
-  const isSelected = selected?.id === party.id;
+  const isSelected = selectedParty === party.id;
 
   return (
     <div
       className={`party${isSelected ? ' selected' : ''}`}
-      onClick={() => setSelected(party)}
+      onClick={() => setSelectedParty(party.id)}
     >
       <p className='partyName'>
         {name}

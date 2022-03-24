@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import Party from './Party';
 import './Parties.css';
 
-const Parties = ({ selected, setSelected, setSelectedDrop }) => {
+const Parties = () => {
   const sessionUser = useSelector(state => state.session.user);
   const parties = Object.values(useSelector(state => state.parties));
 
@@ -21,9 +21,6 @@ const Parties = ({ selected, setSelected, setSelectedDrop }) => {
               key={party.id}
               sessionUser={sessionUser}
               party={party}
-              selected={selected}
-              setSelected={setSelected}
-              setSelectedDrop={setSelectedDrop}
               isLeader
             />
           ))}
@@ -37,8 +34,6 @@ const Parties = ({ selected, setSelected, setSelectedDrop }) => {
               key={party.id}
               sessionUser={sessionUser}
               party={party}
-              setSelected={setSelected}
-              selected={selected}
             />
           ))}
         </div>

@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSelected } from '../../context/SelectedContext';
 import Modal from '../Modal';
 import PartyForm from '../Forms/PartyForm';
 import DropForm from '../Forms/DropForm';
 import { removeParty } from '../../store/parties';
 import './PartyDetails.css';
 
-const PartyDetails = ({ party, setDrop }) => {
+const PartyDetails = () => {
   const dispatch = useDispatch();
+  const { selectedParty, setSelectedDrop } = useSelected();
+  const party = useSelector(state => state.parties[selectedParty]);
   const [showEdit, setShowEdit] = useState(false);
   const [showDrop, setShowDrop] = useState(false);
   const sessionUser = useSelector(state => state.session.user);
@@ -62,7 +65,7 @@ const PartyDetails = ({ party, setDrop }) => {
         <p className='heading'>Drops</p>
         <div className='dropList'>
           {drops.map(drop => (
-            <div className='drop' key={drop.id} onClick={() => setDrop(drop)}>
+            <div className='drop' key={drop.id} onClick={() => setSelectedDrop(drop.id)}>
               <p className='bossName'>{drop.bossName}</p>
               <p className='itemName'>{drop.itemName}</p>
             </div>
