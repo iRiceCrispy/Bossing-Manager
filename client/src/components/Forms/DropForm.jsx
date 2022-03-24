@@ -14,6 +14,7 @@ const DropForm = ({ showForm, party, drop, edit }) => {
   const [members, setMembers] = useState(edit ? drop.members.map(mem => mem.user) : party.members);
   const [input, setInput] = useState('');
   const [showSearch, setShowSearch] = useState(false);
+  const [errors, setErrors] = useState([]);
   const { setSelectedDrop } = useSelected();
 
   const matches = (edit ? drop.party.members : party.members)
@@ -33,6 +34,7 @@ const DropForm = ({ showForm, party, drop, edit }) => {
 
   const submitForm = e => {
     e.preventDefault();
+    setErrors([]);
 
     if (!edit) {
       const newDrop = {
@@ -42,27 +44,43 @@ const DropForm = ({ showForm, party, drop, edit }) => {
         memberIds: members.map(member => member.id),
       };
 
-      dispatch(createDrop(party.id, newDrop)).then(drp => setSelectedDrop(drp.id));
+      dispatch(createDrop(party.id, newDrop))
+        .then(drp => {
+          setSelectedDrop(drp.id);
+          showForm(false);
+        })
+        .catch(async res => {
+          const data = await res.json();
+
+          if (data?.errors) setErrors(data.errors);
+        });
     }
     else {
-      const editedDrop = {};
       const bossChanged = bossName !== drop.bossName;
       const itemChanged = itemName !== drop.itemName;
       const imageChanged = image !== drop.image;
       const membersChanged = JSON.stringify(members.map(member => member.id))
         !== JSON.stringify(drop.members.map(member => member.user.id));
 
-      if (bossChanged) editedDrop.bossName = bossName;
-      if (itemChanged) editedDrop.itemName = itemName;
-      if (imageChanged) editedDrop.image = image;
-      if (membersChanged) editedDrop.memberIds = members.map(member => member.id);
-
       if (bossChanged || itemChanged || imageChanged || membersChanged) {
-        dispatch(editDrop(drop.id, editedDrop));
-      }
-    }
+        const editedDrop = {
+          bossName,
+          itemName,
+          image,
+          memberIds: members.map(member => member.id),
 
-    showForm(false);
+        };
+
+        dispatch(editDrop(drop.id, editedDrop))
+          .then(() => showForm(false))
+          .catch(async res => {
+            const data = await res.json();
+
+            if (data?.errors) setErrors(data.errors);
+          });
+      }
+      else showForm(false);
+    }
   };
 
   return (
@@ -71,6 +89,11 @@ const DropForm = ({ showForm, party, drop, edit }) => {
         <header>
           <h2 className='formTitle'>{edit ? 'Edit drop' : 'Add a drop'}</h2>
         </header>
+        <ul className='errors'>
+          {errors.map((error, idx) => (
+            <li className='error' key={idx}>{error}</li>
+          ))}
+        </ul>
         <div className='formContent'>
           <label>
             Boss
@@ -81,7 +104,7 @@ const DropForm = ({ showForm, party, drop, edit }) => {
             <input type='text' value={itemName} onChange={e => setItemName(e.target.value)} />
           </label>
           <label>
-            Image
+            Image (optional)
             <input type='text' value={image} onChange={e => setImage(e.target.value)} />
           </label>
           <div>

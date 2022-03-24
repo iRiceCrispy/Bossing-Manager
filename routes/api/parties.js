@@ -24,6 +24,29 @@ const validateParty = [
   handleValidationErrors,
 ];
 
+const validateDrop = [
+  check('bossName')
+    .exists({ checkFalsy: true })
+    .withMessage('Please enter a boss.'),
+  check('itemName')
+    .exists({ checkFalsy: true })
+    .withMessage('Please enter an item.'),
+  check('image')
+    .custom(image => {
+      if (!image.length || image.endsWith('.jpg') || image.endsWith('.jpeg') || image.endsWith('.png')) {
+        return true;
+      }
+
+      throw new Error('Only images with extentions .png, .jpg, and .jpeg are accepted.');
+    }),
+  check('memberIds')
+    .isArray({ min: 2 })
+    .withMessage('Please include at least 2 members in the party, including yourself.')
+    .isArray({ max: 6 })
+    .withMessage('There cannot be more than 6 members in a party.'),
+  handleValidationErrors,
+];
+
 // Get all parties that the current user belongs to
 router.get('/', asyncHandler(async (req, res) => {
   const { user } = req;
@@ -59,8 +82,8 @@ router.put('/:id', validateParty, asyncHandler(async (req, res, next) => {
 
   if (party.leaderId.toString() !== user.id) return next(unauthorizedError);
 
-  if (name) party.name = name;
-  if (memberIds) party.memberIds = memberIds;
+  party.name = name;
+  party.memberIds = memberIds;
 
   await party.save();
 
@@ -82,7 +105,7 @@ router.delete('/:id', asyncHandler(async (req, res, next) => {
 }));
 
 // Create a new drop for a party
-router.post('/:id/drops', asyncHandler(async (req, res, next) => {
+router.post('/:id/drops', validateDrop, asyncHandler(async (req, res, next) => {
   const { user } = req;
   const { id } = req.params;
   const {
