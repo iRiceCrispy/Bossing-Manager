@@ -1,17 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import Modal from '../Modal';
+import PartyForm from '../Forms/PartyForm';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
 
 const Navigation = () => {
+  const [showCreate, setShowCreate] = useState(false);
   const user = useSelector(state => state.session.user);
 
   return (
     <nav>
       <div className='navbar'>
         <div className='home'>
-          <Link className='btn transparent' to='/'>Home</Link>
+          <a className='btn transparent' href='/'>Home</a>
+        </div>
+        <div className='options'>
+          {showCreate ? (
+            <Modal showModal={setShowCreate}>
+              <PartyForm showForm={setShowCreate} />
+            </Modal>
+          ) : (
+            <button className='btn transparent createParty' type='button' onClick={() => setShowCreate(true)}>Create new party</button>
+          )}
         </div>
         <div className='auth'>
           {user ? (

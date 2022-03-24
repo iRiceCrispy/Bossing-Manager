@@ -54,11 +54,3 @@ const Parties = ({ selected, setSelected, setSelectedDrop }) => {
 };
 
 export default Parties;
-
-// {showCreate
-//   ? (
-//     <Modal showModal={setShowCreate}>
-//       <PartyForm showForm={setShowCreate} />
-//     </Modal>
-//   )
-//   : (<button className='btn createParty' type='button' onClick={() => setShowCreate(true)}>Create new party</button>)}
