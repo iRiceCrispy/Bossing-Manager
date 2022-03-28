@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { restoreUser } from './store/session';
 import { loadUsers } from './store/users';
 import SelectedProvider from './context/SelectedContext';
@@ -41,6 +41,9 @@ const App = () => {
               </SelectedProvider>
             )
             : <Splash />}
+        </Route>
+        <Route>
+          <Redirect to='/' />
         </Route>
       </Switch>
     </div>
