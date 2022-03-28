@@ -3,7 +3,10 @@ import { useDispatch } from 'react-redux';
 import { useSelected } from '../../context/SelectedContext';
 import Tags from './Tags';
 import SearchMenu from './SearchMenu';
+import SearchDropDown from './SearchDropDown';
 import { createDrop, editDrop } from '../../store/drops';
+import bossList from '../../util/bossList.json';
+// import itemList from '../../util/itemList.json';
 import './forms.css';
 
 const DropForm = ({ showForm, party, drop, edit }) => {
@@ -16,6 +19,10 @@ const DropForm = ({ showForm, party, drop, edit }) => {
   const [showSearch, setShowSearch] = useState(false);
   const [errors, setErrors] = useState([]);
   const { setSelectedDrop } = useSelected();
+
+  const bossNames = Object.keys(bossList);
+  const boss = bossList[bossName];
+  const itemNames = boss?.drops;
 
   const matches = (edit ? drop.party.members : party.members)
     .filter(user => user.username.toLowerCase().includes(input.toLowerCase())
@@ -95,14 +102,24 @@ const DropForm = ({ showForm, party, drop, edit }) => {
           ))}
         </ul>
         <div className='formContent'>
-          <label>
+          <div>
             Boss
-            <input type='text' value={bossName} onChange={e => setBossName(e.target.value)} />
-          </label>
-          <label>
+            <SearchDropDown
+              options={bossNames}
+              result={bossName}
+              setResult={setBossName}
+            />
+          </div>
+          <div>
             Item
-            <input type='text' value={itemName} onChange={e => setItemName(e.target.value)} />
-          </label>
+            <SearchDropDown
+              options={itemNames}
+              disabled={!itemNames?.length}
+              reset={!bossName}
+              result={itemName}
+              setResult={setItemName}
+            />
+          </div>
           <label>
             Image (optional)
             <input type='text' value={image} onChange={e => setImage(e.target.value)} />
