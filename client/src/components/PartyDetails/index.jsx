@@ -71,12 +71,14 @@ const PartyDetails = () => {
       <div className='dropListContainer'>
         <p className='heading'>Drops</p>
         <div className='dropList'>
-          {drops.map(drop => (
-            <div className='drop' key={drop.id} onClick={() => setSelectedDrop(drop.id)}>
-              <p className='bossName'>{drop.bossName}</p>
-              <p className='itemName'>{drop.itemName}</p>
-            </div>
-          ))}
+          {!drops.length
+            ? <p>There are currently no drops for this party.</p>
+            : drops.map(drop => (
+              <div className='drop' key={drop.id} onClick={() => setSelectedDrop(drop.id)}>
+                <p className='bossName'>{drop.bossName}</p>
+                <p className='itemName'>{drop.itemName}</p>
+              </div>
+            ))}
         </div>
       </div>
     </div>
