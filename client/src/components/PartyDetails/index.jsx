@@ -10,15 +10,17 @@ import './PartyDetails.css';
 const PartyDetails = () => {
   const dispatch = useDispatch();
   const { selectedParty, setSelectedParty, setSelectedDrop } = useSelected();
-  const party = useSelector(state => state.parties[selectedParty]);
   const [showEdit, setShowEdit] = useState(false);
   const [showDrop, setShowDrop] = useState(false);
+  const party = useSelector(state => state.parties[selectedParty]);
   const sessionUser = useSelector(state => state.session.user);
   const drops = Object.values(useSelector(state => state.drops))
-    .filter(drop => drop.party.id === party.id);
+    .filter(drop => drop.party.id === party?.id);
 
-  const isLeader = party.leader.id === sessionUser.id;
+  if (!party) return <div id='notFound'>The party you are looking for has either been deleted, or does not exist.</div>;
+
   const { name, leader, members } = party;
+  const isLeader = leader.id === sessionUser.id;
   members.sort((a, b) => (b.id === sessionUser.id) - (a.id === sessionUser.id));
 
   const deleteParty = () => {

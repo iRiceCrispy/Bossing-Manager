@@ -80,3 +80,7 @@
 .partyDetails .bossName {
   font-weight: 700;
 }
+
+#notFound {
+  margin: auto auto;
+}

@@ -13,8 +13,10 @@ const DropDetails = () => {
   const sessionUser = useSelector(state => state.session.user);
   const drop = useSelector(state => state.drops[selectedDrop]);
 
-  const isLeader = drop.party.leader.id === sessionUser.id;
-  const { bossName, itemName } = drop;
+  if (!drop) return <div id='notFound'>The drop you are looking for has either been deleted, or does not exist.</div>;
+
+  const { party: { leader }, bossName, itemName } = drop;
+  const isLeader = leader.id === sessionUser.id;
   const members = drop.members
     .map(member => member.user)
     .sort((a, b) => (b.id === sessionUser.id) - (a.id === sessionUser.id));
