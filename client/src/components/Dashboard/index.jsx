@@ -34,7 +34,16 @@ const Dashboard = () => {
   else if (partySelected) {
     content = <PartyDetails />;
   }
-  else content = 'Hello';
+  else {
+    content = (
+      <div id='notFound'>
+        No content yet. Will add in the future once more features has been implemented.
+        <br />
+        <br />
+        For now, browse the left sidebar to view parties and their corresponding drops.
+      </div>
+    );
+  }
 
   const showBack = partySelected || dropSelected;
 

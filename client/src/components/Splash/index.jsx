@@ -30,18 +30,23 @@ const Splash = () => (
       <div className='tech'>
         <p className='heading'>Technologies Used</p>
         <div>
-          <div className='backend'>
-            <p className='heading2'>Backend</p>
-            <div>
-              <p>Express</p>
-              <p>MongoDB</p>
-            </div>
-          </div>
           <div className='frontend'>
             <p className='heading2'>Frontend</p>
             <div>
+              <p>HTML</p>
+              <p>CSS</p>
+              <p>JavaScript</p>
               <p>React</p>
               <p>Redux</p>
+            </div>
+          </div>
+          <div className='backend'>
+            <p className='heading2'>Backend</p>
+            <div>
+              <p>JavaScript</p>
+              <p>Express</p>
+              <p>MongoDB</p>
+              <p>Mongoose</p>
             </div>
           </div>
         </div>

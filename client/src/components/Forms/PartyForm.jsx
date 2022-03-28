@@ -45,8 +45,8 @@ const PartyForm = ({ showForm, party, edit }) => {
 
       dispatch(createParty(newParty))
         .then(pt => {
-          setSelectedParty(pt.id);
           showForm(false);
+          setSelectedParty(pt.id);
         })
         .catch(async res => {
           const data = await res.json();
