@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+import DropDownMenu from './DropDownMenu';
 import './SearchDropDown.css';
 
-const SearchDropDown = ({ options, result, setResult, disabled, reset }) => {
+const SearchDropDown = ({ options, result, setResult, disabled }) => {
   const [input, setInput] = useState('');
   const matches = options?.filter(option => option.toLowerCase().includes(input.toLowerCase()));
 
-  if (reset) {
-    setResult('');
+  if (disabled) {
+    if (input) setInput('');
+    if (result) setResult('');
   }
 
   const setValue = match => {
@@ -15,7 +17,7 @@ const SearchDropDown = ({ options, result, setResult, disabled, reset }) => {
   };
 
   return (
-    <div className='sddContainer'>
+    <div className={`sddContainer${disabled ? ' disabled' : ''}`}>
       <input
         className='search'
         type='text'
@@ -27,11 +29,7 @@ const SearchDropDown = ({ options, result, setResult, disabled, reset }) => {
         }}
       />
       {input && (
-      <div className='matches'>
-        {matches.map(match => (
-          <div className='match' onClick={() => setValue(match)}>{match}</div>
-        ))}
-      </div>
+        <DropDownMenu matches={matches} setter={setValue} />
       )}
     </div>
   );

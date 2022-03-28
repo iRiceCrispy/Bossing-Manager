@@ -12,10 +12,10 @@ router.use(requireAuth);
 const validateDrop = [
   check('bossName')
     .exists({ checkFalsy: true })
-    .withMessage('Please enter a boss.'),
+    .withMessage('Please enter a valid boss.'),
   check('itemName')
     .exists({ checkFalsy: true })
-    .withMessage('Please enter an item.'),
+    .withMessage('Please enter a valid item.'),
   check('image')
     .custom(image => {
       if (!image.length || image.endsWith('.jpg') || image.endsWith('.jpeg') || image.endsWith('.png')) {

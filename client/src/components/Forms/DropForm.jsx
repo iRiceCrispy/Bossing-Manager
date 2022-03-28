@@ -53,8 +53,8 @@ const DropForm = ({ showForm, party, drop, edit }) => {
 
       dispatch(createDrop(party.id, newDrop))
         .then(drp => {
-          setSelectedDrop(drp.id);
           showForm(false);
+          setSelectedDrop(drp.id);
         })
         .catch(async res => {
           const data = await res.json();
@@ -114,8 +114,7 @@ const DropForm = ({ showForm, party, drop, edit }) => {
             Item
             <SearchDropDown
               options={itemNames}
-              disabled={!itemNames?.length}
-              reset={!bossName}
+              disabled={!bossName}
               result={itemName}
               setResult={setItemName}
             />
