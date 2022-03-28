@@ -19,7 +19,7 @@
 
 .tag {
   width: fit-content;
-  display: flex;
+  display: inline-flex;
   gap: 5px;
   background-color: var(--color-base);
   padding: 4px;
@@ -34,4 +34,8 @@
 .searchMenu {
   color: black;
   background-color: white;
+}
+
+.memberSearch {
+  width: 100%;
 }

@@ -111,7 +111,7 @@ const PartyForm = ({ showForm, party, edit }) => {
                   onKeyDown={e => {
                     if (e.key === 'Enter') {
                       e.preventDefault();
-                      addMember();
+                      if (input) addMember();
                     }
                   }}
                 />
