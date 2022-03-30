@@ -6,13 +6,13 @@ import SearchMenu from './SearchMenu';
 import SearchDropDown from './SearchDropDown';
 import { createDrop, editDrop } from '../../store/drops';
 import bossList from '../../util/bossList.json';
-// import itemList from '../../util/itemList.json';
+import itemList from '../../util/itemList.json';
 import './forms.css';
 
 const DropForm = ({ showForm, party, drop, edit }) => {
   const dispatch = useDispatch();
-  const [bossName, setBossName] = useState(edit ? drop.bossName : '');
-  const [itemName, setItemName] = useState(edit ? drop.itemName : '');
+  const [bossId, setBossId] = useState(edit ? drop.bossName : '');
+  const [itemId, setIemId] = useState(edit ? drop.itemName : '');
   const [image, setImage] = useState(edit ? drop.image : '');
   const [members, setMembers] = useState(edit ? drop.members.map(mem => mem.user) : party.members);
   const [input, setInput] = useState('');
@@ -20,9 +20,19 @@ const DropForm = ({ showForm, party, drop, edit }) => {
   const [errors, setErrors] = useState([]);
   const { setSelectedDrop } = useSelected();
 
-  const bossNames = Object.keys(bossList);
-  const boss = bossList[bossName];
-  const itemNames = boss?.drops;
+  const bosses = Object.entries(bossList).reduce((accum, [key, value]) => {
+    accum.push({ id: key, value: value.name });
+    return accum;
+  }, []);
+  const boss = bossList[bossId];
+
+  const items = boss
+    ? bossList[bossId].drops.reduce((accum, value) => {
+      accum.push({ id: value, value });
+      return accum;
+    }, [])
+    : undefined;
+  const item = itemList[itemId];
 
   const matches = (edit ? drop.party.members : party.members)
     .filter(user => user.username.toLowerCase().includes(input.toLowerCase())
@@ -45,8 +55,8 @@ const DropForm = ({ showForm, party, drop, edit }) => {
 
     if (!edit) {
       const newDrop = {
-        bossName,
-        itemName,
+        bossName: bossId,
+        itemName: itemId,
         image,
         memberIds: members.map(member => member.id),
       };
@@ -63,16 +73,16 @@ const DropForm = ({ showForm, party, drop, edit }) => {
         });
     }
     else {
-      const bossChanged = bossName !== drop.bossName;
-      const itemChanged = itemName !== drop.itemName;
+      const bossChanged = bossId.id !== drop.bossName;
+      const itemChanged = itemId.id !== drop.itemName;
       const imageChanged = image !== drop.image;
       const membersChanged = JSON.stringify(members.map(member => member.id))
         !== JSON.stringify(drop.members.map(member => member.user.id));
 
       if (bossChanged || itemChanged || imageChanged || membersChanged) {
         const editedDrop = {
-          bossName,
-          itemName,
+          bossName: bossId,
+          itemName: itemId,
           image,
           memberIds: members.map(member => member.id),
 
@@ -105,18 +115,18 @@ const DropForm = ({ showForm, party, drop, edit }) => {
           <div>
             Boss
             <SearchDropDown
-              options={bossNames}
-              result={bossName}
-              setResult={setBossName}
+              options={bosses}
+              result={boss?.name}
+              setResult={setBossId}
             />
           </div>
           <div>
             Item
             <SearchDropDown
-              options={itemNames}
-              disabled={!bossName}
-              result={itemName}
-              setResult={setItemName}
+              options={items}
+              disabled={!bossId}
+              result={item?.name}
+              setResult={setIemId}
             />
           </div>
           <label>

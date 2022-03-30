@@ -5,8 +5,8 @@ const DropDownMenu = ({ matches, setter }) => {
 
   return (
     <div className='matches'>
-      {matches.map((match, i) => (
-        <div className='match' key={i} onClick={() => setter(match)}>{match}</div>
+      {matches.map(match => (
+        <div className='match' key={match.id} onClick={() => setter(match)}>{match.value}</div>
       ))}
     </div>
   );
