@@ -5,6 +5,8 @@ import Modal from '../Modal';
 import PartyForm from '../Forms/PartyForm';
 import DropForm from '../Forms/DropForm';
 import { removeParty } from '../../store/parties';
+import bossList from '../../util/bossList.json';
+import itemList from '../../util/itemList.json';
 import './PartyDetails.css';
 
 const PartyDetails = () => {
@@ -73,12 +75,17 @@ const PartyDetails = () => {
         <div className='dropList'>
           {!drops.length
             ? <p>There are currently no drops for this party.</p>
-            : drops.map(drop => (
-              <div className='drop' key={drop.id} onClick={() => setSelectedDrop(drop.id)}>
-                <p className='bossName'>{drop.bossName}</p>
-                <p className='itemName'>{drop.itemName}</p>
-              </div>
-            ))}
+            : drops.map(drop => {
+              const boss = bossList[drop.bossName];
+              const item = itemList[drop.itemName];
+
+              return (
+                <div className='drop' key={drop.id} onClick={() => setSelectedDrop(drop.id)}>
+                  <p className='bossName'>{boss.name}</p>
+                  <p className='itemName'>{item.name}</p>
+                </div>
+              );
+            })}
         </div>
       </div>
     </div>

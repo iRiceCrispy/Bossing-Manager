@@ -4,6 +4,8 @@ import { useSelected } from '../../context/SelectedContext';
 import Modal from '../Modal';
 import DropForm from '../Forms/DropForm';
 import { removeDrop } from '../../store/drops';
+import bossList from '../../util/bossList.json';
+import itemList from '../../util/itemList.json';
 import './DropDetails.css';
 
 const DropDetails = () => {
@@ -21,6 +23,9 @@ const DropDetails = () => {
     .map(member => member.user)
     .sort((a, b) => (b.id === sessionUser.id) - (a.id === sessionUser.id));
 
+  const boss = bossList[bossName];
+  const item = itemList[itemName];
+
   const deleteDrop = () => {
     dispatch(removeDrop(drop.id));
     setSelectedDrop('');
@@ -29,8 +34,8 @@ const DropDetails = () => {
   return (
     <div className='dropDetails' key={drop.id}>
       <div className='details'>
-        <p className='bossName'>{bossName}</p>
-        <p className='itemName'>{itemName}</p>
+        <p className='bossName'>{boss.name}</p>
+        <p className='itemName'>{item.name}</p>
         <p className='partyMembers'>
           Members:
         </p>

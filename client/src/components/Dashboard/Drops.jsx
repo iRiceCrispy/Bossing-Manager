@@ -1,6 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useSelected } from '../../context/SelectedContext';
+import bossList from '../../util/bossList.json';
+import itemList from '../../util/itemList.json';
 import './Drops.css';
 
 const Drops = () => {
@@ -16,10 +18,13 @@ const Drops = () => {
       <p className='heading'>Drops</p>
       {drops.map(drop => {
         const isSelected = selectedDrop === drop.id;
+        const boss = bossList[drop.bossName];
+        const item = itemList[drop.itemName];
+
         return (
           <div className={`drop${isSelected ? ' selected' : ''}`} key={drop.id} onClick={() => setSelectedDrop(drop.id)}>
-            <p className='bossName'>{drop.bossName}</p>
-            <p className='itemName'>{drop.itemName}</p>
+            <p className='bossName'>{boss.name}</p>
+            <p className='itemName'>{item.name}</p>
           </div>
         );
       })}

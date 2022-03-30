@@ -10,7 +10,7 @@ const SearchDropDown = ({ options, result, setResult, disabled }) => {
 
   if (disabled) {
     if (input) setInput('');
-    setResult('');
+    if (result) setResult('');
   }
 
   const setValue = match => {
