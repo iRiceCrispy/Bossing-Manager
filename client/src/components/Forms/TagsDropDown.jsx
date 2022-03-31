@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import Tags from './Tags';
+// import Tags from './Tags';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DropDownMenu from './DropDownMenu';
 
 const TagsDropDown = ({ options, results, setResult }) => {
@@ -22,7 +23,17 @@ const TagsDropDown = ({ options, results, setResult }) => {
   return (
     <div className='tddContainer'>
       {results?.map(result => (
-        <Tags key={result.id} tag={result.value} setter={setResult} />
+        <div className='tag' key={result.id}>
+          <span className='name'>
+            {result.value}
+          </span>
+          <span
+            className='x'
+            onClick={() => setResult(prev => prev.filter(item => item.value !== result.value))}
+          >
+            <FontAwesomeIcon icon='fas fa-xmark' />
+          </span>
+        </div>
       ))}
       <input
         className='search'
