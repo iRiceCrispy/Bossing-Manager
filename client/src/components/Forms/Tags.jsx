@@ -1,14 +1,14 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const Tags = ({ username, setMembers }) => (
+const Tags = ({ tag, setter }) => (
   <div className='tag'>
     <span className='name'>
-      {username}
+      {tag}
     </span>
     <span
       className='x'
-      onClick={() => setMembers(prev => prev.filter(member => member.username !== username))}
+      onClick={() => setter(prev => prev.filter(item => item.value !== tag))}
     >
       <FontAwesomeIcon icon='fas fa-xmark' />
     </span>

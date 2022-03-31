@@ -8,10 +8,10 @@ const SearchDropDown = ({ options, result, setResult, disabled }) => {
   const matches = options
     ?.filter(option => option.value.toLowerCase().includes(input.toLowerCase()));
 
-  if (disabled) {
-    if (input) setInput('');
-    if (result) setResult('');
-  }
+  // if (disabled) {
+  //   if (input) setInput('');
+  //   if (result) setResult('');
+  // }
 
   const setValue = match => {
     setInput('');
