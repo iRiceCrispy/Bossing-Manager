@@ -4,7 +4,7 @@ import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import './Auth.css';
 
-const Login = ({ type }) => (
+const Auth = ({ type }) => (
   <div className={`auth content ${type}`}>
     <Link className='btn transparent home' to='/'>Home</Link>
     <img className={`authImage ${type}`} src={`/static/${type}.png`} alt={type} />
@@ -14,4 +14,4 @@ const Login = ({ type }) => (
   </div>
 );
 
-export default Login;
+export default Auth;

@@ -14,6 +14,10 @@ const App = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const user = useSelector(state => state.session.user);
 
+  document.addEventListener('keydown', e => {
+    if (e.target.nodeName === 'INPUT' && e.key === 'Enter') e.preventDefault();
+  });
+
   useEffect(() => {
     (async () => {
       await dispatch(restoreUser());

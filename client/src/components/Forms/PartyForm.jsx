@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSelected } from '../../context/SelectedContext';
-import TagsDropDown from './TagsDropDown';
+import TagsDropDown from '../FormFields/TagsDropDown';
 import { createParty, editParty } from '../../store/parties';
 import './forms.css';
 

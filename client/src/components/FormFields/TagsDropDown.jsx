@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
-// import Tags from './Tags';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DropDownMenu from './DropDownMenu';
 
 const TagsDropDown = ({ options, results, setResult }) => {
   const [input, setInput] = useState('');
-
-  console.log(options);
-  console.log(results);
 
   const matches = options
     ?.filter(option => option.value.toLowerCase().includes(input.toLowerCase())
@@ -21,7 +17,7 @@ const TagsDropDown = ({ options, results, setResult }) => {
   };
 
   return (
-    <div className='tddContainer'>
+    <div className='tags dropdown'>
       {results?.map(result => (
         <div className='tag' key={result.id}>
           <span className='name'>

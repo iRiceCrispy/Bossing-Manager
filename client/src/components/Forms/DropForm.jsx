@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelected } from '../../context/SelectedContext';
-import TagsDropDown from './TagsDropDown';
-import SearchDropDown from './SearchDropDown';
+import TagsDropDown from '../FormFields/TagsDropDown';
+import SearchDropDown from '../FormFields/SearchDropDown';
 import { createDrop, editDrop } from '../../store/drops';
 import bossList from '../../util/bossList.json';
 import itemList from '../../util/itemList.json';
@@ -99,6 +99,7 @@ const DropForm = ({ showForm, party, drop, edit }) => {
           <div>
             Boss
             <SearchDropDown
+              index={2}
               options={bosses}
               result={boss?.name}
               setResult={setBossId}
@@ -107,6 +108,7 @@ const DropForm = ({ showForm, party, drop, edit }) => {
           <div>
             Item
             <SearchDropDown
+              index={1}
               options={items}
               disabled={!bossId}
               result={item?.name}
