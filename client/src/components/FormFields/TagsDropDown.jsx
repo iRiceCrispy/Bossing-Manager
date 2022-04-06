@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DropDownMenu from './DropDownMenu';
+import './TagsDropDown.css';
 
 const TagsDropDown = ({ options, results, setResult }) => {
   const [input, setInput] = useState('');
@@ -17,32 +18,38 @@ const TagsDropDown = ({ options, results, setResult }) => {
   };
 
   return (
-    <div className='tags dropdown'>
-      {results?.map(result => (
-        <div className='tag' key={result.id}>
-          <span className='name'>
-            {result.value}
-          </span>
-          <span
-            className='x'
-            onClick={() => setResult(prev => prev.filter(item => item.value !== result.value))}
-          >
-            <FontAwesomeIcon icon='fas fa-xmark' />
-          </span>
+    <>
+      <div className='tagsContainer'>
+        {results?.map(result => (
+          <div className='tag' key={result.id}>
+            <span className='value'>
+              {result.value}
+            </span>
+            <span
+              className='x'
+              onClick={() => setResult(prev => prev.filter(item => item.value !== result.value))}
+            >
+              <FontAwesomeIcon icon='fas fa-xmark' />
+            </span>
+          </div>
+        ))}
+      </div>
+      <div className='tagsDropdownContainer'>
+        <div className='tagsDropdown'>
+          <input
+            className='search'
+            type='text'
+            value={input}
+            onChange={e => {
+              setInput(e.target.value);
+            }}
+          />
+          {input && (
+          <DropDownMenu matches={matches} setter={setter} />
+          )}
         </div>
-      ))}
-      <input
-        className='search'
-        type='text'
-        value={input}
-        onChange={e => {
-          setInput(e.target.value);
-        }}
-      />
-      {input && (
-        <DropDownMenu matches={matches} setter={setter} />
-      )}
-    </div>
+      </div>
+    </>
   );
 };
 

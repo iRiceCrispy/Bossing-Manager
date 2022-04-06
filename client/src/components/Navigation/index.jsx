@@ -15,7 +15,7 @@ const Navigation = () => {
   return (
     <nav>
       <div className='navbar'>
-        <div className='home'>
+        <div className='home section'>
           <Link
             className='btn transparent'
             to='/'
@@ -27,22 +27,22 @@ const Navigation = () => {
             Home
           </Link>
         </div>
-        <div className='options'>
+        <div className='options section'>
           {showCreate ? (
             <Modal showModal={setShowCreate}>
               <PartyForm showForm={setShowCreate} />
             </Modal>
           ) : (
-            <button className='btn transparent createParty' type='button' onClick={() => setShowCreate(true)}>Create new party</button>
+            <button className='btn transparent createParty navOption' type='button' onClick={() => setShowCreate(true)}>Create new party</button>
           )}
         </div>
-        <div className='auth'>
+        <div className='auth section'>
           {user ? (
             <ProfileButton user={user} />
           ) : (
             <>
-              <Link className='btn transparent' to='/login'>Log In</Link>
-              <Link className='btn transparent' to='/signup'>Sign Up</Link>
+              <Link className='btn transparent navOption' to='/login'>Log In</Link>
+              <Link className='btn transparent navOption' to='/signup'>Sign Up</Link>
             </>
           )}
         </div>

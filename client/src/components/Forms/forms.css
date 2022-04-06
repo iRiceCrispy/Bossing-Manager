@@ -22,20 +22,6 @@
   background-color: var(--color-text);
 }
 
-.tag {
-  width: fit-content;
-  display: inline-flex;
-  gap: 5px;
-  background-color: var(--color-base);
-  padding: 4px;
-  border-radius: 4px;
-  margin-right: 3px;
-}
-
-.tag .x:hover {
-  cursor: pointer;
-}
-
 .searchMenu {
   color: black;
   background-color: white;

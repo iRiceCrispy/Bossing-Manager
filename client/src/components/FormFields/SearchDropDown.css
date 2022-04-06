@@ -1,15 +1,11 @@
-.dropdownContainer {
+.searchDropdownContainer {
   width: 100%;
   height: 25px;
   border-radius: 4px;
   position: relative;
 }
 
-/* .dropdownContainer.showMenu {
-  z-index: 10;
-} */
-
-.search.dropdown {
+.searchDropdown {
   width: 100%;
   font-size: 14px;
   color: black;
@@ -19,7 +15,7 @@
   position: absolute;
 }
 
-.search.dropdown input {
+.searchDropdown input {
   margin: 0;
   padding: 4px 8px;
   border: none;

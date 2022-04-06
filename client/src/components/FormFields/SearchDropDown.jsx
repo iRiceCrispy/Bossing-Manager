@@ -38,13 +38,13 @@ const SearchDropDown = ({ options, result, setResult, index }) => {
 
   return (
     <div
-      className={`dropdownContainer${showMenu ? ' showMenu' : ''}`}
+      className={`searchDropdownContainer${showMenu ? ' showMenu' : ''}`}
       onClick={e => {
         e.stopPropagation();
         setShowMenu(true);
       }}
     >
-      <div className='search dropdown' style={{ zIndex: index }}>
+      <div className='searchDropdown' style={{ zIndex: index }}>
         <div className='result'>
           <input
             className='search'

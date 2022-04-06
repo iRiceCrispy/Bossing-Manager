@@ -52,7 +52,7 @@ const ProfileButton = () => {
 
   return (
     <div className='profileContainer'>
-      <button className='btn transparent profile' type='button' onClick={() => !showMenu && setShowMenu(true)}>
+      <button className='btn transparent profile navOption' type='button' onClick={() => !showMenu && setShowMenu(true)}>
         <FontAwesomeIcon icon='fas fa-user' />
       </button>
       {showMenu && <DropDownMenu />}
