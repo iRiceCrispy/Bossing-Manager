@@ -73,6 +73,41 @@ export const removeDrop = id => async dispatch => {
   return res;
 };
 
+export const addSale = (id, data) => async dispatch => {
+  const res = await csrfFetch(`/api/drops/${id}/sale`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+
+  const drop = await res.json();
+  dispatch(edit(drop));
+
+  return res;
+};
+
+export const editSale = (id, data) => async dispatch => {
+  const res = await csrfFetch(`/api/drops/${id}/sale`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+
+  const drop = await res.json();
+  dispatch(edit(drop));
+
+  return res;
+};
+
+export const removeSale = id => async dispatch => {
+  const res = await csrfFetch(`/api/drops/${id}/sale`, {
+    method: 'DELETE',
+  });
+
+  const drop = await res.json();
+  dispatch(edit(drop));
+
+  return res;
+};
+
 const reducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD:
