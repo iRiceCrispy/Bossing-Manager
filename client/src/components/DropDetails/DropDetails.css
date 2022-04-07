@@ -1,15 +1,17 @@
 .dropDetails {
   min-width: max-content;
   width: 50%;
+  position: relative;
 }
 
 .dropDetails .details {
   padding: 32px;
   border: 1px solid black;
   border-radius: 8px;
+  padding-right: 250px;
 }
 
-.dropDetails .details>* {
+.dropDetails .details > * {
   padding: 12px 0;
 }
 
@@ -22,6 +24,24 @@
 .dropDetails .itemName {
   font-size: 24px;
   font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dropDetails .bossImg {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  position: absolute;
+  top: 25px;
+  right: 25px;
+}
+
+.dropDetails .itemImg {
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
 }
 
 .dropDetails .partyMembers {
@@ -46,4 +66,9 @@
 
 .buttons .delete {
   grid-area: 1 / 2 / 2 / 3;
+}
+
+.screenshot {
+  max-width: 450px;
+  object-fit: contain;
 }

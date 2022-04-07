@@ -34,8 +34,14 @@ const DropDetails = () => {
   return (
     <div className='dropDetails' key={drop.id}>
       <div className='details'>
-        <p className='bossName'>{boss.name}</p>
-        <p className='itemName'>{item.name}</p>
+        <p className='bossName'>
+          {boss.name}
+          <img className='bossImg' src={boss.image} alt='' />
+        </p>
+        <p className='itemName'>
+          {item.name}
+          <img className='itemImg' src={item.image} alt='' />
+        </p>
         <p className='partyMembers'>
           Members:
         </p>
@@ -45,7 +51,7 @@ const DropDetails = () => {
             {' '}
           </p>
         ))}
-        <img src={drop.image} alt='' />
+        <img className='screenshot' src={drop.image} alt='' />
       </div>
       {isLeader && (
       <div className='buttons'>
