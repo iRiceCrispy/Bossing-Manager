@@ -72,3 +72,10 @@
   max-width: 450px;
   object-fit: contain;
 }
+
+.isSold {
+  font-size: 16px;
+  font-weight: 500;
+  margin-left: 12px;
+  opacity: 0.75;
+}
