@@ -7,7 +7,10 @@ const Splash = () => (
     <header>
       <div className='header'>
         <div className='home'>
-          <Link className='btn transparent' to='/'>Home</Link>
+          <Link className='btn transparent' to='/'>
+            <img src='favicon.ico' alt='favicon' />
+            Chaos Mano
+          </Link>
         </div>
         <h1>A Maplestory boss drop tracker</h1>
         <div className='authButtons'>
