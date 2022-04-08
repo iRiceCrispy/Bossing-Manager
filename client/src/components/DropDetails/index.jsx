@@ -66,22 +66,40 @@ const DropDetails = () => {
         <img className='screenshot' src={drop.image} alt='' />
       </div>
       {isLeader && (
+        <div className='buttons'>
+          <button className='btn filled' type='button' onClick={() => setShowEdit(true)}>Edit Drop</button>
+          <button className='btn filled' type='button' onClick={deleteDrop}>Delete Drop</button>
+        </div>
+      )}
+      {sold && (
         <>
-          <div className='buttons'>
-            <button className='btn filled' type='button' onClick={() => setShowEdit(true)}>Edit Drop</button>
-            <button className='btn filled' type='button' onClick={deleteDrop}>Delete Drop</button>
+          <div className='sale'>
+            <p>
+              Sold For:
+              {' '}
+              {drop.price.toLocaleString()}
+            </p>
+            <img className='saleConfirmation' src={drop.saleImage} alt='' />
           </div>
-          {showEdit && (
-            <Modal showModal={setShowEdit}>
-              <DropForm showForm={setShowEdit} drop={drop} edit />
-            </Modal>
-          )}
-          {showSale && (
-            <Modal showModal={setShowSale}>
-              <SaleForm setShowForm={setShowSale} drop={drop} />
-            </Modal>
-          )}
+          <div className='payments'>
+            {members.map(member => (
+              <div className='payment'>
+                <p className='memberName'>{member.username}</p>
+                <p className='amount'>{Math.floor(drop.price / members.length).toLocaleString()}</p>
+              </div>
+            ))}
+          </div>
         </>
+      )}
+      {showEdit && (
+        <Modal showModal={setShowEdit}>
+          <DropForm showForm={setShowEdit} drop={drop} edit />
+        </Modal>
+      )}
+      {showSale && (
+        <Modal showModal={setShowSale}>
+          <SaleForm setShowForm={setShowSale} drop={drop} />
+        </Modal>
       )}
     </div>
   );
