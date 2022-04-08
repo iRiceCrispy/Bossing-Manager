@@ -85,4 +85,60 @@ router.delete('/:id', asyncHandler(async (req, res, next) => {
   res.json(drop);
 }));
 
+// Marking drop as sold
+router.post('/:id/sale', asyncHandler(async (req, res, next) => {
+  const { user } = req;
+  const { id } = req.params;
+  const { price, saleImage } = req.body;
+
+  const drop = await Drop.findById(id).populate('party');
+
+  if (drop.party.leaderId.toString() !== user.id) return next(unauthorizedError);
+
+  drop.sold = true;
+  drop.price = price;
+  drop.saleImage = saleImage;
+
+  await drop.save();
+
+  res.json(drop);
+}));
+
+// Update sale
+router.put('/:id/sale', asyncHandler(async (req, res, next) => {
+  const { user } = req;
+  const { id } = req.params;
+  const { price, saleImage } = req.body;
+
+  const drop = await Drop.findById(id).populate('party');
+
+  if (drop.party.leaderId.toString() !== user.id) return next(unauthorizedError);
+
+  drop.sold = true;
+  drop.price = price;
+  drop.saleImage = saleImage;
+
+  await drop.save();
+
+  res.json(drop);
+}));
+
+// Delete sale
+router.delete('/:id/sale', asyncHandler(async (req, res, next) => {
+  const { user } = req;
+  const { id } = req.params;
+
+  const drop = await Drop.findById(id).populate('party');
+
+  if (drop.party.leaderId.toString() !== user.id) return next(unauthorizedError);
+
+  drop.sold = false;
+  delete drop.price;
+  delete drop.saleImage;
+
+  await drop.save();
+
+  res.json(drop);
+}));
+
 module.exports = router;

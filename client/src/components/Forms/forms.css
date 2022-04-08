@@ -1,5 +1,4 @@
-.partyForm,
-.dropForm {
+.formContainer {
   width: 400px;
   min-width: fit-content;
   min-height: max-content;
