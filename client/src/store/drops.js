@@ -108,6 +108,28 @@ export const removeSale = id => async dispatch => {
   return res;
 };
 
+export const payMember = (dropId, memberId) => async dispatch => {
+  const res = await csrfFetch(`/api/drops/${dropId}/members/${memberId}`, {
+    method: 'POST',
+  });
+
+  const drop = await res.json();
+  dispatch(edit(drop));
+
+  return res;
+};
+
+export const unpayMember = (dropId, memberId) => async dispatch => {
+  const res = await csrfFetch(`/api/drops/${dropId}/members/${memberId}`, {
+    method: 'DELETE',
+  });
+
+  const drop = await res.json();
+  dispatch(edit(drop));
+
+  return res;
+};
+
 const reducer = (state = {}, action) => {
   switch (action.type) {
     case LOAD:
