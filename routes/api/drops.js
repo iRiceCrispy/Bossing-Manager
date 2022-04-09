@@ -141,4 +141,40 @@ router.delete('/:id/sale', asyncHandler(async (req, res, next) => {
   res.json(drop);
 }));
 
+// Mark member payment
+router.post('/:dropId/members/:memberId/payment', asyncHandler(async (req, res, next) => {
+  const { user } = req;
+  const { dropId, memberId } = req.params;
+
+  const drop = await Drop.findById(dropId).populate('party');
+
+  if (drop.party.leaderId.toString() !== user.id) return next(unauthorizedError);
+
+  const member = drop.members.find(mem => mem.userId.toString() === memberId);
+
+  member.isPaid = true;
+
+  await drop.save();
+
+  res.json(drop);
+}));
+
+// Unmark member payment
+router.delete('/:dropId/members/:memberId/payment', asyncHandler(async (req, res, next) => {
+  const { user } = req;
+  const { dropId, memberId } = req.params;
+
+  const drop = await Drop.findById(dropId).populate('party');
+
+  if (drop.party.leaderId.toString() !== user.id) return next(unauthorizedError);
+
+  const member = drop.members.find(mem => mem.userId.toString() === memberId);
+
+  member.isPaid = false;
+
+  await drop.save();
+
+  res.json(drop);
+}));
+
 module.exports = router;
