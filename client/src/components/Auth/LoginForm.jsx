@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import ValidationError from '../FormFields/ValidationError';
 import { demo, login } from '../../store/session';
 
 const LoginForm = () => {
@@ -14,6 +15,7 @@ const LoginForm = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
+    setErrors({});
 
     return dispatch(login({ credential, password })).catch(async res => {
       const data = await res.json();
@@ -25,7 +27,9 @@ const LoginForm = () => {
     <form className='loginForm' onSubmit={handleSubmit}>
       <header><h2>Log In</h2></header>
       <div className='form content'>
-        <p className='error'>{errors.login}</p>
+        <div className='loginError'>
+          <ValidationError message={errors.login} />
+        </div>
         <label>
           Username/Email
           <input
@@ -33,7 +37,7 @@ const LoginForm = () => {
             value={credential}
             onChange={e => setCredential(e.target.value)}
           />
-          <p className='error'>{errors.credential}</p>
+          <ValidationError message={errors.credential} />
         </label>
         <label>
           Password
@@ -42,7 +46,7 @@ const LoginForm = () => {
             value={password}
             onChange={e => setPassword(e.target.value)}
           />
-          <p className='error'>{errors.password}</p>
+          <ValidationError message={errors.password} />
         </label>
       </div>
       <footer>

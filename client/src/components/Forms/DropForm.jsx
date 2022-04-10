@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useSelected } from '../../context/SelectedContext';
 import TagsDropDown from '../FormFields/TagsDropDown';
 import SearchDropDown from '../FormFields/SearchDropDown';
+import ValidationError from '../FormFields/ValidationError';
 import { createDrop, editDrop } from '../../store/drops';
 import bossList from '../../util/bossList.json';
 import itemList from '../../util/itemList.json';
@@ -35,6 +36,7 @@ const DropForm = ({ showForm, party, drop, edit }) => {
 
   const submitForm = e => {
     e.preventDefault();
+    setErrors({});
 
     if (!edit) {
       const newDrop = {
@@ -98,7 +100,7 @@ const DropForm = ({ showForm, party, drop, edit }) => {
               result={boss?.name}
               setResult={setBossId}
             />
-            <p className='error'>{errors.bossName}</p>
+            <ValidationError message={errors.bossName} />
           </div>
           <div>
             Item
@@ -109,12 +111,12 @@ const DropForm = ({ showForm, party, drop, edit }) => {
               result={item?.name}
               setResult={setIemId}
             />
-            <p className='error'>{errors.itemName}</p>
+            <ValidationError message={errors.itemName} />
           </div>
           <label>
             Image (optional)
             <input type='text' value={image} onChange={e => setImage(e.target.value)} />
-            <p className='error'>{errors.image}</p>
+            <ValidationError message={errors.image} />
           </label>
           <div className='tags'>
             Members
@@ -124,7 +126,7 @@ const DropForm = ({ showForm, party, drop, edit }) => {
               results={members}
               setResult={setMembers}
             />
-            <p className='error'>{errors.memberIds}</p>
+            <ValidationError message={errors.memberIds} />
           </div>
         </div>
         <footer>

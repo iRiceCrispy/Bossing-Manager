@@ -1,15 +1,3 @@
-form .errors {
-  margin: 12px 0;
-  height: 100px;
-  list-style-type: none;
-}
-
-form .error {
-  color: red;
-  font-size: 13px;
-  padding: 1px 0;
-}
-
 .auth.content {
   display: flex;
   align-items: center;
@@ -75,6 +63,7 @@ form .error {
 
 .auth.content .form.content {
   margin: 32px 0;
+  position: relative;
 }
 
 .auth.content footer .buttons {
@@ -89,4 +78,9 @@ form .error {
 .buttons {
   display: flex;
   gap: 12px;
+}
+
+.loginError {
+  position: absolute;
+  top: -36px;
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSelected } from '../../context/SelectedContext';
 import TagsDropDown from '../FormFields/TagsDropDown';
+import ValidationError from '../FormFields/ValidationError';
 import { createParty, editParty } from '../../store/parties';
 import './forms.css';
 
@@ -18,6 +19,7 @@ const PartyForm = ({ showForm, party, edit }) => {
 
   const submitForm = e => {
     e.preventDefault();
+    setErrors({});
 
     if (!edit) {
       const newParty = {
@@ -70,7 +72,7 @@ const PartyForm = ({ showForm, party, edit }) => {
           <label>
             Name
             <input type='text' value={name} onChange={e => setName(e.target.value)} />
-            <p className='error'>{errors.name}</p>
+            <ValidationError message={errors.name} />
           </label>
           <div className='tags'>
             Members
@@ -79,7 +81,7 @@ const PartyForm = ({ showForm, party, edit }) => {
               results={members}
               setResult={setMembers}
             />
-            <p className='error'>{errors.memberIds}</p>
+            <ValidationError message={errors.memberIds} />
           </div>
         </div>
         <footer>

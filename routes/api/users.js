@@ -14,7 +14,7 @@ const validateSignup = [
     .custom(async email => {
       const user = await User.findOne({ email });
 
-      if (user) throw new Error('Email already registered to another user.');
+      if (user) throw new Error('Email already registered.');
     }),
   check('username')
     .isLength({ min: 4 })
@@ -35,12 +35,9 @@ const validateSignup = [
     .isLength({ min: 6 })
     .withMessage('Password must be 6 characters or more.'),
   check('confirmPassword')
-    .exists({ checkFalsy: true })
-    .withMessage('Password and Confirm Password must match.')
-    .bail()
     .custom((value, { req }) => {
       if (value !== req.body.password) {
-        throw new Error('Password and Confirm Password must match.');
+        throw new Error('Password and Confirm Password does not match.');
       }
       return true;
     }),

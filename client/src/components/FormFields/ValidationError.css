@@ -1,0 +1,12 @@
+.validationError {
+  color: red;
+  font-size: 13px;
+  padding: 1px 0;
+  height: 20px;
+  line-height: 20px;
+}
+
+.errorIcon {
+  margin-left: 2px;
+  margin-right: 6px;
+}

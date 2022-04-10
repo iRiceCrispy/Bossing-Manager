@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import ValidationError from '../FormFields/ValidationError';
 import { signup } from '../../store/session';
 
 const SignupForm = () => {
@@ -16,6 +17,7 @@ const SignupForm = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
+    setErrors({});
 
     return dispatch(signup({ email, username, password, confirmPassword }))
       .catch(async res => {
@@ -31,12 +33,12 @@ const SignupForm = () => {
         <label>
           Email
           <input type='text' value={email} onChange={e => setEmail(e.target.value)} />
-          <p className='error'>{errors.email}</p>
+          <ValidationError message={errors.email} />
         </label>
         <label>
           Username
           <input type='text' value={username} onChange={e => setUsername(e.target.value)} />
-          <p className='error'>{errors.username}</p>
+          <ValidationError message={errors.username} />
         </label>
         <label>
           Password
@@ -45,7 +47,7 @@ const SignupForm = () => {
             value={password}
             onChange={e => setPassword(e.target.value)}
           />
-          <p className='error'>{errors.password}</p>
+          <ValidationError message={errors.password} />
         </label>
         <label>
           Confirm Password
@@ -54,7 +56,7 @@ const SignupForm = () => {
             value={confirmPassword}
             onChange={e => setConfirmPassword(e.target.value)}
           />
-          <p className='error'>{errors.confirmPassword}</p>
+          <ValidationError message={errors.confirmPassword} />
         </label>
       </div>
       <footer>
