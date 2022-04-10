@@ -1,12 +1,12 @@
 form .errors {
   margin: 12px 0;
   height: 100px;
-  color: red;
-  font-size: 14px;
   list-style-type: none;
 }
 
-form .errors .error {
+form .error {
+  color: red;
+  font-size: 13px;
   padding: 1px 0;
 }
 

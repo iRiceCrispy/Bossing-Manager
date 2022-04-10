@@ -18,7 +18,6 @@ const PartyForm = ({ showForm, party, edit }) => {
 
   const submitForm = e => {
     e.preventDefault();
-    setErrors([]);
 
     if (!edit) {
       const newParty = {
@@ -67,15 +66,11 @@ const PartyForm = ({ showForm, party, edit }) => {
         <header>
           <h2 className='formTitle'>{edit ? 'Edit party' : 'Create new a party'}</h2>
         </header>
-        <ul className='errors'>
-          {errors.map((error, idx) => (
-            <li className='error' key={idx}>{error}</li>
-          ))}
-        </ul>
         <div className='formContent'>
           <label>
             Name
             <input type='text' value={name} onChange={e => setName(e.target.value)} />
+            <p className='error'>{errors.name}</p>
           </label>
           <div className='tags'>
             Members
@@ -84,6 +79,7 @@ const PartyForm = ({ showForm, party, edit }) => {
               results={members}
               setResult={setMembers}
             />
+            <p className='error'>{errors.memberIds}</p>
           </div>
         </div>
         <footer>

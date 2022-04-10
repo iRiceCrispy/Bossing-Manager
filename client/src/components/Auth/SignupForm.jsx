@@ -16,30 +16,27 @@ const SignupForm = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    setErrors([]);
 
-    return dispatch(signup({ email, username, password, confirmPassword })).catch(async res => {
-      const data = await res.json();
-      if (data && data.errors) setErrors(data.errors);
-    });
+    return dispatch(signup({ email, username, password, confirmPassword }))
+      .catch(async res => {
+        const data = await res.json();
+        if (data && data.errors) setErrors(data.errors);
+      });
   };
 
   return (
     <form className='signupForm' onSubmit={handleSubmit}>
       <header><h2>Sign Up</h2></header>
-      <ul className='errors'>
-        {errors.map((error, idx) => (
-          <li className='error' key={idx}>{error}</li>
-        ))}
-      </ul>
       <div className='form content'>
         <label>
           Email
           <input type='text' value={email} onChange={e => setEmail(e.target.value)} />
+          <p className='error'>{errors.email}</p>
         </label>
         <label>
           Username
           <input type='text' value={username} onChange={e => setUsername(e.target.value)} />
+          <p className='error'>{errors.username}</p>
         </label>
         <label>
           Password
@@ -48,6 +45,7 @@ const SignupForm = () => {
             value={password}
             onChange={e => setPassword(e.target.value)}
           />
+          <p className='error'>{errors.password}</p>
         </label>
         <label>
           Confirm Password
@@ -56,6 +54,7 @@ const SignupForm = () => {
             value={confirmPassword}
             onChange={e => setConfirmPassword(e.target.value)}
           />
+          <p className='error'>{errors.confirmPassword}</p>
         </label>
       </div>
       <footer>

@@ -35,7 +35,6 @@ const DropForm = ({ showForm, party, drop, edit }) => {
 
   const submitForm = e => {
     e.preventDefault();
-    setErrors([]);
 
     if (!edit) {
       const newDrop = {
@@ -90,11 +89,6 @@ const DropForm = ({ showForm, party, drop, edit }) => {
         <header>
           <h2 className='formTitle'>{edit ? 'Edit drop' : 'Add a drop'}</h2>
         </header>
-        <ul className='errors'>
-          {errors.map((error, idx) => (
-            <li className='error' key={idx}>{error}</li>
-          ))}
-        </ul>
         <div className='formContent'>
           <div>
             Boss
@@ -104,6 +98,7 @@ const DropForm = ({ showForm, party, drop, edit }) => {
               result={boss?.name}
               setResult={setBossId}
             />
+            <p className='error'>{errors.bossName}</p>
           </div>
           <div>
             Item
@@ -114,10 +109,12 @@ const DropForm = ({ showForm, party, drop, edit }) => {
               result={item?.name}
               setResult={setIemId}
             />
+            <p className='error'>{errors.itemName}</p>
           </div>
           <label>
             Image (optional)
             <input type='text' value={image} onChange={e => setImage(e.target.value)} />
+            <p className='error'>{errors.image}</p>
           </label>
           <div className='tags'>
             Members
@@ -127,6 +124,7 @@ const DropForm = ({ showForm, party, drop, edit }) => {
               results={members}
               setResult={setMembers}
             />
+            <p className='error'>{errors.memberIds}</p>
           </div>
         </div>
         <footer>

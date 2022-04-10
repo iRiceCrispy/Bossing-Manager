@@ -14,7 +14,6 @@ const LoginForm = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    setErrors([]);
 
     return dispatch(login({ credential, password })).catch(async res => {
       const data = await res.json();
@@ -25,12 +24,8 @@ const LoginForm = () => {
   return (
     <form className='loginForm' onSubmit={handleSubmit}>
       <header><h2>Log In</h2></header>
-      <ul className='errors'>
-        {errors.map((error, idx) => (
-          <li className='error' key={idx}>{error}</li>
-        ))}
-      </ul>
       <div className='form content'>
+        <p className='error'>{errors.login}</p>
         <label>
           Username/Email
           <input
@@ -38,6 +33,7 @@ const LoginForm = () => {
             value={credential}
             onChange={e => setCredential(e.target.value)}
           />
+          <p className='error'>{errors.credential}</p>
         </label>
         <label>
           Password
@@ -46,6 +42,7 @@ const LoginForm = () => {
             value={password}
             onChange={e => setPassword(e.target.value)}
           />
+          <p className='error'>{errors.password}</p>
         </label>
       </div>
       <footer>

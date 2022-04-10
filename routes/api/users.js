@@ -36,7 +36,7 @@ const validateSignup = [
     .withMessage('Password must be 6 characters or more.'),
   check('confirmPassword')
     .exists({ checkFalsy: true })
-    .withMessage('Confirm Password field is required.')
+    .withMessage('Password and Confirm Password must match.')
     .bail()
     .custom((value, { req }) => {
       if (value !== req.body.password) {
