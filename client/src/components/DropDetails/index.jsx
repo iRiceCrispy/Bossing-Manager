@@ -4,7 +4,7 @@ import { useSelected } from '../../context/SelectedContext';
 import Modal from '../Modal';
 import DropForm from '../Forms/DropForm';
 import SaleForm from '../Forms/SaleForm';
-import { removeDrop } from '../../store/drops';
+import { removeDrop, payMember, unpayMember } from '../../store/drops';
 import bossList from '../../util/bossList.json';
 import itemList from '../../util/itemList.json';
 import './DropDetails.css';
@@ -22,8 +22,8 @@ const DropDetails = () => {
   const { party: { leader }, bossName, itemName, sold } = drop;
   const isLeader = leader.id === sessionUser.id;
   const members = drop.members
-    .map(member => member.user)
-    .sort((a, b) => (b.id === sessionUser.id) - (a.id === sessionUser.id));
+    .map(member => member)
+    .sort((a, b) => (b.user.id === sessionUser.id) - (a.user.id === sessionUser.id));
 
   const boss = bossList[bossName];
   const item = itemList[itemName];
@@ -31,6 +31,15 @@ const DropDetails = () => {
   const deleteDrop = () => {
     dispatch(removeDrop(drop.id));
     setSelectedDrop('');
+  };
+
+  const handlePayment = member => {
+    if (member.isPaid) {
+      dispatch(unpayMember(drop.id, member.user.id));
+    }
+    else {
+      dispatch(payMember(drop.id, member.user.id));
+    }
   };
 
   return (
@@ -58,8 +67,8 @@ const DropDetails = () => {
           Members:
         </p>
         {members.map(member => (
-          <p className='partyMember' key={member.id}>
-            {member.id === sessionUser.id ? 'You' : member.username}
+          <p className='partyMember' key={member.user.id}>
+            {member.id === sessionUser.id ? 'You' : member.user.username}
             {' '}
           </p>
         ))}
@@ -83,9 +92,10 @@ const DropDetails = () => {
           </div>
           <div className='payments'>
             {members.map(member => (
-              <div className='payment'>
-                <p className='memberName'>{member.username}</p>
+              <div className='payment' key={member.user.id}>
+                <p className='memberName'>{member.user.username}</p>
                 <p className='amount'>{Math.floor(drop.price / members.length).toLocaleString()}</p>
+                <button className='btn filled' type='button' onClick={() => handlePayment(member)}>{member.isPaid ? 'Cancel' : 'Pay member'}</button>
               </div>
             ))}
           </div>

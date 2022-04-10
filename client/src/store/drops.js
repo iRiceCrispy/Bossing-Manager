@@ -109,7 +109,7 @@ export const removeSale = id => async dispatch => {
 };
 
 export const payMember = (dropId, memberId) => async dispatch => {
-  const res = await csrfFetch(`/api/drops/${dropId}/members/${memberId}`, {
+  const res = await csrfFetch(`/api/drops/${dropId}/members/${memberId}/payment`, {
     method: 'POST',
   });
 
@@ -120,7 +120,7 @@ export const payMember = (dropId, memberId) => async dispatch => {
 };
 
 export const unpayMember = (dropId, memberId) => async dispatch => {
-  const res = await csrfFetch(`/api/drops/${dropId}/members/${memberId}`, {
+  const res = await csrfFetch(`/api/drops/${dropId}/members/${memberId}/payment`, {
     method: 'DELETE',
   });
 

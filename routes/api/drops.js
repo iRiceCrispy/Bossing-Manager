@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth, unauthorizedError } = require('../../utils/auth');
-const { Drop } = require('../../db/models');
+const { Party, Drop } = require('../../db/models');
 
 const router = express.Router();
 
@@ -36,7 +36,14 @@ const validateDrop = [
 router.get('/', asyncHandler(async (req, res) => {
   const { user } = req;
 
-  const drops = await Drop.find({ members: { $in: { userId: user.id } } });
+  const parties = await Party.find({ leaderId: user.id });
+
+  const drops = await Drop.find({
+    $or: [
+      { members: { $elemMatch: { userId: user.id } } },
+      { partyId: { $in: parties.map(party => party.id) } },
+    ],
+  });
 
   const data = drops.reduce((accum, drop) => {
     accum[drop.id] = drop.toJSON();

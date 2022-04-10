@@ -51,7 +51,7 @@ const validateDrop = [
 router.get('/', asyncHandler(async (req, res) => {
   const { user } = req;
 
-  const parties = await Party.find({ memberIds: { $in: user.id } });
+  const parties = await Party.find({ memberIds: user.id });
 
   const data = parties.reduce((accum, party) => {
     accum[party.id] = party.toJSON();
