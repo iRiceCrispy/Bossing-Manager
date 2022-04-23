@@ -26,7 +26,7 @@ const LoginForm = () => {
   return (
     <form className='loginForm' onSubmit={handleSubmit}>
       <header><h2>Log In</h2></header>
-      <div className='form content'>
+      <div className='content'>
         <div className='loginError'>
           <ValidationError message={errors.login} />
         </div>

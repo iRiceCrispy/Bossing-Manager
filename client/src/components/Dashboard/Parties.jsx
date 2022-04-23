@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import Party from './Party';
-import './Parties.css';
+import './Parties.scss';
 
 const Parties = () => {
   const sessionUser = useSelector(state => state.session.user);

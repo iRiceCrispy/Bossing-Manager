@@ -73,6 +73,7 @@ input:focus {
   width: max-content;
   border: none;
   border-radius: 4px;
+  white-space: nowrap;
 }
 
 .btn:hover {
@@ -92,4 +93,8 @@ input:focus {
   font-size: 32px;
   padding: 16px 32px;
   border-radius: 16px;
+}
+
+#notFound {
+  margin: auto auto;
 }

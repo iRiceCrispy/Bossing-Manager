@@ -8,7 +8,7 @@ import Parties from './Parties';
 import Drops from './Drops';
 import PartyDetails from '../PartyDetails';
 import DropDetails from '../DropDetails';
-import './Dashboard.css';
+import './Dashboard.scss';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -53,8 +53,8 @@ const Dashboard = () => {
   };
 
   return isLoaded && (
-    <div className='dashboardContainer'>
-      <nav className='leftSideBar'>
+    <div id='dashboard'>
+      <nav className='sidebar'>
         {showBack && (
         <button
           className='btn transparent goBack'

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import blackmage from '../../assets/Black_Mage.png';
-import './Splash.css';
+import './Splash.scss';
 
 const Splash = () => (
-  <div className='splash'>
+  <div id='splash'>
     <header>
-      <div className='header'>
+      <nav>
         <div className='home'>
           <Link className='btn transparent' to='/'>
             <img src='favicon.ico' alt='favicon' />
@@ -18,7 +18,7 @@ const Splash = () => (
           <Link className='btn transparent' to='/login'>Log In</Link>
           <Link className='btn transparent' to='/signup'>Sign Up</Link>
         </div>
-      </div>
+      </nav>
     </header>
     <section className='main' style={{ backgroundImage: `url(${blackmage})` }}>
       <div className='content'>

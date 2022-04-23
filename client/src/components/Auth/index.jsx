@@ -5,10 +5,10 @@ import SignupForm from './SignupForm';
 import loginImg from '../../assets/login.png';
 import signupImg from '../../assets/signup.png';
 
-import './Auth.css';
+import './Auth.scss';
 
 const Auth = ({ type }) => (
-  <div className={`auth content ${type}`}>
+  <div id='auth' className={`${type}`}>
     <Link className='btn transparent home' to='/'>Home</Link>
     <img
       className={`authImage ${type}`}

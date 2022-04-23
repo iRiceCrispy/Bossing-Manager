@@ -7,7 +7,7 @@ import SaleForm from '../Forms/SaleForm';
 import { removeDrop, payMember, unpayMember } from '../../store/drops';
 import bossList from '../../util/bossList.json';
 import itemList from '../../util/itemList.json';
-import './DropDetails.css';
+import './DropDetails.scss';
 
 const DropDetails = () => {
   const dispatch = useDispatch();

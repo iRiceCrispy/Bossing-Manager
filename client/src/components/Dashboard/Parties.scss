@@ -1,0 +1,46 @@
+.partiesContainer {
+  padding: 12px;
+
+  .leaderOf {
+    border-bottom: 1px solid black;
+  }
+
+  .party {
+    cursor: pointer;
+    user-select: none;
+    padding: 12px;
+    border-radius: 4px;
+
+    &.selected,
+    &:hover,
+    &:active {
+      background-color: var(--color-base);
+    }
+
+    &:hover {
+      opacity: 0.75;
+    }
+
+    &:active {
+      opacity: 1;
+    }
+
+    .partyName {
+      margin: 0;
+      margin-bottom: 12px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .partyLeader {
+      margin: 0;
+      margin-bottom: 12px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .partyMembers {
+      font-size: 13px;
+    }
+  }
+}

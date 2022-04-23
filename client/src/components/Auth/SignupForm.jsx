@@ -29,7 +29,7 @@ const SignupForm = () => {
   return (
     <form className='signupForm' onSubmit={handleSubmit}>
       <header><h2>Sign Up</h2></header>
-      <div className='form content'>
+      <div className='content'>
         <label>
           Email
           <input type='text' value={email} onChange={e => setEmail(e.target.value)} />

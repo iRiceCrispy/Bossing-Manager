@@ -1,0 +1,84 @@
+.partyDetails {
+  min-width: max-content;
+  width: 50%;
+
+  .details {
+    padding: 32px;
+    border: 1px solid black;
+    border-radius: 8px;
+
+    > * {
+      padding: 12px 0;
+    }
+
+    .partyName {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .partyLeader {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .partyMembers {
+      font-size: 16px;
+      font-weight: 700;
+
+      .partyMember {
+        padding: 6px 0;
+      }
+    }
+  }
+
+  .buttons {
+    display: grid;
+    grid-template-columns: min-content min-content auto min-content;
+    grid-column-gap: 5px;
+
+    .edit {
+      grid-area: 1 / 1 / 2 / 2;
+    }
+
+    .delete {
+      grid-area: 1 / 2 / 2 / 3;
+    }
+
+    .add {
+      grid-area: 1 / 4 / 2 / 5;
+    }
+  }
+
+  .dropListContainer {
+    margin-top: 36px;
+
+    .heading {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 36px;
+    }
+
+    .drop {
+      cursor: pointer;
+      user-select: none;
+      padding: 12px;
+      margin-bottom: 12px;
+      background-color: var(--color-base2);
+      border-radius: 4px;
+
+      &:hover {
+        opacity: 0.75;
+      }
+
+      .bossName,
+      .itemName {
+        padding: 12px 0;
+      }
+
+      .bossName {
+        font-weight: 700;
+      }
+    }
+  }
+}

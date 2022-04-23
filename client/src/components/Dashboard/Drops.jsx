@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useSelected } from '../../context/SelectedContext';
 import bossList from '../../util/bossList.json';
 import itemList from '../../util/itemList.json';
-import './Drops.css';
+import './Drops.scss';
 
 const Drops = () => {
   const { selectedParty, selectedDrop, setSelectedDrop } = useSelected();

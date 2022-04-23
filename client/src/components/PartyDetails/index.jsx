@@ -7,7 +7,7 @@ import DropForm from '../Forms/DropForm';
 import { removeParty } from '../../store/parties';
 import bossList from '../../util/bossList.json';
 import itemList from '../../util/itemList.json';
-import './PartyDetails.css';
+import './PartyDetails.scss';
 
 const PartyDetails = () => {
   const dispatch = useDispatch();
