@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import blackmage from '../../assets/Black_Mage.png';
 import './Splash.css';
 
 const Splash = () => (
@@ -19,7 +20,7 @@ const Splash = () => (
         </div>
       </div>
     </header>
-    <section className='main'>
+    <section className='main' style={{ backgroundImage: `url(${blackmage})` }}>
       <div className='content'>
         <h2>
           Manage your
