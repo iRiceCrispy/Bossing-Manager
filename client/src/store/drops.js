@@ -79,8 +79,12 @@ export const addSale = (id, data) => async dispatch => {
     body: JSON.stringify(data),
   });
 
-  const drop = await res.json();
-  dispatch(edit(drop));
+  if (res.ok) {
+    const drop = await res.json();
+    dispatch(edit(drop));
+
+    return drop;
+  }
 
   return res;
 };

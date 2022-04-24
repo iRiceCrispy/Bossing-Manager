@@ -17,6 +17,10 @@ const validateDrop = [
     .exists({ checkFalsy: true })
     .withMessage('Please enter a valid item.'),
   check('image')
+    .optional({ checkFalsy: true })
+    .isURL()
+    .withMessage('Please provid a valid URL')
+    .bail()
     .custom(image => {
       if (!image.length || image.endsWith('.jpg') || image.endsWith('.jpeg') || image.endsWith('.png')) {
         return true;
@@ -29,6 +33,25 @@ const validateDrop = [
     .withMessage('Please include at least 2 members in the party, including yourself.')
     .isArray({ max: 6 })
     .withMessage('There cannot be more than 6 members in a party.'),
+  handleValidationErrors,
+];
+
+const validateSale = [
+  check('price')
+    .isInt({ min: 0 })
+    .withMessage('Price must be a non-negative number.'),
+  check('saleImage')
+    .optional({ checkFalsy: true })
+    .isURL()
+    .withMessage('Please provid a valid URL')
+    .bail()
+    .custom(image => {
+      if (!image.length || image.endsWith('.jpg') || image.endsWith('.jpeg') || image.endsWith('.png')) {
+        return true;
+      }
+
+      throw new Error('Only images with extentions .png, .jpg, and .jpeg are accepted.');
+    }),
   handleValidationErrors,
 ];
 
@@ -93,7 +116,7 @@ router.delete('/:id', asyncHandler(async (req, res, next) => {
 }));
 
 // Marking drop as sold
-router.post('/:id/sale', asyncHandler(async (req, res, next) => {
+router.post('/:id/sale', validateSale, asyncHandler(async (req, res, next) => {
   const { user } = req;
   const { id } = req.params;
   const { price, saleImage } = req.body;
@@ -112,7 +135,7 @@ router.post('/:id/sale', asyncHandler(async (req, res, next) => {
 }));
 
 // Update sale
-router.put('/:id/sale', asyncHandler(async (req, res, next) => {
+router.put('/:id/sale', validateSale, asyncHandler(async (req, res, next) => {
   const { user } = req;
   const { id } = req.params;
   const { price, saleImage } = req.body;

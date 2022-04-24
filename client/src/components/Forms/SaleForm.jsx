@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import ValidationError from '../FormFields/ValidationError';
 import { addSale } from '../../store/drops';
 import './forms.scss';
 
@@ -7,6 +8,7 @@ const SaleForm = ({ drop, setShowForm }) => {
   const dispatch = useDispatch();
   const [price, setPrice] = useState('0');
   const [image, setImage] = useState('');
+  const [errors, setErrors] = useState([]);
 
   const changePrice = e => {
     if (!e.target.value.match(/^(|[,\d])+$/)) return;
@@ -16,6 +18,7 @@ const SaleForm = ({ drop, setShowForm }) => {
 
   const submitForm = e => {
     e.preventDefault();
+    setErrors({});
 
     const newSale = {
       price,
@@ -23,7 +26,12 @@ const SaleForm = ({ drop, setShowForm }) => {
     };
 
     dispatch(addSale(drop.id, newSale))
-      .then(() => setShowForm(false));
+      .then(() => setShowForm(false))
+      .catch(async res => {
+        const data = await res.json();
+
+        if (data?.errors) setErrors(data.errors);
+      });
   };
 
   return (
@@ -43,9 +51,10 @@ const SaleForm = ({ drop, setShowForm }) => {
             onFocus={() => price <= 0 && setPrice('')}
             onBlur={() => !price && setPrice('0')}
           />
+          <ValidationError message={errors.price} />
         </div>
-        <div className='inputContainer image'>
-          <label htmlFor='image'>Image (optional)</label>
+        <div className='inputContainer saleImage'>
+          <label htmlFor='saleImage'>Image (optional)</label>
           <input
             id='image'
             type='text'
@@ -53,6 +62,7 @@ const SaleForm = ({ drop, setShowForm }) => {
             placeholder='https://www.image.com/image.png'
             onChange={e => setImage(e.target.value)}
           />
+          <ValidationError message={errors.saleImage} />
         </div>
       </main>
       <footer>
