@@ -7,7 +7,7 @@ import ValidationError from '../FormFields/ValidationError';
 import { createDrop, editDrop } from '../../store/drops';
 import bossList from '../../util/bossList.json';
 import itemList from '../../util/itemList.json';
-import './forms.css';
+import './forms.scss';
 
 const DropForm = ({ showForm, party, drop, edit }) => {
   const dispatch = useDispatch();
@@ -86,54 +86,64 @@ const DropForm = ({ showForm, party, drop, edit }) => {
   };
 
   return (
-    <div className='formContainer dropForm'>
-      <form onSubmit={submitForm}>
-        <header>
-          <h2 className='formTitle'>{edit ? 'Edit drop' : 'Add a drop'}</h2>
-        </header>
-        <div className='formContent'>
-          <div>
-            Boss
-            <SearchDropDown
-              index={2}
-              options={bosses}
-              result={boss?.name}
-              setResult={setBossId}
-            />
-            <ValidationError message={errors.bossName} />
-          </div>
-          <div>
-            Item
-            <SearchDropDown
-              index={1}
-              options={items}
-              disabled={!bossId}
-              result={item?.name}
-              setResult={setIemId}
-            />
-            <ValidationError message={errors.itemName} />
-          </div>
-          <label>
-            Image (optional)
-            <input type='text' value={image} onChange={e => setImage(e.target.value)} />
-            <ValidationError message={errors.image} />
-          </label>
-          <div className='tags'>
-            Members
-            <TagsDropDown
-              options={(edit ? drop.party.members : party.members)
-                .map(user => ({ id: user.id, value: user.username }))}
-              results={members}
-              setResult={setMembers}
-            />
-            <ValidationError message={errors.memberIds} />
-          </div>
+    <form id='dropForm' className='form' onSubmit={submitForm}>
+      <header>
+        <h2 className='formTitle'>{edit ? 'Edit drop' : 'Add a drop'}</h2>
+      </header>
+      <main className='formContent'>
+        <div className='inputContainer bossName'>
+          <label htmlFor='bossName'>Boss Name</label>
+          <SearchDropDown
+            id='bossName'
+            placeholder='Boss Name'
+            index={2}
+            options={bosses}
+            result={boss?.name}
+            setResult={setBossId}
+          />
+          <ValidationError message={errors.bossName} />
         </div>
-        <footer>
-          <button className='btn filled submit' type='submit'>{edit ? 'Confirm' : 'Create Drop'}</button>
-        </footer>
-      </form>
-    </div>
+        <div className='inputContainer itemName'>
+          <label htmlFor='itemName'>Item Name</label>
+          <SearchDropDown
+            id='itemName'
+            placeholder='Item Name'
+            index={1}
+            options={items}
+            disabled={!bossId}
+            result={item?.name}
+            setResult={setIemId}
+          />
+          <ValidationError message={errors.itemName} />
+        </div>
+        <div className='inputContainer image'>
+          <label htmlFor='image'>Image (optional)</label>
+          <input
+            id='image'
+            type='text'
+            value={image}
+            placeholder='https://www.image.com/image.png'
+            onChange={e => setImage(e.target.value)}
+          />
+          <ValidationError message={errors.image} />
+        </div>
+        <div className='inputContainer members'>
+          <label htmlFor='members'>Members</label>
+          <TagsDropDown
+            id='members'
+            placeholder='Members'
+            options={(edit ? drop.party.members : party.members)
+              .map(user => ({ id: user.id, value: user.username }))}
+            results={members}
+            setResult={setMembers}
+          />
+          <ValidationError message={errors.memberIds} />
+        </div>
+      </main>
+      <footer>
+        <button className='btn light' type='submit'>{edit ? 'Confirm' : 'Create Drop'}</button>
+      </footer>
+    </form>
   );
 };
 

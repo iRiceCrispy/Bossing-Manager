@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DropDownMenu from './DropDownMenu';
 import './SearchDropDown.css';
 
-const SearchDropDown = ({ options, result, setResult, index }) => {
+const SearchDropDown = ({ id, placeholder, options, result, setResult, index }) => {
   const [input, setInput] = useState('');
   const [showMenu, setShowMenu] = useState(false);
 
@@ -47,9 +47,11 @@ const SearchDropDown = ({ options, result, setResult, index }) => {
       <div className='searchDropdown' style={{ zIndex: index }}>
         <div className='result'>
           <input
+            id={id}
             className='search'
             type='text'
             value={input || result || ''}
+            placeholder={placeholder}
             onChange={e => {
               setInput(e.target.value);
               setResult('');

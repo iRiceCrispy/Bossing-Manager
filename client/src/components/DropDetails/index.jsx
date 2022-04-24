@@ -76,8 +76,8 @@ const DropDetails = () => {
       </div>
       {isLeader && (
         <div className='buttons'>
-          <button className='btn filled' type='button' onClick={() => setShowEdit(true)}>Edit Drop</button>
-          <button className='btn filled' type='button' onClick={deleteDrop}>Delete Drop</button>
+          <button className='btn light' type='button' onClick={() => setShowEdit(true)}>Edit Drop</button>
+          <button className='btn light' type='button' onClick={deleteDrop}>Delete Drop</button>
         </div>
       )}
       {sold && (
@@ -95,7 +95,7 @@ const DropDetails = () => {
               <div className='payment' key={member.user.id}>
                 <p className='memberName'>{member.user.username}</p>
                 <p className='amount'>{Math.floor(drop.price / members.length).toLocaleString()}</p>
-                <button className='btn filled' type='button' onClick={() => handlePayment(member)}>{member.isPaid ? 'Cancel' : 'Pay member'}</button>
+                <button className='btn light' type='button' onClick={() => handlePayment(member)}>{member.isPaid ? 'Cancel' : 'Pay member'}</button>
               </div>
             ))}
           </div>

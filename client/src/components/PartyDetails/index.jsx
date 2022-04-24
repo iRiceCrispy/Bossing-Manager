@@ -59,15 +59,15 @@ const PartyDetails = () => {
                 <PartyForm showForm={setShowEdit} party={party} edit />
               </Modal>
             )
-            : <button className='btn filled edit' type='button' onClick={() => setShowEdit(true)}>Edit party</button>}
-          <button className='btn filled delete' type='button' onClick={deleteParty}>Delete party</button>
+            : <button className='btn light edit' type='button' onClick={() => setShowEdit(true)}>Edit party</button>}
+          <button className='btn light delete' type='button' onClick={deleteParty}>Delete party</button>
           {showDrop
             ? (
               <Modal showModal={setShowDrop}>
                 <DropForm showForm={setShowDrop} party={party} />
               </Modal>
             )
-            : <button className='btn filled add' type='button' onClick={() => setShowDrop(true)}>Add a drop</button>}
+            : <button className='btn light add' type='button' onClick={() => setShowDrop(true)}>Add a drop</button>}
         </div>
       )}
       <div className='dropListContainer'>

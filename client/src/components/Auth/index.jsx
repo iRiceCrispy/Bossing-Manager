@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import LoginForm from './LoginForm';
-import SignupForm from './SignupForm';
+import LoginForm from '../Forms/LoginForm';
+import SignupForm from '../Forms/SignupForm';
 import loginImg from '../../assets/login.png';
 import signupImg from '../../assets/signup.png';
 

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DropDownMenu from './DropDownMenu';
 import './TagsDropDown.css';
 
-const TagsDropDown = ({ options, results, setResult }) => {
+const TagsDropDown = ({ id, placeholder, options, results, setResult }) => {
   const [input, setInput] = useState('');
 
   const matches = options
@@ -37,9 +37,11 @@ const TagsDropDown = ({ options, results, setResult }) => {
       <div className='tagsDropdownContainer'>
         <div className='tagsDropdown'>
           <input
+            id={id}
             className='search'
             type='text'
             value={input}
+            placeholder={placeholder}
             onChange={e => {
               setInput(e.target.value);
             }}

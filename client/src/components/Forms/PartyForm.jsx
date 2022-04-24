@@ -4,7 +4,7 @@ import { useSelected } from '../../context/SelectedContext';
 import TagsDropDown from '../FormFields/TagsDropDown';
 import ValidationError from '../FormFields/ValidationError';
 import { createParty, editParty } from '../../store/parties';
-import './forms.css';
+import './forms.scss';
 
 const PartyForm = ({ showForm, party, edit }) => {
   const dispatch = useDispatch();
@@ -63,32 +63,38 @@ const PartyForm = ({ showForm, party, edit }) => {
   };
 
   return (
-    <div className='formContainer partyForm'>
-      <form onSubmit={submitForm}>
-        <header>
-          <h2 className='formTitle'>{edit ? 'Edit party' : 'Create new a party'}</h2>
-        </header>
-        <div className='formContent'>
-          <label>
-            Name
-            <input type='text' value={name} onChange={e => setName(e.target.value)} />
-            <ValidationError message={errors.name} />
-          </label>
-          <div className='tags'>
-            Members
-            <TagsDropDown
-              options={users.map(user => ({ id: user.id, value: user.username }))}
-              results={members}
-              setResult={setMembers}
-            />
-            <ValidationError message={errors.memberIds} />
-          </div>
+    <form id='partyForm' className='form' onSubmit={submitForm}>
+      <header>
+        <h2 className='formTitle'>{edit ? 'Edit party' : 'Create new a party'}</h2>
+      </header>
+      <main>
+        <div className='inputContainer partyName'>
+          <label htmlFor='partyName'>Party Name</label>
+          <input
+            id='partyName'
+            type='text'
+            value={name}
+            placeholder='Party Name'
+            onChange={e => setName(e.target.value)}
+          />
+          <ValidationError message={errors.name} />
         </div>
-        <footer>
-          <button className='btn filled submit' type='submit'>{edit ? 'Confirm' : 'Create Party'}</button>
-        </footer>
-      </form>
-    </div>
+        <div className='tags'>
+          <label htmlFor='partyMembers'>Members</label>
+          <TagsDropDown
+            id='partyMembers'
+            placeholder='Members'
+            options={users.map(user => ({ id: user.id, value: user.username }))}
+            results={members}
+            setResult={setMembers}
+          />
+          <ValidationError message={errors.memberIds} />
+        </div>
+      </main>
+      <footer>
+        <button className='btn light' type='submit'>{edit ? 'Confirm' : 'Create Party'}</button>
+      </footer>
+    </form>
   );
 };
 

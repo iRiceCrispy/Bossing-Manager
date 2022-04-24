@@ -34,7 +34,7 @@ nav {
   min-height: 64px;
 }
 
-main {
+.app > main {
   max-height: 100%;
   width: 100%;
   flex: 1 1 auto;
@@ -80,9 +80,14 @@ input:focus {
   opacity: 0.75;
 }
 
-.btn.filled {
+.btn.dark {
   color: var(--color-text);
   background-color: var(--color-base2);
+}
+
+.btn.light {
+  color: var(--color-base2);
+  background-color: var(--color-text);
 }
 
 .btn.transparent {

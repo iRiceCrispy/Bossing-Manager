@@ -27,7 +27,7 @@ const SignupForm = () => {
   };
 
   return (
-    <form className='signupForm' onSubmit={handleSubmit}>
+    <form id='signupForm' className='form' onSubmit={handleSubmit}>
       <header><h2>Sign Up</h2></header>
       <div className='content'>
         <label>
@@ -61,7 +61,7 @@ const SignupForm = () => {
       </div>
       <footer>
         <div className='buttons'>
-          <button className='btn filled' type='submit'>Sign Up</button>
+          <button className='btn light' type='submit'>Sign Up</button>
         </div>
         <p>
           Already registered?

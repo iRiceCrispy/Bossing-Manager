@@ -24,7 +24,7 @@ const LoginForm = () => {
   };
 
   return (
-    <form className='loginForm' onSubmit={handleSubmit}>
+    <form id='loginForm' className='form' onSubmit={handleSubmit}>
       <header><h2>Log In</h2></header>
       <div className='content'>
         <div className='loginError'>
@@ -51,8 +51,8 @@ const LoginForm = () => {
       </div>
       <footer>
         <div className='buttons'>
-          <button className='btn filled' type='submit'>Log In</button>
-          <button className='btn filled' type='button' onClick={() => dispatch(demo())}>Log In as Demo</button>
+          <button className='btn dark' type='submit'>Log In</button>
+          <button className='btn dark' type='button' onClick={() => dispatch(demo())}>Log In as Demo</button>
         </div>
         <p>
           Not registered?

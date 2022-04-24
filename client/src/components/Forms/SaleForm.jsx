@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addSale } from '../../store/drops';
-import './forms.css';
+import './forms.scss';
 
 const SaleForm = ({ drop, setShowForm }) => {
   const dispatch = useDispatch();
@@ -27,32 +27,38 @@ const SaleForm = ({ drop, setShowForm }) => {
   };
 
   return (
-    <div className='formContainer saleForm'>
-      <form onSubmit={submitForm}>
-        <header>
-          <h2 className='formTitle'>Input sales info.</h2>
-        </header>
-        <div className='formContent'>
-          <label>
-            Price
-            <input
-              type='text'
-              value={price.toLocaleString()}
-              onChange={changePrice}
-              onFocus={() => price <= 0 && setPrice('')}
-              onBlur={() => !price && setPrice('0')}
-            />
-          </label>
-          <label>
-            Image (optional)
-            <input type='text' value={image} onChange={e => setImage(e.target.value)} />
-          </label>
+    <form id='saleForm' className='form' onSubmit={submitForm}>
+      <header>
+        <h2 className='formTitle'>Input sales info.</h2>
+      </header>
+      <main>
+        <div className='inputContainer price'>
+          <label htmlFor='price'>Price</label>
+          <input
+            id='price'
+            type='text'
+            value={price.toLocaleString()}
+            onChange={changePrice}
+            placeholder='0'
+            onFocus={() => price <= 0 && setPrice('')}
+            onBlur={() => !price && setPrice('0')}
+          />
         </div>
-        <footer>
-          <button className='btn filled submit' type='submit'>Confirm</button>
-        </footer>
-      </form>
-    </div>
+        <div className='inputContainer image'>
+          <label htmlFor='image'>Image (optional)</label>
+          <input
+            id='image'
+            type='text'
+            value={image}
+            placeholder='https://www.image.com/image.png'
+            onChange={e => setImage(e.target.value)}
+          />
+        </div>
+      </main>
+      <footer>
+        <button className='btn light submit' type='submit'>Confirm</button>
+      </footer>
+    </form>
   );
 };
 export default SaleForm;

@@ -27,7 +27,7 @@ const Splash = () => (
           <br />
           hard earned boss drops!
         </h2>
-        <Link className='btn filled large' to='/signup'>Get started!</Link>
+        <Link className='btn dark large' to='/signup'>Get started!</Link>
       </div>
     </section>
     <footer>

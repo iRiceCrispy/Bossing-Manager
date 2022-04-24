@@ -1,0 +1,20 @@
+form.form {
+  width: 100%;
+  min-width: max-content;
+  min-height: max-content;
+
+  header {
+    .formTitle {
+      font-size: 28px;
+    }
+  }
+
+  main {
+    margin: 32px 0;
+
+    > .inputContainer {
+      width: 350px;
+      margin-bottom: 12px;
+    }
+  }
+}
