@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import ProfileButton from '../Navigation/ProfileButton';
+import ProfileButton from '../ProfileButton';
 import blackmage from '../../assets/Black_Mage.png';
 import './Splash.scss';
 

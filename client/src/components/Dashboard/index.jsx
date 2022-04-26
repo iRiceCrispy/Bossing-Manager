@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, Route, Switch, useRouteMatch } from 'react-router-dom';
+import { Link, NavLink, Route, Switch, useRouteMatch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loadParties } from '../../store/parties';
 import { loadDrops } from '../../store/drops';
-import Navigation from '../Navigation';
 import './Dashboard.scss';
+import ProfileButton from '../ProfileButton';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -35,21 +35,28 @@ const Dashboard = () => {
           </li>
         </ul>
       </nav>
-      <div className='main'>
-        <Navigation />
-        <div className='content'>
-          <Switch>
-            <Route exact path={path}>
-              Dashboard
-            </Route>
-            <Route exact path={`${path}/parties`}>
-              Parties
-            </Route>
-            <Route exact path={`${path}/drops`}>
-              Drops
-            </Route>
-          </Switch>
+      <div className='topbar'>
+        <div className='menu'>
+          <button className='btn transparent menuItem' type='button'>
+            <Link to={`${url}/parties/create`}>Create new party</Link>
+          </button>
         </div>
+        <div className='auth'>
+          <ProfileButton />
+        </div>
+      </div>
+      <div className='content'>
+        <Switch>
+          <Route exact path={path}>
+            Dashboard
+          </Route>
+          <Route exact path={`${path}/parties`}>
+            Parties
+          </Route>
+          <Route exact path={`${path}/drops`}>
+            Drops
+          </Route>
+        </Switch>
       </div>
     </div>
   );
