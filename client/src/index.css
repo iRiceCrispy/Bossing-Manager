@@ -35,6 +35,8 @@ body {
 
 a {
   text-decoration: none;
+  display: inline-block;
+  width: 100%;
 }
 
 ul {

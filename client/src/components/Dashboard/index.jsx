@@ -23,23 +23,46 @@ const Dashboard = () => {
   return isLoaded && (
     <div id='dashboard'>
       <nav className='sidebar'>
-        <ul>
+        <div className='home'>
+          <Link className='logo' type='button' to='/'>
+            <img src='/favicon.ico' alt='favicon' />
+            <span className='text'>Chaos Mano</span>
+          </Link>
+        </div>
+        <ul className='menu'>
           <li>
-            <NavLink to={url}>Dashboard</NavLink>
+            <NavLink
+              className='menuItem'
+              activeClassName='selected'
+              exact
+              to={url}
+            >
+              Dashboard
+            </NavLink>
           </li>
           <li>
-            <NavLink to={`${url}/parties`}>Parties</NavLink>
+            <NavLink
+              className='menuItem'
+              activeClassName='selected'
+              to={`${url}/parties`}
+            >
+              Parties
+            </NavLink>
           </li>
           <li>
-            <NavLink to={`${url}/drops`}>Drops</NavLink>
+            <NavLink
+              className='menuItem'
+              activeClassName='selected'
+              to={`${url}/drops`}
+            >
+              Drops
+            </NavLink>
           </li>
         </ul>
       </nav>
       <div className='topbar'>
         <div className='menu'>
-          <button className='btn transparent menuItem' type='button'>
-            <Link to={`${url}/parties/create`}>Create new party</Link>
-          </button>
+          <Link className='btn transparent menuItem' to={`${url}/parties/create`}>Create new party</Link>
         </div>
         <div className='auth'>
           <ProfileButton />
