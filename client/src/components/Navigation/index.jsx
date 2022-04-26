@@ -13,7 +13,7 @@ const Navigation = () => {
   const user = useSelector(state => state.session.user);
 
   return (
-    <nav>
+    <nav className='topbar'>
       <div className='navbar'>
         <div className='home section'>
           <Link

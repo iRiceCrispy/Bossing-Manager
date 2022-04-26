@@ -1,3 +1,8 @@
+.topbar {
+  width: 100%;
+  height: 64px;
+}
+
 .navbar {
   width: 100%;
   height: 64px;
@@ -6,9 +11,6 @@
   display: grid;
   grid-template-columns: repeat(2, max-content) auto max-content;
   gap: 24x;
-  position: fixed;
-  top: 0;
-  z-index: 10;
 }
 
 .navbar .section {

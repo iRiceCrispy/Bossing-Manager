@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { NavLink, Route, Switch, useRouteMatch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { loadParties } from '../../store/parties';
 import { loadDrops } from '../../store/drops';
-import { useSelected } from '../../context/SelectedContext';
-import Parties from './Parties';
-import Drops from './Drops';
-import PartyDetails from '../PartyDetails';
-import DropDetails from '../DropDetails';
+import Navigation from '../Navigation';
 import './Dashboard.scss';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
+  const { path, url } = useRouteMatch();
   const [isLoaded, setIsLoaded] = useState(false);
-  const { selectedParty, setSelectedParty, selectedDrop, setSelectedDrop } = useSelected();
-  const partySelected = Boolean(selectedParty);
-  const dropSelected = Boolean(selectedDrop);
 
   useEffect(() => {
     (async () => {
@@ -26,54 +20,36 @@ const Dashboard = () => {
     })();
   }, [dispatch]);
 
-  let content;
-
-  if (dropSelected) {
-    content = <DropDetails />;
-  }
-  else if (partySelected) {
-    content = <PartyDetails />;
-  }
-  else {
-    content = (
-      <div id='notFound'>
-        No content yet. Will add in the future once more features has been implemented.
-        <br />
-        <br />
-        For now, browse the left sidebar to view parties and their corresponding drops.
-      </div>
-    );
-  }
-
-  const showBack = partySelected || dropSelected;
-
-  const goBack = () => {
-    if (dropSelected) setSelectedDrop('');
-    else if (partySelected) setSelectedParty('');
-  };
-
   return isLoaded && (
     <div id='dashboard'>
       <nav className='sidebar'>
-        {showBack && (
-        <button
-          className='btn transparent goBack'
-          type='button'
-          onClick={goBack}
-        >
-          <FontAwesomeIcon icon='fas fa-arrow-left' />
-          {' '}
-          Back
-        </button>
-        )}
-        {dropSelected ? (
-          <Drops />
-        ) : (
-          <Parties />
-        )}
+        <ul>
+          <li>
+            <NavLink to={url}>Dashboard</NavLink>
+          </li>
+          <li>
+            <NavLink to={`${url}/parties`}>Parties</NavLink>
+          </li>
+          <li>
+            <NavLink to={`${url}/drops`}>Drops</NavLink>
+          </li>
+        </ul>
       </nav>
-      <div className='content'>
-        {content}
+      <div className='main'>
+        <Navigation />
+        <div className='content'>
+          <Switch>
+            <Route exact path={path}>
+              Dashboard
+            </Route>
+            <Route exact path={`${path}/parties`}>
+              Parties
+            </Route>
+            <Route exact path={`${path}/drops`}>
+              Drops
+            </Route>
+          </Switch>
+        </div>
       </div>
     </div>
   );
