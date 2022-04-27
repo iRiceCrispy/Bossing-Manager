@@ -1,9 +1,57 @@
 #drops {
+  min-width: max-content;
   width: 80%;
   min-height: 100%;
   margin: 0 auto 48px;
 
   h2 {
     margin-bottom: 48px;
+  }
+
+  .dropList {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+  }
+
+  .drop {
+    min-width: 500px;
+    padding: 24px;
+    background-color: var(--color-base2);
+    border-radius: 4px;
+    position: relative;
+
+    &[sold='false']::after,
+    &[sold='true']::after {
+      font-size: 13px;
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+    }
+
+    &[sold='false']::after {
+      content: '[pending]';
+      color: yellow;
+    }
+
+    &[sold='true']::after {
+      content: '[sold]';
+      color: gray;
+    }
+
+    .bossName {
+      margin-bottom: 24px;
+    }
+
+    .partyLink {
+      width: max-content;
+      position: absolute;
+      top: 24px;
+      right: 24px;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 }

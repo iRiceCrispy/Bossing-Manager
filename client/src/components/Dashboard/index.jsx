@@ -6,6 +6,7 @@ import { loadDrops } from '../../store/drops';
 import ProfileButton from '../ProfileButton';
 import Main from './Main';
 import Parties from './Parties';
+import Drops from './Drops';
 import './Dashboard.scss';
 
 const Dashboard = () => {
@@ -79,7 +80,7 @@ const Dashboard = () => {
             <Parties />
           </Route>
           <Route exact path={`${path}/drops`}>
-            Drops
+            <Drops />
           </Route>
         </Switch>
       </div>
