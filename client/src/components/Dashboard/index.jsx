@@ -5,6 +5,7 @@ import { loadParties } from '../../store/parties';
 import { loadDrops } from '../../store/drops';
 import ProfileButton from '../ProfileButton';
 import Main from './Main';
+import Parties from './Parties';
 import './Dashboard.scss';
 
 const Dashboard = () => {
@@ -75,7 +76,7 @@ const Dashboard = () => {
             <Main />
           </Route>
           <Route exact path={`${path}/parties`}>
-            Parties
+            <Parties />
           </Route>
           <Route exact path={`${path}/drops`}>
             Drops

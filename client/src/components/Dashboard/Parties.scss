@@ -1,46 +1,35 @@
-.partiesContainer {
-  padding: 12px;
+#parties {
+  width: 80%;
+  min-height: 100%;
+  margin: 0 auto 48px;
 
-  .leaderOf {
-    border-bottom: 1px solid black;
+  h2 {
+    margin-bottom: 48px;
+  }
+
+  .partyList {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
   }
 
   .party {
-    cursor: pointer;
-    user-select: none;
-    padding: 12px;
+    padding: 24px;
+    background-color: var(--color-base2);
     border-radius: 4px;
 
-    &.selected,
-    &:hover,
-    &:active {
-      background-color: var(--color-base);
-    }
-
-    &:hover {
-      opacity: 0.75;
-    }
-
-    &:active {
-      opacity: 1;
-    }
-
     .partyName {
-      margin: 0;
-      margin-bottom: 12px;
-      font-size: 18px;
-      font-weight: 700;
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--color-base);
     }
 
-    .partyLeader {
-      margin: 0;
-      margin-bottom: 12px;
-      font-size: 15px;
-      font-weight: 600;
+    .member:not(:last-child)::after {
+      content: ', ';
     }
+  }
 
-    .partyMembers {
-      font-size: 13px;
-    }
+  .null {
+    text-align: center;
   }
 }
