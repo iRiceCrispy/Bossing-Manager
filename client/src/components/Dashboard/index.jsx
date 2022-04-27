@@ -7,6 +7,8 @@ import ProfileButton from '../ProfileButton';
 import Main from './Main';
 import Parties from './Parties';
 import Drops from './Drops';
+import PartyDetails from '../PartyDetails';
+import DropDetails from '../DropDetails';
 import './Dashboard.scss';
 
 const Dashboard = () => {
@@ -79,8 +81,14 @@ const Dashboard = () => {
           <Route exact path={`${path}/parties`}>
             <Parties />
           </Route>
+          <Route exact path={`${path}/parties/:id`}>
+            <PartyDetails />
+          </Route>
           <Route exact path={`${path}/drops`}>
             <Drops />
+          </Route>
+          <Route exact path={`${path}/drops/:id`}>
+            <DropDetails />
           </Route>
         </Switch>
       </div>

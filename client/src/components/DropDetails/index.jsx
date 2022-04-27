@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSelected } from '../../context/SelectedContext';
 import Modal from '../Modal';
 import DropForm from '../Forms/DropForm';
 import SaleForm from '../Forms/SaleForm';
@@ -11,11 +11,11 @@ import './DropDetails.scss';
 
 const DropDetails = () => {
   const dispatch = useDispatch();
+  const { id } = useParams();
   const [showEdit, setShowEdit] = useState(false);
   const [showSale, setShowSale] = useState(false);
-  const { selectedDrop, setSelectedDrop } = useSelected();
   const sessionUser = useSelector(state => state.session.user);
-  const drop = useSelector(state => state.drops[selectedDrop]);
+  const drop = useSelector(state => state.drops[id]);
 
   if (!drop) return <div id='notFound'>The drop you are looking for has either been deleted, or does not exist.</div>;
 
@@ -30,7 +30,6 @@ const DropDetails = () => {
 
   const deleteDrop = () => {
     dispatch(removeDrop(drop.id));
-    setSelectedDrop('');
   };
 
   const handlePayment = member => {

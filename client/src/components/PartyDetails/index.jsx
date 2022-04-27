@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSelected } from '../../context/SelectedContext';
 import Modal from '../Modal';
 import PartyForm from '../Forms/PartyForm';
 import DropForm from '../Forms/DropForm';
@@ -11,10 +11,10 @@ import './PartyDetails.scss';
 
 const PartyDetails = () => {
   const dispatch = useDispatch();
-  const { selectedParty, setSelectedParty, setSelectedDrop } = useSelected();
+  const { id } = useParams();
   const [showEdit, setShowEdit] = useState(false);
   const [showDrop, setShowDrop] = useState(false);
-  const party = useSelector(state => state.parties[selectedParty]);
+  const party = useSelector(state => state.parties[id]);
   const sessionUser = useSelector(state => state.session.user);
   const drops = Object.values(useSelector(state => state.drops))
     .filter(drop => drop.party.id === party?.id);
@@ -27,7 +27,6 @@ const PartyDetails = () => {
 
   const deleteParty = () => {
     dispatch(removeParty(party.id));
-    setSelectedParty('');
   };
 
   return (
@@ -80,7 +79,7 @@ const PartyDetails = () => {
               const item = itemList[drop.itemName];
 
               return (
-                <div className='drop' key={drop.id} onClick={() => setSelectedDrop(drop.id)}>
+                <div className='drop' key={drop.id}>
                   <p className='bossName'>{boss.name}</p>
                   <p className='itemName'>{item.name}</p>
                 </div>
