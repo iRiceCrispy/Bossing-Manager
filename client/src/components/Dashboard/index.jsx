@@ -3,8 +3,9 @@ import { Link, NavLink, Route, Switch, useRouteMatch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loadParties } from '../../store/parties';
 import { loadDrops } from '../../store/drops';
-import './Dashboard.scss';
 import ProfileButton from '../ProfileButton';
+import Main from './Main';
+import './Dashboard.scss';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -68,10 +69,10 @@ const Dashboard = () => {
           <ProfileButton />
         </div>
       </div>
-      <div className='content'>
+      <div className='contentContainer'>
         <Switch>
           <Route exact path={path}>
-            Dashboard
+            <Main />
           </Route>
           <Route exact path={`${path}/parties`}>
             Parties
