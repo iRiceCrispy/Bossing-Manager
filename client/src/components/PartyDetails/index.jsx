@@ -1,19 +1,13 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import Modal from '../Modal';
-import PartyForm from '../Forms/PartyForm';
-import DropForm from '../Forms/DropForm';
-import { removeParty } from '../../store/parties';
+import React from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import bossList from '../../util/bossList.json';
 import itemList from '../../util/itemList.json';
 import './PartyDetails.scss';
 
 const PartyDetails = () => {
-  const dispatch = useDispatch();
   const { id } = useParams();
-  const [showEdit, setShowEdit] = useState(false);
-  const [showDrop, setShowDrop] = useState(false);
   const party = useSelector(state => state.parties[id]);
   const sessionUser = useSelector(state => state.session.user);
   const drops = Object.values(useSelector(state => state.drops))
@@ -24,10 +18,6 @@ const PartyDetails = () => {
   const { name, leader, members } = party;
   const isLeader = leader.id === sessionUser.id;
   members.sort((a, b) => (b.id === sessionUser.id) - (a.id === sessionUser.id));
-
-  const deleteParty = () => {
-    dispatch(removeParty(party.id));
-  };
 
   return (
     <div className='partyDetails'>
@@ -40,38 +30,33 @@ const PartyDetails = () => {
           {' '}
           {leader.username}
         </p>
-        <p className='partyMembers'>
-          Members:
-        </p>
-        {members.map(member => (
-          <p className='partyMember' key={member.id}>
-            {member.id === sessionUser.id ? 'You' : member.username}
-            {' '}
-          </p>
-        ))}
-      </div>
-      {isLeader && (
-        <div className='buttons'>
-          {showEdit
-            ? (
-              <Modal showModal={setShowEdit}>
-                <PartyForm showForm={setShowEdit} party={party} edit />
-              </Modal>
-            )
-            : <button className='btn light edit' type='button' onClick={() => setShowEdit(true)}>Edit party</button>}
-          <button className='btn light delete' type='button' onClick={deleteParty}>Delete party</button>
-          {showDrop
-            ? (
-              <Modal showModal={setShowDrop}>
-                <DropForm showForm={setShowDrop} party={party} />
-              </Modal>
-            )
-            : <button className='btn light add' type='button' onClick={() => setShowDrop(true)}>Add a drop</button>}
+        <div className='partyMembers'>
+          <p>Members:</p>
+          {members.map(member => (
+            <p className='partyMember' key={member.id}>
+              {member.id === sessionUser.id ? 'You' : member.username}
+            </p>
+          ))}
         </div>
-      )}
-      <div className='dropListContainer'>
+        {isLeader && (
+          <>
+            <div className='modifyingButtons'>
+              <button className='btn transparent edit' type='button'>
+                <FontAwesomeIcon icon='fa-solid fa-pen-to-square' />
+              </button>
+              <button className='btn transparent delete' type='button'>
+                <FontAwesomeIcon icon='fa-solid fa-trash-can' />
+              </button>
+            </div>
+            <div className='createButton'>
+              <button className='btn transparent add' type='button'>Add a drop</button>
+            </div>
+          </>
+        )}
+      </div>
+      <div className='drops'>
         <p className='heading'>Drops</p>
-        <div className='dropList'>
+        <ul className='dropList'>
           {!drops.length
             ? <p>There are currently no drops for this party.</p>
             : drops.map(drop => {
@@ -79,13 +64,19 @@ const PartyDetails = () => {
               const item = itemList[drop.itemName];
 
               return (
-                <div className='drop' key={drop.id}>
-                  <p className='bossName'>{boss.name}</p>
-                  <p className='itemName'>{item.name}</p>
-                </div>
+                <li key={drop.id}>
+                  <Link
+                    className='drop'
+                    sold={drop.sold.toString()}
+                    to={`/dashboard/drops/${drop.id}`}
+                  >
+                    <p className='bossName'>{boss.name}</p>
+                    <p className='itemName'>{item.name}</p>
+                  </Link>
+                </li>
               );
             })}
-        </div>
+        </ul>
       </div>
     </div>
   );
