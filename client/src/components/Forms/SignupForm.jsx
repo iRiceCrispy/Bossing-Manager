@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect, Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ValidationError from '../FormFields/ValidationError';
 import { signup } from '../../store/session';
 
 const SignupForm = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const sessionUser = useSelector(state => state.session.user);
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -20,6 +21,9 @@ const SignupForm = () => {
     setErrors({});
 
     return dispatch(signup({ email, username, password, confirmPassword }))
+      .then(() => {
+        history.replace('/dashboard');
+      })
       .catch(async res => {
         const data = await res.json();
         if (data && data.errors) setErrors(data.errors);

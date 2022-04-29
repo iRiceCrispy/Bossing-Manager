@@ -50,9 +50,9 @@ const ProfileButton = () => {
           <button
             className='btn transparent logout'
             type='button'
-            onClick={async () => {
-              await dispatch(logout());
-              history.push('/login');
+            onClick={() => {
+              dispatch(logout());
+              history.push('/');
             }}
           >
             <span className='icon'>
