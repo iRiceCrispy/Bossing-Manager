@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Modal from '../Modal';
-import DropForm from '../Forms/DropForm';
 import SaleForm from '../Forms/SaleForm';
 import { removeDrop, payMember, unpayMember } from '../../store/drops';
 import bossList from '../../util/bossList.json';
@@ -12,7 +12,6 @@ import './DropDetails.scss';
 const DropDetails = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const [showEdit, setShowEdit] = useState(false);
   const [showSale, setShowSale] = useState(false);
   const sessionUser = useSelector(state => state.session.user);
   const drop = useSelector(state => state.drops[id]);
@@ -44,71 +43,75 @@ const DropDetails = () => {
   return (
     <div className='dropDetails' key={drop.id}>
       <div className='details'>
-        <p className='bossName'>
-          {boss.name}
-          <span className='isSold'>{sold ? '[Sold]' : '[Pending]'}</span>
-          {!sold && (
-          <button
-            className='btn transparent'
-            type='button'
-            onClick={() => setShowSale(true)}
-          >
-            Mark as Sold
-          </button>
-          )}
-          <img className='bossImg' src={boss.image} alt='' />
-        </p>
-        <p className='itemName'>
-          {item.name}
-          <img className='itemImg' src={item.image} alt='' />
-        </p>
-        <p className='partyMembers'>
-          Members:
-        </p>
-        {members.map(member => (
-          <p className='partyMember' key={member.user.id}>
-            {member.id === sessionUser.id ? 'You' : member.user.username}
-            {' '}
+        <div className='info'>
+          <p className='bossName'>
+            {boss.name}
+            <span className='isSold'>{sold ? '[Sold]' : '[Pending]'}</span>
+            {!sold && (
+            <button
+              className='btn transparent'
+              type='button'
+              onClick={() => setShowSale(true)}
+            >
+              Mark as Sold
+            </button>
+            )}
+            <img className='bossImg' src={boss.image} alt='' />
           </p>
-        ))}
-        <img className='screenshot' src={drop.image} alt='' />
-      </div>
-      {isLeader && (
-        <div className='buttons'>
-          <button className='btn light' type='button' onClick={() => setShowEdit(true)}>Edit Drop</button>
-          <button className='btn light' type='button' onClick={deleteDrop}>Delete Drop</button>
-        </div>
-      )}
-      {sold && (
-        <>
-          <div className='sale'>
-            <p>
-              Sold For:
-              {' '}
-              {drop.price.toLocaleString()}
-            </p>
-            <img className='saleConfirmation' src={drop.saleImage} alt='' />
-          </div>
-          <div className='payments'>
+          <p className='itemName'>
+            {item.name}
+            <img className='itemImg' src={item.image} alt='' />
+          </p>
+          <div className='partyMembers'>
+            <p>Members:</p>
             {members.map(member => (
-              <div className='payment' key={member.user.id}>
-                <p className='memberName'>{member.user.username}</p>
-                <p className='amount'>{Math.floor(drop.price / members.length).toLocaleString()}</p>
-                <button className='btn light' type='button' onClick={() => handlePayment(member)}>{member.isPaid ? 'Cancel' : 'Pay member'}</button>
+              <div className='partyMember' key={member.id}>
+                <div className='status'>
+                  {member.isPaid
+                     && <FontAwesomeIcon icon='fa-solid fa-check' />}
+                </div>
+                <p className='username' key={member.user.id}>
+                  {member.id === sessionUser.id ? 'You' : member.user.username}
+                  {' '}
+                </p>
+                {drop.sold && (
+                  <button
+                    className='btn transparent payButton'
+                    type='button'
+                    onClick={() => handlePayment(member)}
+                  >
+                    {member.isPaid ? 'Cancel' : 'Pay member'}
+                  </button>
+                )}
               </div>
             ))}
           </div>
-        </>
-      )}
-      {showEdit && (
-        <Modal showModal={setShowEdit}>
-          <DropForm showForm={setShowEdit} drop={drop} edit />
-        </Modal>
-      )}
+        </div>
+        <img className='screenshot' src={drop.image} alt='' />
+        {sold && (
+        <div className='sale'>
+          <p className='price'>
+            {drop.price.toLocaleString()}
+          </p>
+          <p className='split'>{Math.floor(drop.price / members.length).toLocaleString()}</p>
+          <img className='saleConfirmation' src={drop.saleImage} alt='' />
+        </div>
+        )}
+      </div>
       {showSale && (
         <Modal showModal={setShowSale}>
           <SaleForm setShowForm={setShowSale} drop={drop} />
         </Modal>
+      )}
+      {isLeader && (
+      <div className='modifyingButtons'>
+        <button className='btn transparent edit' type='button'>
+          <FontAwesomeIcon icon='fa-solid fa-pen-to-square' />
+        </button>
+        <button className='btn transparent delete' type='button'>
+          <FontAwesomeIcon icon='fa-solid fa-trash-can' />
+        </button>
+      </div>
       )}
     </div>
   );
