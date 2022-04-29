@@ -28,8 +28,12 @@ const remove = id => ({
 export const loadDrops = () => async dispatch => {
   const res = await fetch('/api/drops');
 
-  const drops = await res.json();
-  dispatch(load(drops));
+  if (res.ok) {
+    const drops = await res.json();
+    dispatch(load(drops));
+
+    return drops;
+  }
 
   return res;
 };
@@ -56,8 +60,12 @@ export const editDrop = (id, data) => async dispatch => {
     body: JSON.stringify(data),
   });
 
-  const drop = await res.json();
-  dispatch(edit(drop));
+  if (res.ok) {
+    const drop = await res.json();
+    dispatch(edit(drop));
+
+    return drop;
+  }
 
   return res;
 };
@@ -67,8 +75,12 @@ export const removeDrop = id => async dispatch => {
     method: 'DELETE',
   });
 
-  const drop = await res.json();
-  dispatch(remove(drop.id));
+  if (res.ok) {
+    const drop = await res.json();
+    dispatch(remove(drop.id));
+
+    return drop;
+  }
 
   return res;
 };
@@ -95,8 +107,12 @@ export const editSale = (id, data) => async dispatch => {
     body: JSON.stringify(data),
   });
 
-  const drop = await res.json();
-  dispatch(edit(drop));
+  if (res.ok) {
+    const drop = await res.json();
+    dispatch(edit(drop));
+
+    return drop;
+  }
 
   return res;
 };
@@ -106,8 +122,12 @@ export const removeSale = id => async dispatch => {
     method: 'DELETE',
   });
 
-  const drop = await res.json();
-  dispatch(edit(drop));
+  if (res.ok) {
+    const drop = await res.json();
+    dispatch(edit(drop));
+
+    return drop;
+  }
 
   return res;
 };
@@ -117,8 +137,12 @@ export const payMember = (dropId, memberId) => async dispatch => {
     method: 'POST',
   });
 
-  const drop = await res.json();
-  dispatch(edit(drop));
+  if (res.ok) {
+    const drop = await res.json();
+    dispatch(edit(drop));
+
+    return drop;
+  }
 
   return res;
 };
@@ -128,8 +152,12 @@ export const unpayMember = (dropId, memberId) => async dispatch => {
     method: 'DELETE',
   });
 
-  const drop = await res.json();
-  dispatch(edit(drop));
+  if (res.ok) {
+    const drop = await res.json();
+    dispatch(edit(drop));
+
+    return drop;
+  }
 
   return res;
 };

@@ -25,7 +25,7 @@ const PartyDetails = () => {
 
   const deleteParty = () => {
     dispatch(removeParty(party.id));
-    history.push('/dashboard/parties');
+    history.replace('/dashboard/parties');
   };
 
   return (
@@ -58,7 +58,7 @@ const PartyDetails = () => {
               </button>
             </div>
             <div className='createButton'>
-              <button className='btn transparent add' type='button'>Add a drop</button>
+              <Link className='btn transparent add' to={`${url}/add-drop`}>Add a drop</Link>
             </div>
           </>
         )}
