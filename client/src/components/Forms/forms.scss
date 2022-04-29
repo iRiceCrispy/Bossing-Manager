@@ -14,5 +14,9 @@ form.form {
       width: 100%;
       margin-bottom: 12px;
     }
+
+    input#price {
+      text-align: end;
+    }
   }
 }

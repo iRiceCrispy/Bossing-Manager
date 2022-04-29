@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Modal from '../Modal';
 import SaleForm from '../Forms/SaleForm';
-import { removeDrop, payMember, unpayMember } from '../../store/drops';
+import { removeDrop, removeSale, payMember, unpayMember } from '../../store/drops';
 import bossList from '../../util/bossList.json';
 import itemList from '../../util/itemList.json';
 import './DropDetails.scss';
@@ -50,14 +50,22 @@ const DropDetails = () => {
           <p className='bossName'>
             {boss.name}
             <span className='isSold'>{sold ? '[Sold]' : '[Pending]'}</span>
-            {!sold && (
-            <button
-              className='btn transparent'
-              type='button'
-              onClick={() => setShowSale(true)}
-            >
-              Mark as Sold
-            </button>
+            {sold ? (
+              <button
+                className='btn transparent'
+                type='button'
+                onClick={() => dispatch(removeSale(drop.id))}
+              >
+                Undo
+              </button>
+            ) : (
+              <button
+                className='btn transparent'
+                type='button'
+                onClick={() => setShowSale(true)}
+              >
+                Mark as Sold
+              </button>
             )}
             <img className='bossImg' src={boss.image} alt='' />
           </p>
