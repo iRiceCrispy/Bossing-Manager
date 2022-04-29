@@ -165,6 +165,9 @@ router.delete('/:id/sale', asyncHandler(async (req, res, next) => {
   drop.sold = false;
   delete drop.price;
   delete drop.saleImage;
+  drop.members.forEach(member => {
+    member.isPaid = false;
+  });
 
   await drop.save();
 

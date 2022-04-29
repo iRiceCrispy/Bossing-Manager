@@ -1,86 +1,131 @@
 .dropDetails {
-  min-width: max-content;
-  width: 50%;
+  min-width: fit-content;
+  width: 80%;
+  min-height: 100%;
+  margin: 0 auto;
   position: relative;
 
   .details {
-    padding: 32px;
-    border: 1px solid black;
-    border-radius: 8px;
-    padding-right: 250px;
+    padding: 24px;
+    background-color: var(--color-base2);
+    border-radius: 4px;
 
-    > * {
-      padding: 12px 0;
-    }
+    .info {
+      height: 300px;
+      padding-right: 250px;
+      position: relative;
 
-    .bossName {
-      font-size: 32px;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-
-    .itemName {
-      font-size: 24px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .bossImg {
-      width: 200px;
-      height: 200px;
-      object-fit: contain;
-      position: absolute;
-      top: 25px;
-      right: 25px;
-    }
-
-    .itemImg {
-      width: 35px;
-      height: 35px;
-      object-fit: contain;
-    }
-
-    .partyMembers {
-      font-size: 16px;
-      font-weight: 700;
-
-      .partyMember {
-        font-size: 16px;
-        padding: 6px 0;
+      .bossName {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 16px;
       }
-    }
 
-    .isSold {
-      font-size: 16px;
-      font-weight: 500;
-      margin-left: 12px;
-      opacity: 0.75;
+      .itemName {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .bossImg {
+        max-width: 200px;
+        max-height: 200px;
+        object-fit: contain;
+        position: absolute;
+        top: 48px;
+        right: 48px;
+      }
+
+      .itemImg {
+        width: 35px;
+        height: 35px;
+        object-fit: contain;
+      }
+
+      .partyMembers {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        > p {
+          font-weight: bold;
+          margin-bottom: 4px;
+        }
+
+        .partyMember {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+
+          .status {
+            width: 15px;
+            height: 15px;
+            font-size: 12px;
+            color: green;
+          }
+
+          .payButton {
+            margin-left: 12px;
+            padding: 0;
+          }
+        }
+      }
+
+      .isSold {
+        font-size: 16px;
+        font-weight: 500;
+        margin-left: 12px;
+        opacity: 0.75;
+      }
     }
 
     .screenshot {
       max-width: 450px;
+      max-height: 450px;
       object-fit: contain;
     }
   }
 
-  .buttons {
-    display: grid;
-    grid-template-columns: min-content min-content auto min-content;
-    grid-column-gap: 5px;
+  .modifyingButtons {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    position: absolute;
+    top: 24px;
+    right: 24px;
 
-    .edit {
-      grid-area: 1 / 1 / 2 / 2;
-    }
-
+    .edit,
     .delete {
-      grid-area: 1 / 2 / 2 / 3;
+      padding: 0;
+      font-size: 20px;
     }
   }
 
   .sale {
-    margin-top: 32px;
+    margin-top: 64px;
+
+    .price {
+      &::before {
+        content: 'Sold for: ';
+      }
+
+      &::after {
+        content: ' mesos';
+      }
+    }
+
+    .split {
+      &::before {
+        content: 'Split: (';
+      }
+
+      &::after {
+        content: ') per person';
+      }
+    }
 
     .saleConfirmation {
       margin-top: 16px;

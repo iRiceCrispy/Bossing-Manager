@@ -1,36 +1,57 @@
-.dropsContainer {
-  padding: 12px;
+#drops {
+  min-width: max-content;
+  width: 80%;
+  min-height: 100%;
+  margin: 0 auto 48px;
+
+  h2 {
+    margin-bottom: 48px;
+  }
+
+  .dropList {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+  }
 
   .drop {
-    cursor: pointer;
-    user-select: none;
-    padding: 12px;
+    min-width: 500px;
+    padding: 24px;
+    background-color: var(--color-base2);
     border-radius: 4px;
+    position: relative;
 
-    &.selected,
-    &:hover,
-    &:active {
-      background-color: var(--color-base);
+    &[sold='false']::after,
+    &[sold='true']::after {
+      font-size: 13px;
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
     }
 
-    &:hover {
-      opacity: 0.75;
+    &[sold='false']::after {
+      content: '[pending]';
+      color: yellow;
     }
 
-    &:active {
-      opacity: 1;
+    &[sold='true']::after {
+      content: '[sold]';
+      color: gray;
     }
 
     .bossName {
-      margin: 0;
-      margin-bottom: 12px;
-      font-size: 18px;
-      font-weight: 700;
+      margin-bottom: 24px;
     }
 
-    .itemName {
-      margin: 0;
-      font-size: 15px;
+    .partyLink {
+      width: max-content;
+      position: absolute;
+      top: 24px;
+      right: 24px;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }

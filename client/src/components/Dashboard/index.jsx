@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import { Link, NavLink, Route, Switch, useRouteMatch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { loadParties } from '../../store/parties';
 import { loadDrops } from '../../store/drops';
-import { useSelected } from '../../context/SelectedContext';
+import ProfileButton from '../ProfileButton';
+import Main from './Main';
 import Parties from './Parties';
 import Drops from './Drops';
 import PartyDetails from '../PartyDetails';
 import DropDetails from '../DropDetails';
+import PartyForm from '../Forms/PartyForm';
+import DropForm from '../Forms/DropForm';
 import './Dashboard.scss';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
+  const { path, url } = useRouteMatch();
   const [isLoaded, setIsLoaded] = useState(false);
-  const { selectedParty, setSelectedParty, selectedDrop, setSelectedDrop } = useSelected();
-  const partySelected = Boolean(selectedParty);
-  const dropSelected = Boolean(selectedDrop);
 
   useEffect(() => {
     (async () => {
@@ -26,54 +27,84 @@ const Dashboard = () => {
     })();
   }, [dispatch]);
 
-  let content;
-
-  if (dropSelected) {
-    content = <DropDetails />;
-  }
-  else if (partySelected) {
-    content = <PartyDetails />;
-  }
-  else {
-    content = (
-      <div id='notFound'>
-        No content yet. Will add in the future once more features has been implemented.
-        <br />
-        <br />
-        For now, browse the left sidebar to view parties and their corresponding drops.
-      </div>
-    );
-  }
-
-  const showBack = partySelected || dropSelected;
-
-  const goBack = () => {
-    if (dropSelected) setSelectedDrop('');
-    else if (partySelected) setSelectedParty('');
-  };
-
   return isLoaded && (
     <div id='dashboard'>
       <nav className='sidebar'>
-        {showBack && (
-        <button
-          className='btn transparent goBack'
-          type='button'
-          onClick={goBack}
-        >
-          <FontAwesomeIcon icon='fas fa-arrow-left' />
-          {' '}
-          Back
-        </button>
-        )}
-        {dropSelected ? (
-          <Drops />
-        ) : (
-          <Parties />
-        )}
+        <div className='home'>
+          <Link className='logo' type='button' to='/'>
+            <img src='/favicon.ico' alt='favicon' />
+            <span className='text'>Chaos Mano</span>
+          </Link>
+        </div>
+        <ul className='menu'>
+          <li>
+            <NavLink
+              className='menuItem'
+              activeClassName='selected'
+              exact
+              to={url}
+            >
+              Dashboard
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              className='menuItem'
+              activeClassName='selected'
+              to={`${url}/parties`}
+            >
+              Parties
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              className='menuItem'
+              activeClassName='selected'
+              to={`${url}/drops`}
+            >
+              Drops
+            </NavLink>
+          </li>
+        </ul>
       </nav>
-      <div className='content'>
-        {content}
+      <div className='topbar'>
+        <div className='menu'>
+          <Link className='btn transparent menuItem' to={`${url}/parties/create`}>Create new party</Link>
+        </div>
+        <div className='auth'>
+          <ProfileButton />
+        </div>
+      </div>
+      <div className='contentContainer'>
+        <Switch>
+          <Route exact path={path}>
+            <Main />
+          </Route>
+          <Route exact path={`${path}/parties`}>
+            <Parties />
+          </Route>
+          <Route exact path={`${path}/parties/create`}>
+            <PartyForm />
+          </Route>
+          <Route exact path={`${path}/parties/:id/edit`}>
+            <PartyForm edit />
+          </Route>
+          <Route exact path={`${path}/parties/:id/add-drop`}>
+            <DropForm />
+          </Route>
+          <Route exact path={`${path}/parties/:id`}>
+            <PartyDetails />
+          </Route>
+          <Route exact path={`${path}/drops`}>
+            <Drops />
+          </Route>
+          <Route exact path={`${path}/drops/:id/edit`}>
+            <DropForm edit />
+          </Route>
+          <Route exact path={`${path}/drops/:id`}>
+            <DropDetails />
+          </Route>
+        </Switch>
       </div>
     </div>
   );

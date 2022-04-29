@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSelected } from '../../context/SelectedContext';
 import TagsDropDown from '../FormFields/TagsDropDown';
 import ValidationError from '../FormFields/ValidationError';
 import { createParty, editParty } from '../../store/parties';
 import './forms.scss';
 
-const PartyForm = ({ showForm, party, edit }) => {
+const PartyForm = ({ edit }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const { id } = useParams();
+  const party = useSelector(state => state.parties[id]);
   const [name, setName] = useState(edit ? party.name : '');
   const [members, setMembers] = useState(edit
     ? party.members.map(member => ({ id: member.id, value: member.username }))
     : []);
   const [errors, setErrors] = useState([]);
-  const { setSelectedParty } = useSelected();
   const sessionUser = useSelector(state => state.session.user);
   const users = Object.values(useSelector(state => state.users));
 
@@ -30,8 +32,7 @@ const PartyForm = ({ showForm, party, edit }) => {
 
       dispatch(createParty(newParty))
         .then(pt => {
-          showForm(false);
-          setSelectedParty(pt.id);
+          history.replace(`/dashboard/parties/${pt.id}`);
         })
         .catch(async res => {
           const data = await res.json();
@@ -51,14 +52,15 @@ const PartyForm = ({ showForm, party, edit }) => {
         };
 
         dispatch(editParty(party.id, editedParty))
-          .then(() => showForm(false))
-          .catch(async res => {
+          .then(pt => {
+            history.replace(`/dashboard/parties/${pt.id}`);
+          }).catch(async res => {
             const data = await res.json();
 
             if (data?.errors) setErrors(data.errors);
           });
       }
-      else showForm(false);
+      else history.replace(`/dashboard/parties/${id}`);
     }
   };
 

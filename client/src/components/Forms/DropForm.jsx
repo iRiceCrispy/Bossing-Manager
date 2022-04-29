@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useSelected } from '../../context/SelectedContext';
+import { useHistory, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import TagsDropDown from '../FormFields/TagsDropDown';
 import SearchDropDown from '../FormFields/SearchDropDown';
 import ValidationError from '../FormFields/ValidationError';
@@ -9,8 +9,12 @@ import bossList from '../../util/bossList.json';
 import itemList from '../../util/itemList.json';
 import './forms.scss';
 
-const DropForm = ({ showForm, party, drop, edit }) => {
+const DropForm = ({ edit }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const { id } = useParams();
+  const drop = useSelector(state => state.drops[id]);
+  const party = useSelector(state => state.parties[edit ? drop.party.id : id]);
   const [bossId, setBossId] = useState(edit ? drop.bossName : '');
   const [itemId, setIemId] = useState(edit ? drop.itemName : '');
   const [image, setImage] = useState(edit ? drop.image : '');
@@ -18,7 +22,6 @@ const DropForm = ({ showForm, party, drop, edit }) => {
     ? drop.members.map(mem => ({ id: mem.user.id, value: mem.user.username }))
     : party.members.map(user => ({ id: user.id, value: user.username })));
   const [errors, setErrors] = useState([]);
-  const { setSelectedDrop } = useSelected();
 
   const bosses = Object.entries(bossList).reduce((accum, [key, value]) => {
     accum.push({ id: key, value: value.name });
@@ -48,8 +51,7 @@ const DropForm = ({ showForm, party, drop, edit }) => {
 
       dispatch(createDrop(party.id, newDrop))
         .then(drp => {
-          showForm(false);
-          setSelectedDrop(drp.id);
+          history.replace(`/dashboard/drops/${drp.id}`);
         })
         .catch(async res => {
           const data = await res.json();
@@ -74,14 +76,17 @@ const DropForm = ({ showForm, party, drop, edit }) => {
         };
 
         dispatch(editDrop(drop.id, editedDrop))
-          .then(() => showForm(false))
-          .catch(async res => {
+          .then(drp => {
+            console.log(drp);
+
+            history.replace(`/dashboard/drops/${drp.id}`);
+          }).catch(async res => {
             const data = await res.json();
 
             if (data?.errors) setErrors(data.errors);
           });
       }
-      else showForm(false);
+      else history.replace(`/dashboard/drops/${id}`);
     }
   };
 

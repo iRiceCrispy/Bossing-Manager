@@ -1,62 +1,84 @@
 .partyDetails {
-  min-width: max-content;
-  width: 50%;
+  width: 80%;
+  min-height: 100%;
+  margin: 0 auto;
+
+  .details,
+  .drops {
+    padding: 24px;
+    background-color: var(--color-base2);
+    border-radius: 4px;
+  }
 
   .details {
-    padding: 32px;
-    border: 1px solid black;
-    border-radius: 8px;
-
-    > * {
-      padding: 12px 0;
-    }
+    position: relative;
 
     .partyName {
       font-size: 32px;
       font-weight: 700;
-      margin-bottom: 12px;
+      margin-bottom: 32px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--color-base);
     }
 
     .partyLeader {
       font-size: 24px;
-      font-weight: 700;
+      font-weight: bold;
+      margin-bottom: 24px;
     }
 
     .partyMembers {
       font-size: 16px;
-      font-weight: 700;
+      font-weight: bold;
 
       .partyMember {
-        padding: 6px 0;
+        font-weight: normal;
+      }
+    }
+
+    .modifyingButtons {
+      display: flex;
+      gap: 12px;
+      padding: 12px;
+      position: absolute;
+      top: 24px;
+      right: 24px;
+
+      .edit,
+      .delete {
+        padding: 0;
+        font-size: 20px;
+      }
+    }
+
+    .createButton {
+      padding: 12px 12px 0;
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+
+      .add {
+        font-size: 14px;
+        padding: 0;
       }
     }
   }
 
-  .buttons {
-    display: grid;
-    grid-template-columns: min-content min-content auto min-content;
-    grid-column-gap: 5px;
-
-    .edit {
-      grid-area: 1 / 1 / 2 / 2;
-    }
-
-    .delete {
-      grid-area: 1 / 2 / 2 / 3;
-    }
-
-    .add {
-      grid-area: 1 / 4 / 2 / 5;
-    }
-  }
-
-  .dropListContainer {
-    margin-top: 36px;
+  .drops {
+    margin-top: 48px;
 
     .heading {
       font-size: 24px;
       font-weight: 700;
-      margin-bottom: 36px;
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--color-base);
+    }
+
+    .dropList {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
     }
 
     .drop {
@@ -64,20 +86,35 @@
       user-select: none;
       padding: 12px;
       margin-bottom: 12px;
-      background-color: var(--color-base2);
+      background-color: var(--color-base);
       border-radius: 4px;
+      position: relative;
 
-      &:hover {
-        opacity: 0.75;
+      &[sold='false']::after,
+      &[sold='true']::after {
+        font-size: 13px;
+        position: absolute;
+        top: 12px;
+        right: 12px;
       }
 
-      .bossName,
-      .itemName {
-        padding: 12px 0;
+      &[sold='false']::after {
+        content: '[pending]';
+        color: yellow;
+      }
+
+      &[sold='true']::after {
+        content: '[sold]';
+        color: gray;
+      }
+
+      &:hover {
+        filter: brightness(1.1);
       }
 
       .bossName {
-        font-weight: 700;
+        font-weight: bold;
+        margin-bottom: 24px;
       }
     }
   }

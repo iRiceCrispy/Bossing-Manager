@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ValidationError from '../FormFields/ValidationError';
 import { demo, login } from '../../store/session';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const sessionUser = useSelector(state => state.session.user);
   const [credential, setCredential] = useState('');
   const [password, setPassword] = useState('');
@@ -17,9 +18,19 @@ const LoginForm = () => {
     e.preventDefault();
     setErrors({});
 
-    return dispatch(login({ credential, password })).catch(async res => {
-      const data = await res.json();
-      if (data && data.errors) setErrors(data.errors);
+    return dispatch(login({ credential, password }))
+      .then(() => {
+        history.replace('/dashboard');
+      })
+      .catch(async res => {
+        const data = await res.json();
+        if (data && data.errors) setErrors(data.errors);
+      });
+  };
+
+  const demoLogin = () => {
+    dispatch(demo()).then(() => {
+      history.replace('/dashboard');
     });
   };
 
@@ -52,7 +63,7 @@ const LoginForm = () => {
       <footer>
         <div className='buttons'>
           <button className='btn dark' type='submit'>Log In</button>
-          <button className='btn dark' type='button' onClick={() => dispatch(demo())}>Log In as Demo</button>
+          <button className='btn dark' type='button' onClick={demoLogin}>Log In as Demo</button>
         </div>
         <p>
           Not registered?
