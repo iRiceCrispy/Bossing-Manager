@@ -1,13 +1,17 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Link, useHistory, useParams, useRouteMatch } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { removeParty } from '../../store/parties';
 import bossList from '../../util/bossList.json';
 import itemList from '../../util/itemList.json';
 import './PartyDetails.scss';
 
 const PartyDetails = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const { id } = useParams();
+  const { url } = useRouteMatch();
   const party = useSelector(state => state.parties[id]);
   const sessionUser = useSelector(state => state.session.user);
   const drops = Object.values(useSelector(state => state.drops))
@@ -18,6 +22,11 @@ const PartyDetails = () => {
   const { name, leader, members } = party;
   const isLeader = leader.id === sessionUser.id;
   members.sort((a, b) => (b.id === sessionUser.id) - (a.id === sessionUser.id));
+
+  const deleteParty = () => {
+    dispatch(removeParty(party.id));
+    history.push('/dashboard/parties');
+  };
 
   return (
     <div className='partyDetails'>
@@ -41,10 +50,10 @@ const PartyDetails = () => {
         {isLeader && (
           <>
             <div className='modifyingButtons'>
-              <button className='btn transparent edit' type='button'>
+              <Link className='btn transparent edit' to={`${url}/edit`}>
                 <FontAwesomeIcon icon='fa-solid fa-pen-to-square' />
-              </button>
-              <button className='btn transparent delete' type='button'>
+              </Link>
+              <button className='btn transparent delete' type='button' onClick={deleteParty}>
                 <FontAwesomeIcon icon='fa-solid fa-trash-can' />
               </button>
             </div>

@@ -76,5 +76,13 @@
     height: 100%;
     padding: 48px;
     overflow-y: auto;
+
+    #partyForm {
+      width: 500px;
+      margin: 0 auto;
+      padding: 24px;
+      background-color: var(--color-base2);
+      border-radius: 4px;
+    }
   }
 }

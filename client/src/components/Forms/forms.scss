@@ -1,7 +1,5 @@
 form.form {
   width: 100%;
-  min-width: max-content;
-  min-height: max-content;
 
   header {
     .formTitle {
@@ -13,7 +11,7 @@ form.form {
     margin: 32px 0;
 
     > .inputContainer {
-      width: 350px;
+      width: 100%;
       margin-bottom: 12px;
     }
   }

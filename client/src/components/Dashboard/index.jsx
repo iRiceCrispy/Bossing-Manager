@@ -9,6 +9,7 @@ import Parties from './Parties';
 import Drops from './Drops';
 import PartyDetails from '../PartyDetails';
 import DropDetails from '../DropDetails';
+import PartyForm from '../Forms/PartyForm';
 import './Dashboard.scss';
 
 const Dashboard = () => {
@@ -80,6 +81,12 @@ const Dashboard = () => {
           </Route>
           <Route exact path={`${path}/parties`}>
             <Parties />
+          </Route>
+          <Route exact path={`${path}/parties/create`}>
+            <PartyForm />
+          </Route>
+          <Route exact path={`${path}/parties/:id/edit`}>
+            <PartyForm edit />
           </Route>
           <Route exact path={`${path}/parties/:id`}>
             <PartyDetails />
