@@ -10,18 +10,20 @@ const Splash = () => {
 
   return (
     <div id='splash'>
-      <header>
-        <nav>
+      <nav>
+        <div className='navbar'>
           <div className='home'>
-            <Link className='btn transparent' to='/'>
-              <img src='favicon.ico' alt='favicon' />
-              Chaos Mano
+            <Link className='logo' type='button' to='/'>
+              <img src='/favicon.ico' alt='favicon' />
+              <span className='text'>Chaos Mano</span>
             </Link>
           </div>
-          <h1>A Maplestory boss drop tracker</h1>
           <div className='authButtons'>
             {user ? (
-              <ProfileButton user={user} />
+              <>
+                <Link className='btn transparent dashboard' to='/dashboard'>Dashboard</Link>
+                <ProfileButton user={user} />
+              </>
             ) : (
               <>
                 <Link className='btn transparent' to='/login'>Log In</Link>
@@ -29,18 +31,19 @@ const Splash = () => {
               </>
             )}
           </div>
-        </nav>
-      </header>
-      <section className='main' style={{ backgroundImage: `url(${blackmage})` }}>
-        <div className='content'>
-          <h2>
-            Manage your
-            <br />
-            hard earned boss drops!
-          </h2>
-          <Link className='btn dark large' to='/signup'>Get started!</Link>
         </div>
-      </section>
+      </nav>
+      <header style={{ backgroundImage: `url(${blackmage})` }}>
+        <h1 className='title'>A Maplestory boss drop tracker</h1>
+        <div className='content'>
+          <div className='description'>
+            <h2>
+              Track and manage your hard earned boss drops!
+            </h2>
+            <Link className='btn dark large' to='/signup'>Get started!</Link>
+          </div>
+        </div>
+      </header>
       <footer>
         <div className='tech'>
           <p className='heading'>Technologies Used</p>
