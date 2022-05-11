@@ -1,42 +1,21 @@
 {
-  "name": "server",
+  "name": "chaos-mano",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Chaos Mano is a boss drop tracker app for a popular MMORPG game Maplestory.",
   "scripts": {
-    "seed": "node -e 'require(\"./db/seeders/index.js\").up()'",
-    "unseed": "node -e 'require(\"./db/seeders/index.js\").down()'",
-    "seed:all": "dotenv npm run seed",
-    "seed:undo": "dotenv npm run unseed",
-    "start": "per-env",
-    "start:development": "dotenv nodemon ./bin/www",
-    "start:production": "./bin/www",
-    "heroku-postbuild": "npm install --prefix client && npm run build --prefix client"
+    "seed": "npm run --prefix server seed",
+    "unseed": "npm run --prefix server unseed",
+    "install": "npm --prefix server install server && npm --prefix client install client",
+    "heroku-postbuild": "npm run build --prefix client",
+    "start": "npm start --prefix server"
   },
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "csurf": "^1.11.0",
-    "express": "^4.17.2",
-    "express-async-handler": "^1.2.0",
-    "express-validator": "^6.14.0",
-    "helmet": "^5.0.2",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.2.6",
-    "mongoose-autopopulate": "^0.16.0",
-    "morgan": "^1.10.0",
-    "per-env": "^1.0.2"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iRiceCrispy/Chaos-Mano.git"
   },
-  "devDependencies": {
-    "dotenv": "^16.0.0",
-    "dotenv-cli": "^5.0.0",
-    "eslint": "^8.11.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-plugin-import": "^2.25.4",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-react": "^7.29.4",
-    "eslint-plugin-react-hooks": "^4.3.0",
-    "nodemon": "^2.0.15"
-  }
+  "author": "iRiceCrispy",
+  "bugs": {
+    "url": "https://github.com/iRiceCrispy/Chaos-Mano/issues"
+  },
+  "homepage": "https://github.com/iRiceCrispy/Chaos-Mano#readme"
 }
