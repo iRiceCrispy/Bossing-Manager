@@ -6,6 +6,9 @@
     "browser": true,
     "node": true
   },
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  },
   "rules": {
     "arrow-parens": [
       2,

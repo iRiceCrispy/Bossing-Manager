@@ -9,29 +9,29 @@ const Parties = () => {
   const parties = useSelector(state => Object.values(state.parties));
 
   return (
-    <div id='parties'>
+    <div id="parties">
       <h2>Parties</h2>
-      <div className='content'>
+      <div className="content">
         {parties.length
           ? (
-            <ul className='partyList'>
+            <ul className="partyList">
               {parties.map(party => (
                 <li key={party.id}>
                   <Link
-                    className='party'
+                    className="party"
                     to={`${path}/${party.id}`}
                   >
-                    <h3 className='partyName'>{party.name}</h3>
-                    <p className='partyLeader'>
+                    <h3 className="partyName">{party.name}</h3>
+                    <p className="partyLeader">
                       Leader:
                       {' '}
                       {party.leader.id === sessionUser.id ? 'YOU' : party.leader.username}
                     </p>
-                    <div className='partyMembers'>
+                    <div className="partyMembers">
                       Members:
                       {' '}
                       {party.members.map(member => (
-                        <span className='member' key={member.id}>
+                        <span className="member" key={member.id}>
                           {member.id === sessionUser.id ? 'YOU' : member.username}
                         </span>
                       ))}
@@ -42,7 +42,7 @@ const Parties = () => {
             </ul>
           )
           : (
-            <p className='null'>
+            <p className="null">
               You are not part of any party.
               <br />
               Either create your own, or join one.

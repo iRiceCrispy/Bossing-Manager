@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './ValidationError.css';
 
 const ValidationError = ({ message }) => (
-  <p className='validationError'>
+  <p className="validationError">
     {message && (
       <>
-        <FontAwesomeIcon className='errorIcon' icon='fa-solid fa-circle-exclamation' />
+        <FontAwesomeIcon className="errorIcon" icon="fa-solid fa-circle-exclamation" />
         <span>{message}</span>
       </>
     )}

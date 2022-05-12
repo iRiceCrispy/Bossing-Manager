@@ -17,7 +17,7 @@ const PartyDetails = () => {
   const drops = Object.values(useSelector(state => state.drops))
     .filter(drop => drop.party.id === party?.id);
 
-  if (!party) return <div id='notFound'>The party you are looking for has either been deleted, or does not exist.</div>;
+  if (!party) return <div id="notFound">The party you are looking for has either been deleted, or does not exist.</div>;
 
   const { name, leader, members } = party;
   const isLeader = leader.id === sessionUser.id;
@@ -29,58 +29,58 @@ const PartyDetails = () => {
   };
 
   return (
-    <div className='partyDetails'>
-      <div className='details'>
-        <h3 className='partyName'>
+    <div className="partyDetails">
+      <div className="details">
+        <h3 className="partyName">
           {name}
         </h3>
-        <p className='partyLeader'>
+        <p className="partyLeader">
           Leader:
           {' '}
           {leader.username}
         </p>
-        <div className='partyMembers'>
+        <div className="partyMembers">
           <p>Members:</p>
           {members.map(member => (
-            <p className='partyMember' key={member.id}>
+            <p className="partyMember" key={member.id}>
               {member.id === sessionUser.id ? 'You' : member.username}
             </p>
           ))}
         </div>
         {isLeader && (
           <>
-            <div className='modifyingButtons'>
-              <Link className='btn transparent edit' to={`${url}/edit`}>
-                <FontAwesomeIcon icon='fa-solid fa-pen-to-square' />
+            <div className="modifyingButtons">
+              <Link className="btn transparent edit" to={`${url}/edit`}>
+                <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
               </Link>
-              <button className='btn transparent delete' type='button' onClick={deleteParty}>
-                <FontAwesomeIcon icon='fa-solid fa-trash-can' />
+              <button className="btn transparent delete" type="button" onClick={deleteParty}>
+                <FontAwesomeIcon icon="fa-solid fa-trash-can" />
               </button>
             </div>
-            <div className='createButton'>
-              <Link className='btn transparent add' to={`${url}/add-drop`}>Add a drop</Link>
+            <div className="createButton">
+              <Link className="btn transparent add" to={`${url}/add-drop`}>Add a drop</Link>
             </div>
           </>
         )}
       </div>
-      <div className='drops'>
-        <p className='heading'>Drops</p>
-        <ul className='dropList'>
+      <div className="drops">
+        <p className="heading">Drops</p>
+        <ul className="dropList">
           {!drops.length
             ? <p>There are currently no drops for this party.</p>
-            : drops.map(drop => {
+            : drops.map((drop) => {
               const boss = bossList[drop.bossName];
               const item = itemList[drop.itemName];
 
               return (
                 <li key={drop.id}>
                   <Link
-                    className='drop'
+                    className="drop"
                     sold={drop.sold.toString()}
                     to={`/dashboard/drops/${drop.id}`}
                   >
-                    <p className='bossName'>{boss.name}</p>
-                    <p className='itemName'>{item.name}</p>
+                    <p className="bossName">{boss.name}</p>
+                    <p className="itemName">{item.name}</p>
                   </Link>
                 </li>
               );

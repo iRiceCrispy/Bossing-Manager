@@ -12,9 +12,9 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState([]);
 
-  if (sessionUser) return <Redirect to='/' />;
+  if (sessionUser) return <Redirect to="/" />;
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
 
@@ -22,7 +22,7 @@ const LoginForm = () => {
       .then(() => {
         history.replace('/dashboard');
       })
-      .catch(async res => {
+      .catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) setErrors(data.errors);
       });
@@ -35,16 +35,16 @@ const LoginForm = () => {
   };
 
   return (
-    <form id='loginForm' className='form' onSubmit={handleSubmit}>
+    <form id="loginForm" className="form" onSubmit={handleSubmit}>
       <header><h2>Log In</h2></header>
-      <div className='content'>
-        <div className='loginError'>
+      <div className="content">
+        <div className="loginError">
           <ValidationError message={errors.login} />
         </div>
         <label>
           Username/Email
           <input
-            type='text'
+            type="text"
             value={credential}
             onChange={e => setCredential(e.target.value)}
           />
@@ -53,7 +53,7 @@ const LoginForm = () => {
         <label>
           Password
           <input
-            type='password'
+            type="password"
             value={password}
             onChange={e => setPassword(e.target.value)}
           />
@@ -61,14 +61,14 @@ const LoginForm = () => {
         </label>
       </div>
       <footer>
-        <div className='buttons'>
-          <button className='btn dark' type='submit'>Log In</button>
-          <button className='btn dark' type='button' onClick={demoLogin}>Log In as Demo</button>
+        <div className="buttons">
+          <button className="btn dark" type="submit">Log In</button>
+          <button className="btn dark" type="button" onClick={demoLogin}>Log In as Demo</button>
         </div>
         <p>
           Not registered?
           {' '}
-          <Link to='/signup'>Create an account</Link>
+          <Link to="/signup">Create an account</Link>
         </p>
       </footer>
     </form>

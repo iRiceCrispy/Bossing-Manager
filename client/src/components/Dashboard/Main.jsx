@@ -18,14 +18,14 @@ const Main = () => {
   const earnings = drops.reduce((sum, drop) => sum + (drop.price || 0), 0).toLocaleString();
 
   return (
-    <div id='main'>
+    <div id="main">
       <h2>Dashboard</h2>
-      <div className='modules'>
-        <section className='parties'>
-          <div className='header'>
-            <h3 className='heading'>Parties</h3>
+      <div className="modules">
+        <section className="parties">
+          <div className="header">
+            <h3 className="heading">Parties</h3>
           </div>
-          <div className='content'>
+          <div className="content">
             <p>
               Currently in
               {' '}
@@ -42,11 +42,11 @@ const Main = () => {
             </p>
           </div>
         </section>
-        <section className='drops'>
-          <div className='header'>
-            <h3 className='heading'>Drops</h3>
+        <section className="drops">
+          <div className="header">
+            <h3 className="heading">Drops</h3>
           </div>
-          <div className='content'>
+          <div className="content">
             <div>
               <p>
                 Total drops:
@@ -67,11 +67,11 @@ const Main = () => {
             </div>
           </div>
         </section>
-        <section className='payments'>
-          <div className='header'>
-            <h3 className='heading'>Payments</h3>
+        <section className="payments">
+          <div className="header">
+            <h3 className="heading">Payments</h3>
           </div>
-          <div className='content'>
+          <div className="content">
             <p>
               Total earned:
               {' '}

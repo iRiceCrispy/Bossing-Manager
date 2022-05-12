@@ -28,19 +28,19 @@ const Dashboard = () => {
   }, [dispatch]);
 
   return isLoaded && (
-    <div id='dashboard'>
-      <nav className='sidebar'>
-        <div className='home'>
-          <Link className='logo' type='button' to='/'>
-            <img src='/favicon.ico' alt='favicon' />
-            <span className='text'>Chaos Mano</span>
+    <div id="dashboard">
+      <nav className="sidebar">
+        <div className="home">
+          <Link className="logo" type="button" to="/">
+            <img src="/favicon.ico" alt="favicon" />
+            <span className="text">Chaos Mano</span>
           </Link>
         </div>
-        <ul className='menu'>
+        <ul className="menu">
           <li>
             <NavLink
-              className='menuItem'
-              activeClassName='selected'
+              className="menuItem"
+              activeClassName="selected"
               exact
               to={url}
             >
@@ -49,8 +49,8 @@ const Dashboard = () => {
           </li>
           <li>
             <NavLink
-              className='menuItem'
-              activeClassName='selected'
+              className="menuItem"
+              activeClassName="selected"
               to={`${url}/parties`}
             >
               Parties
@@ -58,8 +58,8 @@ const Dashboard = () => {
           </li>
           <li>
             <NavLink
-              className='menuItem'
-              activeClassName='selected'
+              className="menuItem"
+              activeClassName="selected"
               to={`${url}/drops`}
             >
               Drops
@@ -67,15 +67,15 @@ const Dashboard = () => {
           </li>
         </ul>
       </nav>
-      <div className='topbar'>
-        <div className='menu'>
-          <Link className='btn transparent menuItem' to={`${url}/parties/create`}>Create new party</Link>
+      <div className="topbar">
+        <div className="menu">
+          <Link className="btn transparent menuItem" to={`${url}/parties/create`}>Create new party</Link>
         </div>
-        <div className='auth'>
+        <div className="auth">
           <ProfileButton />
         </div>
       </div>
-      <div className='contentContainer'>
+      <div className="contentContainer">
         <Switch>
           <Route exact path={path}>
             <Main />

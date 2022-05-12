@@ -2,13 +2,15 @@ import React from 'react';
 import './DropDownMenu.css';
 
 const DropDownMenu = ({ matches, setter, setShowMenu }) => (
-  <div className='dropdownMenu'>
+  <div className="dropdownMenu">
     {matches?.length
       ? matches.map(match => (
         <div
-          className='dropdownOption'
+          className="dropdownOption"
           key={match.id}
-          onClick={e => {
+          role="menuitem"
+          tabIndex={0}
+          onClick={(e) => {
             e.stopPropagation();
             setter(match);
             setShowMenu(false);
@@ -17,7 +19,7 @@ const DropDownMenu = ({ matches, setter, setShowMenu }) => (
           {match.value}
         </div>
       ))
-      : <div className='noResults'>No results found.</div>}
+      : <div className="noResults">No results found.</div>}
   </div>
 );
 

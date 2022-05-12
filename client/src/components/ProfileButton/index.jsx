@@ -24,17 +24,19 @@ const ProfileButton = () => {
   }, [showMenu]);
 
   return (
-    <div className='profileContainer'>
+    <div className="profileContainer">
       <button
-        className='btn transparent profileButton'
-        type='button'
+        className="btn transparent profileButton"
+        type="button"
         onClick={() => !showMenu && setShowMenu(true)}
       >
-        <FontAwesomeIcon icon='fas fa-user' />
+        <FontAwesomeIcon icon="fas fa-user" />
       </button>
       {showMenu && (
         <div
-          className='profileMenu'
+          className="profileMenu"
+          role="button"
+          tabIndex={0}
           onClick={e => e.stopPropagation()}
         >
           <p>
@@ -48,17 +50,17 @@ const ProfileButton = () => {
             {user.email}
           </p>
           <button
-            className='btn transparent logout'
-            type='button'
+            className="btn transparent logout"
+            type="button"
             onClick={() => {
               dispatch(logout());
               history.push('/');
             }}
           >
-            <span className='icon'>
-              <FontAwesomeIcon icon='fas fa-arrow-right-from-bracket' />
+            <span className="icon">
+              <FontAwesomeIcon icon="fas fa-arrow-right-from-bracket" />
             </span>
-            <span className='text'>Log Out</span>
+            <span className="text">Log Out</span>
           </button>
         </div>
       )}

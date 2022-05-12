@@ -37,7 +37,7 @@ const DropForm = ({ edit }) => {
     : undefined;
   const item = itemList[itemId];
 
-  const submitForm = e => {
+  const submitForm = (e) => {
     e.preventDefault();
     setErrors({});
 
@@ -50,10 +50,10 @@ const DropForm = ({ edit }) => {
       };
 
       dispatch(createDrop(party.id, newDrop))
-        .then(drp => {
+        .then((drp) => {
           history.replace(`/dashboard/drops/${drp.id}`);
         })
-        .catch(async res => {
+        .catch(async (res) => {
           const data = await res.json();
 
           if (data?.errors) setErrors(data.errors);
@@ -76,11 +76,11 @@ const DropForm = ({ edit }) => {
         };
 
         dispatch(editDrop(drop.id, editedDrop))
-          .then(drp => {
+          .then((drp) => {
             console.log(drp);
 
             history.replace(`/dashboard/drops/${drp.id}`);
-          }).catch(async res => {
+          }).catch(async (res) => {
             const data = await res.json();
 
             if (data?.errors) setErrors(data.errors);
@@ -91,16 +91,16 @@ const DropForm = ({ edit }) => {
   };
 
   return (
-    <form id='dropForm' className='form' onSubmit={submitForm}>
+    <form id="dropForm" className="form" onSubmit={submitForm}>
       <header>
-        <h2 className='formTitle'>{edit ? 'Edit drop' : 'Add a drop'}</h2>
+        <h2 className="formTitle">{edit ? 'Edit drop' : 'Add a drop'}</h2>
       </header>
-      <main className='formContent'>
-        <div className='inputContainer bossName'>
-          <label htmlFor='bossName'>Boss Name</label>
+      <main className="formContent">
+        <div className="inputContainer bossName">
+          <label htmlFor="bossName">Boss Name</label>
           <SearchDropDown
-            id='bossName'
-            placeholder='Boss Name'
+            id="bossName"
+            placeholder="Boss Name"
             index={2}
             options={bosses}
             result={boss?.name}
@@ -108,11 +108,11 @@ const DropForm = ({ edit }) => {
           />
           <ValidationError message={errors.bossName} />
         </div>
-        <div className='inputContainer itemName'>
-          <label htmlFor='itemName'>Item Name</label>
+        <div className="inputContainer itemName">
+          <label htmlFor="itemName">Item Name</label>
           <SearchDropDown
-            id='itemName'
-            placeholder='Item Name'
+            id="itemName"
+            placeholder="Item Name"
             index={1}
             options={items}
             disabled={!bossId}
@@ -121,22 +121,22 @@ const DropForm = ({ edit }) => {
           />
           <ValidationError message={errors.itemName} />
         </div>
-        <div className='inputContainer image'>
-          <label htmlFor='image'>Image (optional)</label>
+        <div className="inputContainer image">
+          <label htmlFor="image">Image (optional)</label>
           <input
-            id='image'
-            type='text'
+            id="image"
+            type="text"
             value={image}
-            placeholder='https://www.image.com/image.png'
+            placeholder="https://www.image.com/image.png"
             onChange={e => setImage(e.target.value)}
           />
           <ValidationError message={errors.image} />
         </div>
-        <div className='inputContainer members'>
-          <label htmlFor='members'>Members</label>
+        <div className="inputContainer members">
+          <label htmlFor="members">Members</label>
           <TagsDropDown
-            id='members'
-            placeholder='Members'
+            id="members"
+            placeholder="Members"
             options={(edit ? drop.party.members : party.members)
               .map(user => ({ id: user.id, value: user.username }))}
             results={members}
@@ -146,7 +146,7 @@ const DropForm = ({ edit }) => {
         </div>
       </main>
       <footer>
-        <button className='btn light' type='submit'>{edit ? 'Confirm' : 'Create Drop'}</button>
+        <button className="btn light" type="submit">{edit ? 'Confirm' : 'Create Drop'}</button>
       </footer>
     </form>
   );

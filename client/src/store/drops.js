@@ -25,7 +25,7 @@ const remove = id => ({
   id,
 });
 
-export const loadDrops = () => async dispatch => {
+export const loadDrops = () => async (dispatch) => {
   const res = await fetch('/api/drops');
 
   if (res.ok) {
@@ -38,7 +38,7 @@ export const loadDrops = () => async dispatch => {
   return res;
 };
 
-export const createDrop = (partyId, data) => async dispatch => {
+export const createDrop = (partyId, data) => async (dispatch) => {
   const res = await csrfFetch(`/api/parties/${partyId}/drops`, {
     method: 'POST',
     body: JSON.stringify(data),
@@ -54,7 +54,7 @@ export const createDrop = (partyId, data) => async dispatch => {
   return res;
 };
 
-export const editDrop = (id, data) => async dispatch => {
+export const editDrop = (id, data) => async (dispatch) => {
   const res = await csrfFetch(`/api/drops/${id}`, {
     method: 'PUT',
     body: JSON.stringify(data),
@@ -70,7 +70,7 @@ export const editDrop = (id, data) => async dispatch => {
   return res;
 };
 
-export const removeDrop = id => async dispatch => {
+export const removeDrop = id => async (dispatch) => {
   const res = await csrfFetch(`/api/drops/${id}`, {
     method: 'DELETE',
   });
@@ -85,7 +85,7 @@ export const removeDrop = id => async dispatch => {
   return res;
 };
 
-export const addSale = (id, data) => async dispatch => {
+export const addSale = (id, data) => async (dispatch) => {
   const res = await csrfFetch(`/api/drops/${id}/sale`, {
     method: 'POST',
     body: JSON.stringify(data),
@@ -101,7 +101,7 @@ export const addSale = (id, data) => async dispatch => {
   return res;
 };
 
-export const editSale = (id, data) => async dispatch => {
+export const editSale = (id, data) => async (dispatch) => {
   const res = await csrfFetch(`/api/drops/${id}/sale`, {
     method: 'PUT',
     body: JSON.stringify(data),
@@ -117,7 +117,7 @@ export const editSale = (id, data) => async dispatch => {
   return res;
 };
 
-export const removeSale = id => async dispatch => {
+export const removeSale = id => async (dispatch) => {
   const res = await csrfFetch(`/api/drops/${id}/sale`, {
     method: 'DELETE',
   });
@@ -132,7 +132,7 @@ export const removeSale = id => async dispatch => {
   return res;
 };
 
-export const payMember = (dropId, memberId) => async dispatch => {
+export const payMember = (dropId, memberId) => async (dispatch) => {
   const res = await csrfFetch(`/api/drops/${dropId}/members/${memberId}/payment`, {
     method: 'POST',
   });
@@ -147,7 +147,7 @@ export const payMember = (dropId, memberId) => async dispatch => {
   return res;
 };
 
-export const unpayMember = (dropId, memberId) => async dispatch => {
+export const unpayMember = (dropId, memberId) => async (dispatch) => {
   const res = await csrfFetch(`/api/drops/${dropId}/members/${memberId}/payment`, {
     method: 'DELETE',
   });

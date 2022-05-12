@@ -5,7 +5,7 @@ const load = users => ({
   users,
 });
 
-export const loadUsers = () => async dispatch => {
+export const loadUsers = () => async (dispatch) => {
   const res = await fetch('/api/users');
 
   if (res.ok) {

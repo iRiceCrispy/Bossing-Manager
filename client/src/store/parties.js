@@ -25,7 +25,7 @@ const remove = id => ({
   id,
 });
 
-export const loadParties = () => async dispatch => {
+export const loadParties = () => async (dispatch) => {
   const res = await fetch('/api/parties');
 
   if (res.ok) {
@@ -38,7 +38,7 @@ export const loadParties = () => async dispatch => {
   return res;
 };
 
-export const createParty = data => async dispatch => {
+export const createParty = data => async (dispatch) => {
   const res = await csrfFetch('/api/parties', {
     method: 'POST',
     body: JSON.stringify(data),
@@ -54,7 +54,7 @@ export const createParty = data => async dispatch => {
   return res;
 };
 
-export const editParty = (id, data) => async dispatch => {
+export const editParty = (id, data) => async (dispatch) => {
   const res = await csrfFetch(`/api/parties/${id}`, {
     method: 'PUT',
     body: JSON.stringify(data),
@@ -70,7 +70,7 @@ export const editParty = (id, data) => async dispatch => {
   return res;
 };
 
-export const removeParty = id => async dispatch => {
+export const removeParty = id => async (dispatch) => {
   const res = await csrfFetch(`/api/parties/${id}`, {
     method: 'DELETE',
   });

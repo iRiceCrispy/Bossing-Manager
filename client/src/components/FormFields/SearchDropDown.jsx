@@ -26,7 +26,7 @@ const SearchDropDown = ({ id, placeholder, options, result, setResult, index }) 
     return () => document.removeEventListener('click', closeMenu);
   }, [showMenu]);
 
-  const setValue = match => {
+  const setValue = (match) => {
     setInput('');
     setResult(match.id);
   };
@@ -39,20 +39,22 @@ const SearchDropDown = ({ id, placeholder, options, result, setResult, index }) 
   return (
     <div
       className={`searchDropdownContainer${showMenu ? ' showMenu' : ''}`}
-      onClick={e => {
+      role="menuitem"
+      tabIndex={0}
+      onClick={(e) => {
         e.stopPropagation();
         setShowMenu(true);
       }}
     >
-      <div className='searchDropdown' style={{ zIndex: index }}>
-        <div className='result'>
+      <div className="searchDropdown" style={{ zIndex: index }}>
+        <div className="result">
           <input
             id={id}
-            className='search'
-            type='text'
+            className="search"
+            type="text"
             value={input || result || ''}
             placeholder={placeholder}
-            onChange={e => {
+            onChange={(e) => {
               setInput(e.target.value);
               setResult('');
             }}
