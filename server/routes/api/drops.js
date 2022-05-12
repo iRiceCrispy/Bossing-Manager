@@ -21,7 +21,7 @@ const validateDrop = [
     .isURL()
     .withMessage('Please provid a valid URL')
     .bail()
-    .custom(image => {
+    .custom((image) => {
       if (!image.length || image.endsWith('.jpg') || image.endsWith('.jpeg') || image.endsWith('.png')) {
         return true;
       }
@@ -45,7 +45,7 @@ const validateSale = [
     .isURL()
     .withMessage('Please provid a valid URL')
     .bail()
-    .custom(image => {
+    .custom((image) => {
       if (!image.length || image.endsWith('.jpg') || image.endsWith('.jpeg') || image.endsWith('.png')) {
         return true;
       }
@@ -165,7 +165,7 @@ router.delete('/:id/sale', asyncHandler(async (req, res, next) => {
   drop.sold = false;
   delete drop.price;
   delete drop.saleImage;
-  drop.members.forEach(member => {
+  drop.members.forEach((member) => {
     member.isPaid = false;
   });
 

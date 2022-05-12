@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 
-module.exports = mongoose => {
+module.exports = (mongoose) => {
   const userSchema = new mongoose.Schema({
     username: {
       type: String,
@@ -26,8 +26,9 @@ module.exports = mongoose => {
     toJSON: {
       virtuals: true,
       transform(_doc, ret) {
-        delete ret._id;
-        delete ret.hashedPassword;
+        const { id, username } = ret;
+
+        return { id, username };
       },
     },
   });
@@ -40,7 +41,7 @@ module.exports = mongoose => {
   });
 
   userSchema.pre('insertMany', (next, docs) => {
-    docs.forEach(doc => {
+    docs.forEach((doc) => {
       doc.hashedPassword = bcrypt.hashSync(doc.password);
       delete doc.password;
     });

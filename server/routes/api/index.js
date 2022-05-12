@@ -1,8 +1,8 @@
 const router = require('express').Router();
-const sessionRouter = require('./session.js');
-const usersRouter = require('./users.js');
-const partiesRouter = require('./parties.js');
-const dropsRouter = require('./drops.js');
+const sessionRouter = require('./session');
+const usersRouter = require('./users');
+const partiesRouter = require('./parties');
+const dropsRouter = require('./drops');
 
 router.use('/session', sessionRouter);
 router.use('/users', usersRouter);

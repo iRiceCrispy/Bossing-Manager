@@ -32,7 +32,7 @@ const validateDrop = [
     .exists({ checkFalsy: true })
     .withMessage('Please enter an item.'),
   check('image')
-    .custom(image => {
+    .custom((image) => {
       if (!image.length || image.endsWith('.jpg') || image.endsWith('.jpeg') || image.endsWith('.png')) {
         return true;
       }

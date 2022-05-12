@@ -11,7 +11,7 @@ const validateSignup = [
   check('email')
     .isEmail()
     .withMessage('Please provide a valid email.')
-    .custom(async email => {
+    .custom(async (email) => {
       const user = await User.findOne({ email });
 
       if (user) throw new Error('Email already registered.');
@@ -25,7 +25,7 @@ const validateSignup = [
     .not()
     .isEmail()
     .withMessage('Username cannot be an email.')
-    .custom(async username => {
+    .custom(async (username) => {
       const user = await User.findOne({ username });
 
       if (user) throw new Error('Username already in use.');
@@ -48,7 +48,7 @@ router.get('/', asyncHandler(async (req, res) => {
   const users = await User.find();
 
   const data = users.reduce((accum, user) => {
-    accum[user.id] = user.toSafeObject();
+    accum[user.id] = user;
     return accum;
   }, {});
 

@@ -1,6 +1,6 @@
 const autopopulate = require('mongoose-autopopulate');
 
-module.exports = mongoose => {
+module.exports = (mongoose) => {
   const memberSchema = new mongoose.Schema({
     userId: {
       type: mongoose.ObjectId,

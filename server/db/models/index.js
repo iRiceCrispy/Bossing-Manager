@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const basename = path.basename(__filename);
 const { environment } = require('../../config');
-const config = require('../../config/database.js')[environment];
+const config = require('../../config/database')[environment];
 
 const db = {};
 
@@ -15,7 +15,7 @@ db.init = () => {
     console.log('MongoDB has successfully connected!');
   });
 
-  mongoose.connection.on('err', err => {
+  mongoose.connection.on('err', (err) => {
     console.error(`Mongoose connection error: \n${err.stack}`);
   });
 
@@ -26,7 +26,7 @@ db.init = () => {
 
 fs.readdirSync(__dirname)
   .filter(file => file !== basename && file.endsWith('.js'))
-  .forEach(file => {
+  .forEach((file) => {
     const model = require(path.resolve(__dirname, file))(mongoose);
     db[model.modelName] = model;
   });
