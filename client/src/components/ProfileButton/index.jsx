@@ -28,15 +28,18 @@ const ProfileButton = () => {
       <button
         className="btn transparent profileButton"
         type="button"
-        onClick={() => !showMenu && setShowMenu(true)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setShowMenu(prev => !prev);
+        }}
       >
         <FontAwesomeIcon icon="fas fa-user" />
       </button>
       {showMenu && (
         <div
           className="profileMenu"
-          role="button"
-          tabIndex={0}
+          role="menu"
+          tabIndex={-1}
           onClick={e => e.stopPropagation()}
         >
           <p>
