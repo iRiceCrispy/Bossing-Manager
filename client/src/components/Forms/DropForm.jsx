@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import TagsDropDown from '../FormFields/TagsDropDown';
 import SearchDropDown from '../FormFields/SearchDropDown';
@@ -11,7 +11,7 @@ import './forms.scss';
 
 const DropForm = ({ edit }) => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { id } = useParams();
   const drop = useSelector(state => state.drops[id]);
   const party = useSelector(state => state.parties[edit ? drop.party.id : id]);
@@ -51,7 +51,7 @@ const DropForm = ({ edit }) => {
 
       dispatch(createDrop(party.id, newDrop))
         .then((drp) => {
-          history.replace(`/dashboard/drops/${drp.id}`);
+          navigate(`/dashboard/drops/${drp.id}`);
         })
         .catch(async (res) => {
           const data = await res.json();
@@ -77,16 +77,14 @@ const DropForm = ({ edit }) => {
 
         dispatch(editDrop(drop.id, editedDrop))
           .then((drp) => {
-            console.log(drp);
-
-            history.replace(`/dashboard/drops/${drp.id}`);
+            navigate(`/dashboard/drops/${drp.id}`);
           }).catch(async (res) => {
             const data = await res.json();
 
             if (data?.errors) setErrors(data.errors);
           });
       }
-      else history.replace(`/dashboard/drops/${id}`);
+      else navigate(`/dashboard/drops/${id}`);
     }
   };
 

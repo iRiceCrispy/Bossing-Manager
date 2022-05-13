@@ -10,13 +10,13 @@ const SaleForm = ({ drop, setShowForm }) => {
   const [image, setImage] = useState('');
   const [errors, setErrors] = useState([]);
 
-  const changePrice = e => {
+  const changePrice = (e) => {
     if (!e.target.value.match(/^(|[,\d])+$/)) return;
 
     setPrice(+(e.target.value).replace(/,/g, ''));
   };
 
-  const submitForm = e => {
+  const submitForm = (e) => {
     e.preventDefault();
     setErrors({});
 
@@ -27,7 +27,7 @@ const SaleForm = ({ drop, setShowForm }) => {
 
     dispatch(addSale(drop.id, newSale))
       .then(() => setShowForm(false))
-      .catch(async res => {
+      .catch(async (res) => {
         const data = await res.json();
 
         if (data?.errors) setErrors(data.errors);
@@ -35,38 +35,38 @@ const SaleForm = ({ drop, setShowForm }) => {
   };
 
   return (
-    <form id='saleForm' className='form' onSubmit={submitForm}>
+    <form id="saleForm" className="form" onSubmit={submitForm}>
       <header>
-        <h2 className='formTitle'>Input sales info.</h2>
+        <h2 className="formTitle">Input sales info.</h2>
       </header>
       <main>
-        <div className='inputContainer price'>
-          <label htmlFor='price'>Price</label>
+        <div className="inputContainer price">
+          <label htmlFor="price">Price</label>
           <input
-            id='price'
-            type='text'
+            id="price"
+            type="text"
             value={price.toLocaleString()}
             onChange={changePrice}
-            placeholder='0'
+            placeholder="0"
             onFocus={() => price <= 0 && setPrice('')}
             onBlur={() => !price && setPrice('0')}
           />
           <ValidationError message={errors.price} />
         </div>
-        <div className='inputContainer saleImage'>
-          <label htmlFor='saleImage'>Image (optional)</label>
+        <div className="inputContainer saleImage">
+          <label htmlFor="saleImage">Image (optional)</label>
           <input
-            id='image'
-            type='text'
+            id="image"
+            type="text"
             value={image}
-            placeholder='https://www.image.com/image.png'
+            placeholder="https://www.image.com/image.png"
             onChange={e => setImage(e.target.value)}
           />
           <ValidationError message={errors.saleImage} />
         </div>
       </main>
       <footer>
-        <button className='btn light submit' type='submit'>Confirm</button>
+        <button className="btn light submit" type="submit">Confirm</button>
       </footer>
     </form>
   );

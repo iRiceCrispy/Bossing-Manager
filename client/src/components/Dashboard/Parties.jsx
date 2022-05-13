@@ -1,10 +1,9 @@
 import React from 'react';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import './Parties.scss';
 
 const Parties = () => {
-  const { path } = useRouteMatch();
   const sessionUser = useSelector(state => state.session.user);
   const parties = useSelector(state => Object.values(state.parties));
 
@@ -19,7 +18,7 @@ const Parties = () => {
                 <li key={party.id}>
                   <Link
                     className="party"
-                    to={`${path}/${party.id}`}
+                    to={`${party.id}`}
                   >
                     <h3 className="partyName">{party.name}</h3>
                     <p className="partyLeader">

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { restoreUser } from './store/session';
 import { loadUsers } from './store/users';
-import SelectedProvider from './context/SelectedContext';
 import Auth from './components/Auth';
 import Dashboard from './components/Dashboard';
 import Splash from './components/Splash';
@@ -26,25 +25,28 @@ const App = () => {
 
   return isLoaded && (
     <div className="app">
-      <Switch>
-        <Route exact path="/">
-          <Splash />
-        </Route>
-        <Route exact path="/login">
-          <Auth type="login" />
-        </Route>
-        <Route exact path="/signup">
-          <Auth type="signup" />
-        </Route>
-        <Route path="/dashboard">
-          <SelectedProvider>
-            <Dashboard />
-          </SelectedProvider>
-        </Route>
-        <Route>
-          <Redirect to="/" />
-        </Route>
-      </Switch>
+      <Routes>
+        <Route
+          path="/"
+          element={<Splash />}
+        />
+        <Route
+          path="/login"
+          element={<Auth type="login" />}
+        />
+        <Route
+          path="/signup"
+          element={<Auth type="signup" />}
+        />
+        <Route
+          path="/dashboard/*"
+          element={<Dashboard />}
+        />
+        <Route
+          path="*"
+          element={<Navigate to="/" />}
+        />
+      </Routes>
     </div>
   );
 };

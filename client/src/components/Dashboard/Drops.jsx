@@ -1,12 +1,11 @@
 import React from 'react';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import bossList from '../../util/bossList.json';
 import itemList from '../../util/itemList.json';
 import './Drops.scss';
 
 const Drops = () => {
-  const { path } = useRouteMatch();
   const drops = useSelector(state => Object.values(state.drops));
 
   return (
@@ -25,7 +24,7 @@ const Drops = () => {
                     <Link
                       className="drop"
                       sold={drop.sold.toString()}
-                      to={`${path}/${drop.id}`}
+                      to={`${drop.id}`}
                     >
                       <h3 className="bossName">{boss.name}</h3>
                       <p className="itemName">{item.name}</p>

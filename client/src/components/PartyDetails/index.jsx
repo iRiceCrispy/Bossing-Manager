@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useHistory, useParams, useRouteMatch } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { removeParty } from '../../store/parties';
@@ -9,9 +9,8 @@ import './PartyDetails.scss';
 
 const PartyDetails = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { id } = useParams();
-  const { url } = useRouteMatch();
   const party = useSelector(state => state.parties[id]);
   const sessionUser = useSelector(state => state.session.user);
   const drops = Object.values(useSelector(state => state.drops))
@@ -25,7 +24,7 @@ const PartyDetails = () => {
 
   const deleteParty = () => {
     dispatch(removeParty(party.id));
-    history.replace('/dashboard/parties');
+    navigate('/dashboard/parties');
   };
 
   return (
@@ -50,7 +49,7 @@ const PartyDetails = () => {
         {isLeader && (
           <>
             <div className="modifyingButtons">
-              <Link className="btn transparent edit" to={`${url}/edit`}>
+              <Link className="btn transparent edit" to="edit">
                 <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
               </Link>
               <button className="btn transparent delete" type="button" onClick={deleteParty}>
@@ -58,7 +57,7 @@ const PartyDetails = () => {
               </button>
             </div>
             <div className="createButton">
-              <Link className="btn transparent add" to={`${url}/add-drop`}>Add a drop</Link>
+              <Link className="btn transparent add" to="add-drop">Add a drop</Link>
             </div>
           </>
         )}

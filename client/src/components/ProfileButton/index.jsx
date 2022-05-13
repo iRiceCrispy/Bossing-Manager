@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { logout } from '../../store/session';
@@ -7,7 +7,7 @@ import './ProfileButton.scss';
 
 const ProfileButton = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const user = useSelector(state => state.session.user);
   const [showMenu, setShowMenu] = useState(false);
 
@@ -54,7 +54,7 @@ const ProfileButton = () => {
             type="button"
             onClick={() => {
               dispatch(logout());
-              history.push('/');
+              navigate('/');
             }}
           >
             <span className="icon">

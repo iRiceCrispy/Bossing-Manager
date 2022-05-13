@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useHistory, useParams, useRouteMatch } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Modal from '../Modal';
@@ -11,8 +11,7 @@ import './DropDetails.scss';
 
 const DropDetails = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
-  const { url } = useRouteMatch();
+  const navigate = useNavigate();
   const { id } = useParams();
   const [showSale, setShowSale] = useState(false);
   const sessionUser = useSelector(state => state.session.user);
@@ -31,7 +30,7 @@ const DropDetails = () => {
 
   const deleteDrop = () => {
     dispatch(removeDrop(drop.id));
-    history.replace('/dashboard/drops');
+    navigate('/dashboard/drops');
   };
 
   const handlePayment = (member) => {
@@ -116,7 +115,7 @@ const DropDetails = () => {
       )}
       {isLeader && (
       <div className="modifyingButtons">
-        <Link className="btn transparent edit" to={`${url}/edit`}>
+        <Link className="btn transparent edit" to="edit">
           <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
         </Link>
         <button className="btn transparent delete" type="button" onClick={deleteDrop}>

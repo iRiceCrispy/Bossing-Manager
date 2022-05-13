@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, NavLink, Route, Switch, useRouteMatch } from 'react-router-dom';
+import { Link, NavLink, Route, Routes } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loadParties } from '../../store/parties';
 import { loadDrops } from '../../store/drops';
@@ -15,7 +15,6 @@ import './Dashboard.scss';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const { path, url } = useRouteMatch();
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -40,9 +39,7 @@ const Dashboard = () => {
           <li>
             <NavLink
               className="menuItem"
-              activeClassName="selected"
-              exact
-              to={url}
+              to="./"
             >
               Dashboard
             </NavLink>
@@ -50,8 +47,7 @@ const Dashboard = () => {
           <li>
             <NavLink
               className="menuItem"
-              activeClassName="selected"
-              to={`${url}/parties`}
+              to="parties"
             >
               Parties
             </NavLink>
@@ -59,8 +55,7 @@ const Dashboard = () => {
           <li>
             <NavLink
               className="menuItem"
-              activeClassName="selected"
-              to={`${url}/drops`}
+              to="drops"
             >
               Drops
             </NavLink>
@@ -69,42 +64,24 @@ const Dashboard = () => {
       </nav>
       <div className="topbar">
         <div className="menu">
-          <Link className="btn transparent menuItem" to={`${url}/parties/create`}>Create new party</Link>
+          <Link className="btn transparent menuItem" to="parties/create">Create new party</Link>
         </div>
         <div className="auth">
           <ProfileButton />
         </div>
       </div>
       <div className="contentContainer">
-        <Switch>
-          <Route exact path={path}>
-            <Main />
-          </Route>
-          <Route exact path={`${path}/parties`}>
-            <Parties />
-          </Route>
-          <Route exact path={`${path}/parties/create`}>
-            <PartyForm />
-          </Route>
-          <Route exact path={`${path}/parties/:id/edit`}>
-            <PartyForm edit />
-          </Route>
-          <Route exact path={`${path}/parties/:id/add-drop`}>
-            <DropForm />
-          </Route>
-          <Route exact path={`${path}/parties/:id`}>
-            <PartyDetails />
-          </Route>
-          <Route exact path={`${path}/drops`}>
-            <Drops />
-          </Route>
-          <Route exact path={`${path}/drops/:id/edit`}>
-            <DropForm edit />
-          </Route>
-          <Route exact path={`${path}/drops/:id`}>
-            <DropDetails />
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="parties" element={<Parties />} />
+          <Route path="parties/:id" element={<PartyDetails />} />
+          <Route path="parties/:id/edit" element={<PartyForm edit />} />
+          <Route path="parties/:id/add-drop" element={<DropForm />} />
+          <Route path="parties/create" element={<PartyForm />} />
+          <Route path="drops" element={<Drops />} />
+          <Route path="drops/:id" element={<DropDetails />} />
+          <Route path="drops/:id/edit" element={<DropForm edit />} />
+        </Routes>
       </div>
     </div>
   );
