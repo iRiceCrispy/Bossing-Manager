@@ -1,12 +1,8 @@
 const router = require('express').Router();
-const sessionRouter = require('./session');
-const usersRouter = require('./users');
-const partiesRouter = require('./parties');
-const dropsRouter = require('./drops');
+const routes = require('require-directory')(module);
 
-router.use('/session', sessionRouter);
-router.use('/users', usersRouter);
-router.use('/parties', partiesRouter);
-router.use('/drops', dropsRouter);
+Object.entries(routes).forEach(([key, route]) => {
+  router.use(`/${key}`, route);
+});
 
 module.exports = router;

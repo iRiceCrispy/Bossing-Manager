@@ -58,7 +58,7 @@ unauthorizedError.status = 401;
 // If there is no current user, return an error
 const requireAuth = [
   restoreUser,
-  (req, _res, next) => {
+  (req, res, next) => {
     if (req.user) return next();
 
     return next(unauthorizedError);

@@ -18,7 +18,7 @@ const partySchema = new mongoose.Schema({
   versionKey: false,
   toJSON: {
     virtuals: true,
-    transform(_data, ret) {
+    transform(doc, ret) {
       return {
         id: ret.id,
         name: ret.name,

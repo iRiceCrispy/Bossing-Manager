@@ -41,7 +41,7 @@ app.use(csurf({
 app.use(routes); // Connect all the routes
 
 // Catch unhandled requests and forward to error handler.
-app.use((_req, _res, next) => {
+app.use((req, res, next) => {
   const err = new Error("The requested resource couldn't be found.");
   err.title = 'Resource Not Found';
   err.errors = ["The requested resource couldn't be found."];
@@ -50,7 +50,7 @@ app.use((_req, _res, next) => {
 });
 
 // Error formatter
-app.use((err, _req, res, _next) => {
+app.use((err, req, res, _next) => {
   res.status(err.status || 500);
   console.error(err);
   res.json({

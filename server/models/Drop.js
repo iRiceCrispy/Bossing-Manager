@@ -14,7 +14,7 @@ const memberSchema = new mongoose.Schema({
   _id: false,
   toJSON: {
     virtuals: true,
-    transform(_data, ret) {
+    transform(doc, ret) {
       return {
         user: ret.user,
         isPaid: ret.isPaid,
@@ -55,7 +55,7 @@ const dropSchema = new mongoose.Schema({
   versionKey: false,
   toJSON: {
     virtuals: true,
-    transform(_data, ret) {
+    transform(doc, ret) {
       return {
         id: ret.id,
         bossName: ret.bossName,

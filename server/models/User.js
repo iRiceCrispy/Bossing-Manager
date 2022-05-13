@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
   versionKey: false,
   toJSON: {
     virtuals: true,
-    transform(_doc, ret) {
+    transform(doc, ret) {
       return {
         id: ret.id,
         username: ret.username,

@@ -29,6 +29,12 @@
         "allowForLoopAfterthoughts": true
       }
     ],
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ],
     "object-curly-newline": [
       "error",
       {
