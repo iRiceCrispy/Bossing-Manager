@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, restoreUser } = require('../../utils/auth');
-const { User } = require('../../db/models');
+const { User } = require('../../models');
 
 const router = express.Router();
 
@@ -22,7 +22,7 @@ router.get('/', restoreUser, (req, res) => {
   const { user } = req;
 
   if (user) {
-    return res.json(user.toSafeObject());
+    return res.json(user.toPrivate());
   }
   return res.json(null);
 });
@@ -43,11 +43,11 @@ router.post('/', validateLogin, asyncHandler(async (req, res, next) => {
 
   setTokenCookie(res, user);
 
-  return res.json(user.toSafeObject());
+  return res.json(user.toPrivate());
 }));
 
 // Log in as demo
-router.post('/demo', asyncHandler(async (req, res, next) => {
+router.get('/demo', asyncHandler(async (req, res, next) => {
   const user = await User.login({ credential: 'demo1', password: 'password' });
 
   if (!user) {
@@ -60,7 +60,7 @@ router.post('/demo', asyncHandler(async (req, res, next) => {
 
   setTokenCookie(res, user);
 
-  return res.json(user.toSafeObject());
+  return res.json(user.toPrivate());
 }));
 
 // Log out

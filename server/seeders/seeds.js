@@ -1,3 +1,4 @@
+const mongoose = require('../config/database');
 const { User, Party, Drop } = require('../models');
 
 const seed = async () => {
@@ -128,12 +129,18 @@ const seed = async () => {
     image: 'https://orangemushroom.files.wordpress.com/2018/08/badge-of-genesis.png',
     members: parties[4].memberIds.map(memberId => ({ userId: memberId })),
   }]);
+
+  mongoose.disconnect();
 };
 
 const unseed = async () => {
   await Drop.collection.drop();
   await Party.collection.drop();
   await User.collection.drop();
+
+  console.log('unseed sucess');
+
+  mongoose.disconnect();
 };
 
 module.exports = { seed, unseed };

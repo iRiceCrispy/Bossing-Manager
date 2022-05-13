@@ -7,6 +7,9 @@ const cookieParser = require('cookie-parser');
 const { environment } = require('./config');
 const routes = require('./routes');
 
+require('./config/database');
+require('./models');
+
 const isProduction = environment === 'production';
 
 const app = express();

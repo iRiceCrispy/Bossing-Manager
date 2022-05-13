@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth, unauthorizedError } = require('../../utils/auth');
-const { Party, Drop } = require('../../db/models');
+const { Party, Drop } = require('../../models');
 
 const router = express.Router();
 

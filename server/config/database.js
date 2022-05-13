@@ -1,24 +1,21 @@
-const { db } = require('./index');
+const mongoose = require('mongoose');
+const { environment, mongoUrl } = require('./index');
 
-const { mongoUrl } = db;
+mongoose.connect(mongoUrl[environment])
+  .catch((err) => {
+    console.error(`MongoDB initial connection error: \n${err}`);
+  });
 
-module.exports = {
-  development: {
-    database: {
-      url: mongoUrl,
-      options: {
-        useNewUrlParser: true,
-        dbName: 'bossing_manager_dev',
-      },
-    },
-  },
-  production: {
-    database: {
-      url: mongoUrl,
-      options: {
-        useNewUrlParser: true,
-        dbName: 'bossing_manager',
-      },
-    },
-  },
-};
+mongoose.connection.on('connected', () => {
+  console.log('MongoDB has successfully connected!');
+});
+
+mongoose.connection.on('error', (err) => {
+  console.error(`MongoDB connection error: \n${err}`);
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.warn('MongoDB connection lost.');
+});
+
+module.exports = mongoose;
