@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ValidationError from '../FormFields/ValidationError';
-import { signup } from '../../store/session';
+import { signup, getSessionUser } from '../../store/session';
 
 const SignupForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const sessionUser = useSelector(state => state.session.user);
+  const sessionUser = useSelector(getSessionUser);
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');

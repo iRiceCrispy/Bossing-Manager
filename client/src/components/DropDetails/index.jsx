@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { deleteDrop, deleteSale, payMember, unpayMember, dropsSelectors } from '../../store/drops';
+import { getSessionUser } from '../../store/session';
 import Modal from '../Modal';
 import SaleForm from '../Forms/SaleForm';
-import { removeDrop, removeSale, payMember, unpayMember } from '../../store/drops';
 import bossList from '../../util/bossList.json';
 import itemList from '../../util/itemList.json';
 import './DropDetails.scss';
@@ -14,8 +15,8 @@ const DropDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [showSale, setShowSale] = useState(false);
-  const sessionUser = useSelector(state => state.session.user);
-  const drop = useSelector(state => state.drops[id]);
+  const sessionUser = useSelector(getSessionUser);
+  const drop = useSelector(state => dropsSelectors.selectById(state, id));
 
   if (!drop) return <div id="notFound">The drop you are looking for has either been deleted, or does not exist.</div>;
 
@@ -28,8 +29,8 @@ const DropDetails = () => {
   const boss = bossList[bossName];
   const item = itemList[itemName];
 
-  const deleteDrop = () => {
-    dispatch(removeDrop(drop.id));
+  const deleteDropEvent = () => {
+    dispatch(deleteDrop(drop.id));
     navigate('/dashboard/drops');
   };
 
@@ -53,7 +54,7 @@ const DropDetails = () => {
               <button
                 className="btn transparent"
                 type="button"
-                onClick={() => dispatch(removeSale(drop.id))}
+                onClick={() => dispatch(deleteSale(drop.id))}
               >
                 Undo
               </button>
@@ -118,7 +119,7 @@ const DropDetails = () => {
         <Link className="btn transparent edit" to="edit">
           <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
         </Link>
-        <button className="btn transparent delete" type="button" onClick={deleteDrop}>
+        <button className="btn transparent delete" type="button" onClick={deleteDropEvent}>
           <FontAwesomeIcon icon="fa-solid fa-trash-can" />
         </button>
       </div>

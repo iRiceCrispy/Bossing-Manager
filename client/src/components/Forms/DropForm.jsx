@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import TagsDropDown from '../FormFields/TagsDropDown';
 import SearchDropDown from '../FormFields/SearchDropDown';
 import ValidationError from '../FormFields/ValidationError';
-import { createDrop, editDrop } from '../../store/drops';
+import { createDrop, updateDrop, dropsSelectors } from '../../store/drops';
+import { partiesSelectors } from '../../store/parties';
 import bossList from '../../util/bossList.json';
 import itemList from '../../util/itemList.json';
 import './forms.scss';
@@ -13,8 +14,8 @@ const DropForm = ({ edit }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
-  const drop = useSelector(state => state.drops[id]);
-  const party = useSelector(state => state.parties[edit ? drop.party.id : id]);
+  const drop = useSelector(state => dropsSelectors.selectById(state, id));
+  const party = useSelector(state => partiesSelectors.selectById(state, edit ? drop.party.id : id));
   const [bossId, setBossId] = useState(edit ? drop.bossName : '');
   const [itemId, setIemId] = useState(edit ? drop.itemName : '');
   const [image, setImage] = useState(edit ? drop.image : '');
@@ -75,7 +76,7 @@ const DropForm = ({ edit }) => {
 
         };
 
-        dispatch(editDrop(drop.id, editedDrop))
+        dispatch(updateDrop(drop.id, editedDrop))
           .then((drp) => {
             navigate(`/dashboard/drops/${drp.id}`);
           }).catch(async (res) => {

@@ -1,13 +1,16 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { getSessionUser } from '../../store/session';
+import { partiesSelectors } from '../../store/parties';
+import { dropsSelectors } from '../../store/drops';
 import './Main.scss';
 
 const Main = () => {
-  const sessionUser = useSelector(state => state.session.user);
-  const parties = Object.values(useSelector(state => state.parties));
-  const drops = Object.values(useSelector(state => state.drops));
+  const sessionUser = useSelector(getSessionUser);
+  const parties = useSelector(partiesSelectors.selectAll);
+  const drops = useSelector(dropsSelectors.selectAll);
 
-  const [partiesL, partiesM] = parties.reduce(([l, m], party) => (
+  const [partiesL] = parties.reduce(([l, m], party) => (
     party.leader.id === sessionUser.id ? [[...l, party], m] : [l, [...m, party]]
   ), [[], []]);
 

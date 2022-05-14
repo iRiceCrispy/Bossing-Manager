@@ -1,186 +1,73 @@
-import { csrfFetch } from './csrf';
+import axios from 'axios';
+import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 
-const LOAD = 'drops/LOAD';
-const CREATE = 'drops/CREATE';
-const EDIT = 'drops/EDIT';
-const REMOVE = 'drops/REMOVE';
+export const fetchDrops = createAsyncThunk('drops/fetch', async () => {
+  const res = await axios.get('/api/drops');
 
-const load = drops => ({
-  type: LOAD,
-  drops,
+  return res.data;
 });
 
-const create = drop => ({
-  type: CREATE,
-  drop,
+export const createDrop = createAsyncThunk('drops/create', async (drop) => {
+  const res = await axios.post('/api/drops', drop);
+
+  return res.data;
 });
 
-const edit = drop => ({
-  type: EDIT,
-  drop,
+export const updateDrop = createAsyncThunk('drop/update', async (drop) => {
+  const { id } = drop;
+  const res = await axios.pust(`/api/parties/${id}`, drop);
+
+  return res.data;
 });
 
-const remove = id => ({
-  type: REMOVE,
-  id,
+export const deleteDrop = createAsyncThunk('drop/delete', async (id) => {
+  const res = await axios.delete(`/api/parties/${id}`);
+
+  return res.data;
 });
 
-export const loadDrops = () => async (dispatch) => {
-  const res = await fetch('/api/drops');
+export const addSale = createAsyncThunk('drop/sale/add', async ({ id, sale }) => {
+  const res = await axios.post(`/api/drops/${id}/sale`, sale);
 
-  if (res.ok) {
-    const drops = await res.json();
-    dispatch(load(drops));
+  return res.data;
+});
 
-    return drops;
-  }
+export const updateSale = createAsyncThunk('drop/sale/update', async ({ id, sale }) => {
+  const res = await axios.put(`/api/drops/${id}/sale`, sale);
 
-  return res;
-};
+  return res.data;
+});
 
-export const createDrop = (partyId, data) => async (dispatch) => {
-  const res = await csrfFetch(`/api/parties/${partyId}/drops`, {
-    method: 'POST',
-    body: JSON.stringify(data),
-  });
+export const deleteSale = createAsyncThunk('drop/sale/delete', async (id) => {
+  const res = await axios.delete(`/api/drops/${id}/sale`);
 
-  if (res.ok) {
-    const drop = await res.json();
-    dispatch(create(drop));
+  return res.data;
+});
 
-    return drop;
-  }
+export const payMember = createAsyncThunk('drop/members/pay', async ({ dropId, memberId }) => {
+  const res = await axios.post(`/api/drops/${dropId}/members/${memberId}/payment`);
 
-  return res;
-};
+  return res.data;
+});
 
-export const editDrop = (id, data) => async (dispatch) => {
-  const res = await csrfFetch(`/api/drops/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-  });
+export const unpayMember = createAsyncThunk('drop/members/unpay', async ({ dropId, memberId }) => {
+  const res = await axios.delete(`/api/drops/${dropId}/members/${memberId}/payment`);
 
-  if (res.ok) {
-    const drop = await res.json();
-    dispatch(edit(drop));
+  return res.data;
+});
 
-    return drop;
-  }
+const dropsAdapter = createEntityAdapter();
 
-  return res;
-};
+const initialState = dropsAdapter.getInitialState();
 
-export const removeDrop = id => async (dispatch) => {
-  const res = await csrfFetch(`/api/drops/${id}`, {
-    method: 'DELETE',
-  });
+const dropsSlice = createSlice({
+  name: 'drops',
+  initialState,
+  extraReducers: (builder) => {
+    builder.addCase(fetchDrops.fulfilled, dropsAdapter.setMany);
+  },
+});
 
-  if (res.ok) {
-    const drop = await res.json();
-    dispatch(remove(drop.id));
+export const dropsSelectors = dropsAdapter.getSelectors(state => state.drops);
 
-    return drop;
-  }
-
-  return res;
-};
-
-export const addSale = (id, data) => async (dispatch) => {
-  const res = await csrfFetch(`/api/drops/${id}/sale`, {
-    method: 'POST',
-    body: JSON.stringify(data),
-  });
-
-  if (res.ok) {
-    const drop = await res.json();
-    dispatch(edit(drop));
-
-    return drop;
-  }
-
-  return res;
-};
-
-export const editSale = (id, data) => async (dispatch) => {
-  const res = await csrfFetch(`/api/drops/${id}/sale`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-  });
-
-  if (res.ok) {
-    const drop = await res.json();
-    dispatch(edit(drop));
-
-    return drop;
-  }
-
-  return res;
-};
-
-export const removeSale = id => async (dispatch) => {
-  const res = await csrfFetch(`/api/drops/${id}/sale`, {
-    method: 'DELETE',
-  });
-
-  if (res.ok) {
-    const drop = await res.json();
-    dispatch(edit(drop));
-
-    return drop;
-  }
-
-  return res;
-};
-
-export const payMember = (dropId, memberId) => async (dispatch) => {
-  const res = await csrfFetch(`/api/drops/${dropId}/members/${memberId}/payment`, {
-    method: 'POST',
-  });
-
-  if (res.ok) {
-    const drop = await res.json();
-    dispatch(edit(drop));
-
-    return drop;
-  }
-
-  return res;
-};
-
-export const unpayMember = (dropId, memberId) => async (dispatch) => {
-  const res = await csrfFetch(`/api/drops/${dropId}/members/${memberId}/payment`, {
-    method: 'DELETE',
-  });
-
-  if (res.ok) {
-    const drop = await res.json();
-    dispatch(edit(drop));
-
-    return drop;
-  }
-
-  return res;
-};
-
-const reducer = (state = {}, action) => {
-  switch (action.type) {
-    case LOAD:
-      return action.drops;
-    case CREATE:
-      state[action.drop.id] = action.drop;
-
-      return { ...state };
-    case EDIT:
-      state[action.drop.id] = { ...state[action.drop.id], ...action.drop };
-
-      return { ...state };
-    case REMOVE:
-      delete state[action.id];
-
-      return { ...state };
-    default:
-      return state;
-  }
-};
-
-export default reducer;
+export default dropsSlice.reducer;

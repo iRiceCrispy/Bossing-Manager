@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, NavLink, Route, Routes } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { loadParties } from '../../store/parties';
-import { loadDrops } from '../../store/drops';
+import { fetchParties } from '../../store/parties';
+import { fetchDrops } from '../../store/drops';
 import ProfileButton from '../ProfileButton';
 import Main from './Main';
 import Parties from './Parties';
@@ -19,8 +19,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     (async () => {
-      await dispatch(loadParties());
-      await dispatch(loadDrops());
+      await dispatch(fetchParties());
+      await dispatch(fetchDrops());
 
       setIsLoaded(true);
     })();

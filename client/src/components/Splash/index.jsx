@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { getSessionUser } from '../../store/session';
 import ProfileButton from '../ProfileButton';
 import blackmage from '../../assets/Black_Mage.png';
 import './Splash.scss';
 
 const Splash = () => {
-  const user = useSelector(state => state.session.user);
+  const user = useSelector(getSessionUser);
 
   return (
     <div id="splash">

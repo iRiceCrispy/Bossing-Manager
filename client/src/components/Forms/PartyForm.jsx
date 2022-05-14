@@ -3,21 +3,23 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import TagsDropDown from '../FormFields/TagsDropDown';
 import ValidationError from '../FormFields/ValidationError';
-import { createParty, editParty } from '../../store/parties';
+import { getSessionUser } from '../../store/session';
+import { usersSelectors } from '../../store/users';
+import { createParty, updateParty, partiesSelectors } from '../../store/parties';
 import './forms.scss';
 
 const PartyForm = ({ edit }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
-  const party = useSelector(state => state.parties[id]);
+  const party = useSelector(state => partiesSelectors.selectById(state, id));
   const [name, setName] = useState(edit ? party.name : '');
   const [members, setMembers] = useState(edit
     ? party.members.map(member => ({ id: member.id, value: member.username }))
     : []);
   const [errors, setErrors] = useState([]);
-  const sessionUser = useSelector(state => state.session.user);
-  const users = Object.values(useSelector(state => state.users));
+  const sessionUser = useSelector(getSessionUser);
+  const users = useSelector(usersSelectors.selectAll);
 
   const submitForm = (e) => {
     e.preventDefault();
@@ -51,7 +53,7 @@ const PartyForm = ({ edit }) => {
           memberIds: members.map(member => member.id),
         };
 
-        dispatch(editParty(party.id, editedParty))
+        dispatch(updateParty(party.id, editedParty))
           .then((pt) => {
             navigate(`/dashboard/parties/${pt.id}`);
           }).catch(async (res) => {

@@ -53,12 +53,7 @@ router.get('/', asyncHandler(async (req, res) => {
 
   const parties = await Party.find({ memberIds: user.id });
 
-  const data = parties.reduce((accum, party) => {
-    accum[party.id] = party.toJSON();
-    return accum;
-  }, {});
-
-  res.json(data);
+  res.json(parties);
 }));
 
 // Create a new party, making the current user as party leader automatically

@@ -47,7 +47,7 @@ router.post('/', validateLogin, asyncHandler(async (req, res, next) => {
 }));
 
 // Log in as demo
-router.get('/demo', asyncHandler(async (req, res, next) => {
+router.post('/demo', asyncHandler(async (req, res, next) => {
   const user = await User.login({ credential: 'demo1', password: 'password' });
 
   if (!user) {

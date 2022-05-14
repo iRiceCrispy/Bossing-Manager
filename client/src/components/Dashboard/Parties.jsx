@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { getSessionUser } from '../../store/session';
+import { partiesSelectors } from '../../store/parties';
 import './Parties.scss';
 
 const Parties = () => {
-  const sessionUser = useSelector(state => state.session.user);
-  const parties = useSelector(state => Object.values(state.parties));
+  const sessionUser = useSelector(getSessionUser);
+  const parties = useSelector(partiesSelectors.selectAll);
 
   return (
     <div id="parties">

@@ -68,12 +68,7 @@ router.get('/', asyncHandler(async (req, res) => {
     ],
   });
 
-  const data = drops.reduce((accum, drop) => {
-    accum[drop.id] = drop.toJSON();
-    return accum;
-  }, {});
-
-  res.json(data);
+  res.json(drops);
 }));
 
 // Update a drop

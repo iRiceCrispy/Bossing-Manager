@@ -2,7 +2,9 @@ import React from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { removeParty } from '../../store/parties';
+import { deleteParty, partiesSelectors } from '../../store/parties';
+import { getSessionUser } from '../../store/session';
+import { dropsSelectors } from '../../store/drops';
 import bossList from '../../util/bossList.json';
 import itemList from '../../util/itemList.json';
 import './PartyDetails.scss';
@@ -11,19 +13,19 @@ const PartyDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
-  const party = useSelector(state => state.parties[id]);
-  const sessionUser = useSelector(state => state.session.user);
-  const drops = Object.values(useSelector(state => state.drops))
+  const party = useSelector(state => partiesSelectors.selectById(state, id));
+  const sessionUser = useSelector(getSessionUser);
+  const drops = useSelector(dropsSelectors.selectAll)
     .filter(drop => drop.party.id === party?.id);
 
   if (!party) return <div id="notFound">The party you are looking for has either been deleted, or does not exist.</div>;
 
   const { name, leader, members } = party;
   const isLeader = leader.id === sessionUser.id;
-  members.sort((a, b) => (b.id === sessionUser.id) - (a.id === sessionUser.id));
+  // members.sort((a, b) => (b.id === sessionUser.id) - (a.id === sessionUser.id));
 
-  const deleteParty = () => {
-    dispatch(removeParty(party.id));
+  const deletePartyEvent = () => {
+    dispatch(deleteParty(party.id));
     navigate('/dashboard/parties');
   };
 
@@ -52,7 +54,7 @@ const PartyDetails = () => {
               <Link className="btn transparent edit" to="edit">
                 <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />
               </Link>
-              <button className="btn transparent delete" type="button" onClick={deleteParty}>
+              <button className="btn transparent delete" type="button" onClick={deletePartyEvent}>
                 <FontAwesomeIcon icon="fa-solid fa-trash-can" />
               </button>
             </div>

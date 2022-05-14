@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { dropsSelectors } from '../../store/drops';
 import bossList from '../../util/bossList.json';
 import itemList from '../../util/itemList.json';
 import './Drops.scss';
 
 const Drops = () => {
-  const drops = useSelector(state => Object.values(state.drops));
+  const drops = useSelector(dropsSelectors.selectAll);
 
   return (
     <div id="drops">

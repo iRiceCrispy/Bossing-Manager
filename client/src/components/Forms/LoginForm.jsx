@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ValidationError from '../FormFields/ValidationError';
-import { demo, login } from '../../store/session';
+import { demo, login, getSessionUser } from '../../store/session';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const sessionUser = useSelector(state => state.session.user);
+  const sessionUser = useSelector(getSessionUser);
   const [credential, setCredential] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState([]);
