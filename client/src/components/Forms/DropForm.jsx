@@ -50,14 +50,9 @@ const DropForm = ({ edit }) => {
         memberIds: members.map(member => member.id),
       };
 
-      dispatch(createDrop(party.id, newDrop))
-        .then((drp) => {
-          navigate(`/dashboard/drops/${drp.id}`);
-        })
-        .catch(async (res) => {
-          const data = await res.json();
-
-          if (data?.errors) setErrors(data.errors);
+      dispatch(createDrop({ partyId: party.id, drop: newDrop }))
+        .then(({ payload }) => {
+          navigate(`/dashboard/drops/${payload.id}`, { replace: true });
         });
     }
     else {
@@ -69,6 +64,7 @@ const DropForm = ({ edit }) => {
 
       if (bossChanged || itemChanged || imageChanged || membersChanged) {
         const editedDrop = {
+          ...drop,
           bossName: bossId,
           itemName: itemId,
           image,
@@ -76,16 +72,12 @@ const DropForm = ({ edit }) => {
 
         };
 
-        dispatch(updateDrop(drop.id, editedDrop))
-          .then((drp) => {
-            navigate(`/dashboard/drops/${drp.id}`);
-          }).catch(async (res) => {
-            const data = await res.json();
-
-            if (data?.errors) setErrors(data.errors);
+        dispatch(updateDrop(editedDrop))
+          .then(({ payload }) => {
+            navigate(`/dashboard/drops/${payload.id}`, { replace: true });
           });
       }
-      else navigate(`/dashboard/drops/${id}`);
+      else navigate(`/dashboard/drops/${id}`, { replace: true });
     }
   };
 

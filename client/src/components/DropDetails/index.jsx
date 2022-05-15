@@ -36,10 +36,10 @@ const DropDetails = () => {
 
   const handlePayment = (member) => {
     if (member.isPaid) {
-      dispatch(unpayMember(drop.id, member.user.id));
+      dispatch(unpayMember({ dropId: drop.id, memberId: member.user.id }));
     }
     else {
-      dispatch(payMember(drop.id, member.user.id));
+      dispatch(payMember({ dropId: drop.id, memberId: member.user.id }));
     }
   };
 

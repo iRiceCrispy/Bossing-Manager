@@ -7,33 +7,27 @@ export const fetchDrops = createAsyncThunk('drops/fetch', async () => {
   return res.data;
 });
 
-export const createDrop = createAsyncThunk('drops/create', async (drop) => {
-  const res = await axios.post('/api/drops', drop);
+export const createDrop = createAsyncThunk('drops/create', async ({ partyId, drop }) => {
+  const res = await axios.post(`/api/parties/${partyId}/drops`, drop);
 
   return res.data;
 });
 
 export const updateDrop = createAsyncThunk('drop/update', async (drop) => {
   const { id } = drop;
-  const res = await axios.pust(`/api/parties/${id}`, drop);
+  const res = await axios.put(`/api/drops/${id}`, drop);
 
   return res.data;
 });
 
 export const deleteDrop = createAsyncThunk('drop/delete', async (id) => {
-  const res = await axios.delete(`/api/parties/${id}`);
+  const res = await axios.delete(`/api/drops/${id}`);
 
   return res.data;
 });
 
-export const addSale = createAsyncThunk('drop/sale/add', async ({ id, sale }) => {
-  const res = await axios.post(`/api/drops/${id}/sale`, sale);
-
-  return res.data;
-});
-
-export const updateSale = createAsyncThunk('drop/sale/update', async ({ id, sale }) => {
-  const res = await axios.put(`/api/drops/${id}/sale`, sale);
+export const addSale = createAsyncThunk('drop/sale/add', async ({ dropId, sale }) => {
+  const res = await axios.post(`/api/drops/${dropId}/sale`, sale);
 
   return res.data;
 });
@@ -64,7 +58,30 @@ const dropsSlice = createSlice({
   name: 'drops',
   initialState,
   extraReducers: (builder) => {
-    builder.addCase(fetchDrops.fulfilled, dropsAdapter.setMany);
+    builder
+      .addCase(fetchDrops.fulfilled, dropsAdapter.setMany)
+      .addCase(createDrop.fulfilled, (state, { payload }) => {
+        dropsAdapter.addOne(state, payload);
+      })
+      .addCase(updateDrop.fulfilled, (state, { payload }) => {
+        dropsAdapter.upsertOne(state, payload);
+      })
+      .addCase(deleteDrop.fulfilled, (state, { payload }) => {
+        const { id } = payload;
+        dropsAdapter.removeOne(state, id);
+      })
+      .addCase(addSale.fulfilled, (state, { payload }) => {
+        dropsAdapter.upsertOne(state, payload);
+      })
+      .addCase(deleteSale.fulfilled, (state, { payload }) => {
+        dropsAdapter.upsertOne(state, payload);
+      })
+      .addCase(payMember.fulfilled, (state, { payload }) => {
+        dropsAdapter.upsertOne(state, payload);
+      })
+      .addCase(unpayMember.fulfilled, (state, { payload }) => {
+        dropsAdapter.upsertOne(state, payload);
+      });
   },
 });
 

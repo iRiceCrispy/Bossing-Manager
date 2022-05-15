@@ -33,8 +33,8 @@ const PartyForm = ({ edit }) => {
       };
 
       dispatch(createParty(newParty))
-        .then((pt) => {
-          navigate(`/dashboard/parties/${pt.id}`);
+        .then(({ payload }) => {
+          navigate(`/dashboard/parties/${payload.id}`, { replace: true });
         })
         .catch(async (res) => {
           const data = await res.json();
@@ -49,13 +49,14 @@ const PartyForm = ({ edit }) => {
 
       if (nameChanged || membersChanged) {
         const editedParty = {
+          ...party,
           name,
           memberIds: members.map(member => member.id),
         };
 
-        dispatch(updateParty(party.id, editedParty))
-          .then((pt) => {
-            navigate(`/dashboard/parties/${pt.id}`);
+        dispatch(updateParty(editedParty))
+          .then(({ payload }) => {
+            navigate(`/dashboard/parties/${payload.id}`, { replace: true });
           }).catch(async (res) => {
             const data = await res.json();
 

@@ -25,7 +25,7 @@ const SaleForm = ({ drop, setShowForm }) => {
       saleImage: image,
     };
 
-    dispatch(addSale(drop.id, newSale))
+    dispatch(addSale({ dropId: drop.id, sale: newSale }))
       .then(() => setShowForm(false))
       .catch(async (res) => {
         const data = await res.json();
