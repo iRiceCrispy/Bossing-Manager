@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import LoginForm from '../Forms/LoginForm';
 import SignupForm from '../Forms/SignupForm';
 import loginImg from '../../assets/login.png';
@@ -20,5 +21,9 @@ const Auth = ({ type }) => (
     </div>
   </div>
 );
+
+Auth.propTypes = {
+  type: PropTypes.string.isRequired,
+};
 
 export default Auth;

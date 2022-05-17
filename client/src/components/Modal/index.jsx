@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './Modal.css';
 
@@ -16,5 +17,10 @@ const Modal = ({ children, showModal }) => (
     </div>
   </div>
 );
+
+Modal.propTypes = {
+  children: PropTypes.element.isRequired,
+  showModal: PropTypes.func.isRequired,
+};
 
 export default Modal;

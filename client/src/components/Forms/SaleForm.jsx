@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 import ValidationError from '../FormFields/ValidationError';
 import { addSale } from '../../store/drops';
 import './forms.scss';
@@ -70,4 +71,30 @@ const SaleForm = ({ drop, setShowForm }) => {
     </form>
   );
 };
+
+SaleForm.propTypes = {
+  drop: PropTypes.shape({
+    id: PropTypes.string,
+    bossName: PropTypes.string,
+    itemName: PropTypes.string,
+    image: PropTypes.string,
+    sold: PropTypes.bool,
+    price: PropTypes.number,
+    saleImage: PropTypes.string,
+    party: PropTypes.arrayOf(
+      PropTypes.shape({
+      }),
+    ),
+    members: PropTypes.arrayOf(
+      PropTypes.shape({
+      }),
+    ),
+  }),
+  setShowForm: PropTypes.func.isRequired,
+};
+
+SaleForm.defaultProps = {
+  drop: undefined,
+};
+
 export default SaleForm;

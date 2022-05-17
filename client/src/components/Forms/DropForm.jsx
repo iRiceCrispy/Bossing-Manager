@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import TagsDropDown from '../FormFields/TagsDropDown';
 import SearchDropDown from '../FormFields/SearchDropDown';
 import ValidationError from '../FormFields/ValidationError';
@@ -112,7 +113,7 @@ const DropForm = ({ edit }) => {
           <SearchDropDown
             id="itemName"
             placeholder="Item Name"
-            index={1}
+            zIndex={1}
             options={items}
             disabled={!bossId}
             result={item?.name}
@@ -149,6 +150,14 @@ const DropForm = ({ edit }) => {
       </footer>
     </form>
   );
+};
+
+DropForm.propTypes = {
+  edit: PropTypes.bool,
+};
+
+DropForm.defaultProps = {
+  edit: false,
 };
 
 export default DropForm;
