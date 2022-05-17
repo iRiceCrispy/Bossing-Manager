@@ -39,20 +39,22 @@ git clone https://github.com/iRiceCrispy/Chaos-Mano.git
 
 ### 4. Install dependencies for both the frontend and backend
 
-in the root directory
+move to the server directory
 
 ```
+cd server/
 npm install
 ```
 
 move to the client directory
 
 ```
+cd ..
 cd client/
 npm install
 ```
 
-### 5. Create a .env file in the root directory based on the .env.exmaple file
+### 5. Create a .env file in the server directory based on the .env.exmaple file
 
 Edit the information between the `<>`'s as you see fit.
 Follow the above instructions to see how you can get a `MONGO_URI`.
@@ -62,16 +64,14 @@ Follow the above instructions to see how you can get a `MONGO_URI`.
 seed data by running
 
 ```
-npm run seed:all
+npm run seed
 ```
 
 unseed data by running
 
 ```
-npm run seed:undo
+npm run unseed
 ```
-
-- For production mode, use the commands `npm run seed` and `npm run unseed` instead.
 
 ### 7. Start the servers for the app
 
@@ -81,6 +81,6 @@ run
 npm start
 ```
 
-in the root directory to start the backend server and in the `client` directory to start the frontend server.
+in the `server` directory to start the backend server and in the `client` directory to start the frontend server.
 
 ## Wiki docs [here](https://github.com/iRiceCrispy/Chaos-Mano/wiki)
