@@ -17,7 +17,7 @@ const PartyForm = ({ edit }) => {
   const [members, setMembers] = useState(edit
     ? party.members.map(member => ({ id: member.id, value: member.username }))
     : []);
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
   const sessionUser = useSelector(getSessionUser);
   const users = useSelector(usersSelectors.selectAll);
 
@@ -33,13 +33,12 @@ const PartyForm = ({ edit }) => {
       };
 
       dispatch(createParty(newParty))
-        .then(({ payload }) => {
-          navigate(`/dashboard/parties/${payload.id}`, { replace: true });
+        .unwrap()
+        .then((res) => {
+          navigate(`/dashboard/parties/${res.id}`, { replace: true });
         })
-        .catch(async (res) => {
-          const data = await res.json();
-
-          if (data?.errors) setErrors(data.errors);
+        .catch((err) => {
+          setErrors(err);
         });
     }
     else {
@@ -55,12 +54,12 @@ const PartyForm = ({ edit }) => {
         };
 
         dispatch(updateParty(editedParty))
-          .then(({ payload }) => {
-            navigate(`/dashboard/parties/${payload.id}`, { replace: true });
-          }).catch(async (res) => {
-            const data = await res.json();
-
-            if (data?.errors) setErrors(data.errors);
+          .unwrap()
+          .then((res) => {
+            navigate(`/dashboard/parties/${res.id}`, { replace: true });
+          })
+          .catch((err) => {
+            setErrors(err);
           });
       }
       else navigate(`/dashboard/parties/${id}`);

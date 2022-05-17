@@ -10,7 +10,7 @@ const LoginForm = () => {
   const sessionUser = useSelector(getSessionUser);
   const [credential, setCredential] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
 
   if (sessionUser) return <Navigate to="/" />;
 
@@ -18,20 +18,21 @@ const LoginForm = () => {
     e.preventDefault();
     setErrors({});
 
-    return dispatch(login({ credential, password }))
+    dispatch(login({ credential, password }))
+      .unwrap()
       .then(() => {
         navigate('/dashboard');
       })
-      .catch(async (res) => {
-        const data = await res.json();
-        if (data && data.errors) setErrors(data.errors);
+      .catch((err) => {
+        setErrors(err);
       });
   };
 
   const demoLogin = () => {
-    dispatch(demo()).then(() => {
-      navigate('/dashboard');
-    });
+    dispatch(demo())
+      .then(() => {
+        navigate('/dashboard');
+      });
   };
 
   return (

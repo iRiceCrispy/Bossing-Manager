@@ -1,54 +1,93 @@
 import axios from 'axios';
 import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 
-export const fetchDrops = createAsyncThunk('drops/fetch', async () => {
-  const res = await axios.get('/api/drops');
+export const fetchDrops = createAsyncThunk(
+  'drops/fetch',
+  async () => {
+    const res = await axios.get('/api/drops');
 
-  return res.data;
-});
+    return res.data;
+  },
+);
 
-export const createDrop = createAsyncThunk('drops/create', async ({ partyId, drop }) => {
-  const res = await axios.post(`/api/parties/${partyId}/drops`, drop);
+export const createDrop = createAsyncThunk(
+  'drops/create',
+  async ({ partyId, drop }, { rejectWithValue }) => {
+    try {
+      const res = await axios.post(`/api/parties/${partyId}/drops`, drop);
 
-  return res.data;
-});
+      return res.data;
+    }
+    catch (err) {
+      return rejectWithValue(err.response.data.errors);
+    }
+  },
+);
 
-export const updateDrop = createAsyncThunk('drop/update', async (drop) => {
-  const { id } = drop;
-  const res = await axios.put(`/api/drops/${id}`, drop);
+export const updateDrop = createAsyncThunk(
+  'drop/update',
+  async (drop, { rejectWithValue }) => {
+    try {
+      const { id } = drop;
+      const res = await axios.put(`/api/drops/${id}`, drop);
 
-  return res.data;
-});
+      return res.data;
+    }
+    catch (err) {
+      return rejectWithValue(err.response.data.errors);
+    }
+  },
+);
 
-export const deleteDrop = createAsyncThunk('drop/delete', async (id) => {
-  const res = await axios.delete(`/api/drops/${id}`);
+export const deleteDrop = createAsyncThunk(
+  'drop/delete',
+  async (id) => {
+    const res = await axios.delete(`/api/drops/${id}`);
 
-  return res.data;
-});
+    return res.data;
+  },
+);
 
-export const addSale = createAsyncThunk('drop/sale/add', async ({ dropId, sale }) => {
-  const res = await axios.post(`/api/drops/${dropId}/sale`, sale);
+export const addSale = createAsyncThunk(
+  'drop/sale/add',
+  async ({ dropId, sale }, { rejectWithValue }) => {
+    try {
+      const res = await axios.post(`/api/drops/${dropId}/sale`, sale);
 
-  return res.data;
-});
+      return res.data;
+    }
+    catch (err) {
+      return rejectWithValue(err.response.data.errors);
+    }
+  },
+);
 
-export const deleteSale = createAsyncThunk('drop/sale/delete', async (id) => {
-  const res = await axios.delete(`/api/drops/${id}/sale`);
+export const deleteSale = createAsyncThunk(
+  'drop/sale/delete',
+  async (id) => {
+    const res = await axios.delete(`/api/drops/${id}/sale`);
 
-  return res.data;
-});
+    return res.data;
+  },
+);
 
-export const payMember = createAsyncThunk('drop/members/pay', async ({ dropId, memberId }) => {
-  const res = await axios.post(`/api/drops/${dropId}/members/${memberId}/payment`);
+export const payMember = createAsyncThunk(
+  'drop/members/pay',
+  async ({ dropId, memberId }) => {
+    const res = await axios.post(`/api/drops/${dropId}/members/${memberId}/payment`);
 
-  return res.data;
-});
+    return res.data;
+  },
+);
 
-export const unpayMember = createAsyncThunk('drop/members/unpay', async ({ dropId, memberId }) => {
-  const res = await axios.delete(`/api/drops/${dropId}/members/${memberId}/payment`);
+export const unpayMember = createAsyncThunk(
+  'drop/members/unpay',
+  async ({ dropId, memberId }) => {
+    const res = await axios.delete(`/api/drops/${dropId}/members/${memberId}/payment`);
 
-  return res.data;
-});
+    return res.data;
+  },
+);
 
 const dropsAdapter = createEntityAdapter();
 

@@ -8,7 +8,7 @@ const SaleForm = ({ drop, setShowForm }) => {
   const dispatch = useDispatch();
   const [price, setPrice] = useState('0');
   const [image, setImage] = useState('');
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
 
   const changePrice = (e) => {
     if (!e.target.value.match(/^(|[,\d])+$/)) return;
@@ -26,11 +26,10 @@ const SaleForm = ({ drop, setShowForm }) => {
     };
 
     dispatch(addSale({ dropId: drop.id, sale: newSale }))
+      .unwrap()
       .then(() => setShowForm(false))
-      .catch(async (res) => {
-        const data = await res.json();
-
-        if (data?.errors) setErrors(data.errors);
+      .catch((err) => {
+        setErrors(err);
       });
   };
 

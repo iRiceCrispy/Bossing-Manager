@@ -1,30 +1,52 @@
 import axios from 'axios';
 import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 
-export const fetchParties = createAsyncThunk('parties/fetch', async () => {
-  const res = await axios.get('/api/parties');
+export const fetchParties = createAsyncThunk(
+  'parties/fetch',
+  async () => {
+    const res = await axios.get('/api/parties');
 
-  return res.data;
-});
+    return res.data;
+  },
+);
 
-export const createParty = createAsyncThunk('parties/create', async (party) => {
-  const res = await axios.post('/api/parties', party);
+export const createParty = createAsyncThunk(
+  'parties/create',
+  async (party, { rejectWithValue }) => {
+    try {
+      const res = await axios.post('/api/parties', party);
 
-  return res.data;
-});
+      return res.data;
+    }
+    catch (err) {
+      return rejectWithValue(err.response.data.errors);
+    }
+  },
+);
 
-export const updateParty = createAsyncThunk('parties/update', async (party) => {
-  const { id } = party;
-  const res = await axios.put(`/api/parties/${id}`, party);
+export const updateParty = createAsyncThunk(
+  'parties/update',
+  async (party, { rejectWithValue }) => {
+    try {
+      const { id } = party;
+      const res = await axios.put(`/api/parties/${id}`, party);
 
-  return res.data;
-});
+      return res.data;
+    }
+    catch (err) {
+      return rejectWithValue(err.response.data.errors);
+    }
+  },
+);
 
-export const deleteParty = createAsyncThunk('parties/delete', async (id) => {
-  const res = await axios.delete(`/api/parties/${id}`);
+export const deleteParty = createAsyncThunk(
+  'parties/delete',
+  async (id) => {
+    const res = await axios.delete(`/api/parties/${id}`);
 
-  return res.data;
-});
+    return res.data;
+  },
+);
 
 const partiesAdapter = createEntityAdapter();
 

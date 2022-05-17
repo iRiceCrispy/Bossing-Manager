@@ -22,7 +22,7 @@ const DropForm = ({ edit }) => {
   const [members, setMembers] = useState(edit
     ? drop.members.map(mem => ({ id: mem.user.id, value: mem.user.username }))
     : party.members.map(user => ({ id: user.id, value: user.username })));
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
 
   const bosses = Object.entries(bossList).reduce((accum, [key, value]) => {
     accum.push({ id: key, value: value.name });
@@ -51,8 +51,12 @@ const DropForm = ({ edit }) => {
       };
 
       dispatch(createDrop({ partyId: party.id, drop: newDrop }))
-        .then(({ payload }) => {
-          navigate(`/dashboard/drops/${payload.id}`, { replace: true });
+        .unwrap()
+        .then((res) => {
+          navigate(`/dashboard/drops/${res.id}`, { replace: true });
+        })
+        .catch((err) => {
+          setErrors(err);
         });
     }
     else {
@@ -73,8 +77,12 @@ const DropForm = ({ edit }) => {
         };
 
         dispatch(updateDrop(editedDrop))
-          .then(({ payload }) => {
-            navigate(`/dashboard/drops/${payload.id}`, { replace: true });
+          .unwrap()
+          .then((res) => {
+            navigate(`/dashboard/drops/${res.id}`, { replace: true });
+          })
+          .catch((err) => {
+            setErrors(err);
           });
       }
       else navigate(`/dashboard/drops/${id}`, { replace: true });

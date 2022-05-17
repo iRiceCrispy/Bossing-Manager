@@ -12,31 +12,41 @@ export const restoreSession = createAsyncThunk(
 
 export const signup = createAsyncThunk(
   'session/signup',
-  async ({ username, email, password }) => {
-    const res = await axios.post('/api/user', {
-      username,
-      email,
-      password,
-    });
+  async ({ username, email, password }, { rejectWithValue }) => {
+    try {
+      const res = await axios.post('/api/users', {
+        username,
+        email,
+        password,
+      });
 
-    return res.data;
+      return res.data;
+    }
+    catch (err) {
+      return rejectWithValue(err.response.data.errors);
+    }
   },
 );
 
 export const login = createAsyncThunk(
   'session/login',
-  async ({ credential, password }) => {
-    const res = await axios.post('/api/session', {
-      credential,
-      password,
-    });
+  async ({ credential, password }, { rejectWithValue }) => {
+    try {
+      const res = await axios.post('/api/session', {
+        credential,
+        password,
+      });
 
-    return res.data;
+      return res.data;
+    }
+    catch (err) {
+      return rejectWithValue(err.response.data.errors);
+    }
   },
 );
 
 export const demo = createAsyncThunk(
-  'session/login',
+  'session/login/demo',
   async () => {
     const res = await axios.post('/api/session/demo');
 
@@ -53,7 +63,9 @@ export const logout = createAsyncThunk(
   },
 );
 
-const initialState = { user: null };
+const initialState = {
+  user: null,
+};
 
 const sessionSlice = createSlice({
   name: 'session',
@@ -74,6 +86,9 @@ const sessionSlice = createSlice({
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
+      })
+      .addCase(demo.fulfilled, (state, action) => {
+        state.user = action.payload;
       });
   },
 });

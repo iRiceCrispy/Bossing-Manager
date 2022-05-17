@@ -12,7 +12,7 @@ const SignupForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
 
   if (sessionUser) return <Navigate to="/" />;
 
@@ -20,13 +20,13 @@ const SignupForm = () => {
     e.preventDefault();
     setErrors({});
 
-    return dispatch(signup({ email, username, password, confirmPassword }))
+    dispatch(signup({ email, username, password, confirmPassword }))
+      .unwrap()
       .then(() => {
         navigate('/dashboard');
       })
-      .catch(async (res) => {
-        const data = await res.json();
-        if (data && data.errors) setErrors(data.errors);
+      .catch((err) => {
+        setErrors(err);
       });
   };
 
