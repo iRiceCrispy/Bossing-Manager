@@ -1,53 +1,53 @@
 import React, { useState } from 'react';
-import { Redirect, Link, useHistory } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ValidationError from '../FormFields/ValidationError';
-import { signup } from '../../store/session';
+import { signup, getSessionUser } from '../../store/session';
 
 const SignupForm = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
-  const sessionUser = useSelector(state => state.session.user);
+  const navigate = useNavigate();
+  const sessionUser = useSelector(getSessionUser);
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
 
-  if (sessionUser) return <Redirect to='/' />;
+  if (sessionUser) return <Navigate to="/" />;
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
 
-    return dispatch(signup({ email, username, password, confirmPassword }))
+    dispatch(signup({ email, username, password, confirmPassword }))
+      .unwrap()
       .then(() => {
-        history.replace('/dashboard');
+        navigate('/dashboard');
       })
-      .catch(async res => {
-        const data = await res.json();
-        if (data && data.errors) setErrors(data.errors);
+      .catch((err) => {
+        setErrors(err);
       });
   };
 
   return (
-    <form id='signupForm' className='form' onSubmit={handleSubmit}>
+    <form id="signupForm" className="form" onSubmit={handleSubmit}>
       <header><h2>Sign Up</h2></header>
-      <div className='content'>
+      <div className="content">
         <label>
           Email
-          <input type='text' value={email} onChange={e => setEmail(e.target.value)} />
+          <input type="text" value={email} onChange={e => setEmail(e.target.value)} />
           <ValidationError message={errors.email} />
         </label>
         <label>
           Username
-          <input type='text' value={username} onChange={e => setUsername(e.target.value)} />
+          <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
           <ValidationError message={errors.username} />
         </label>
         <label>
           Password
           <input
-            type='password'
+            type="password"
             value={password}
             onChange={e => setPassword(e.target.value)}
           />
@@ -56,7 +56,7 @@ const SignupForm = () => {
         <label>
           Confirm Password
           <input
-            type='password'
+            type="password"
             value={confirmPassword}
             onChange={e => setConfirmPassword(e.target.value)}
           />
@@ -64,13 +64,13 @@ const SignupForm = () => {
         </label>
       </div>
       <footer>
-        <div className='buttons'>
-          <button className='btn light' type='submit'>Sign Up</button>
+        <div className="buttons">
+          <button className="btn light" type="submit">Sign Up</button>
         </div>
         <p>
           Already registered?
           {' '}
-          <Link to='/login'>Log in here</Link>
+          <Link to="/login">Log in here</Link>
         </p>
       </footer>
     </form>

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "seeder": "node -e 'require(\"./db/seeders/index.js\").up()'",
-    "unseeder": "node -e 'require(\"./db/seeders/index.js\").down()'",
+    "seeder": "node -e 'require(\"./seeders/index.js\").up()'",
+    "unseeder": "node -e 'require(\"./seeders/index.js\").down()'",
     "seed": "per-env",
     "unseed": "per-env",
     "seed:development": "dotenv npm run seeder",
@@ -21,25 +21,23 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "csurf": "^1.11.0",
-    "express": "^4.17.2",
+    "express": "^4.18.1",
     "express-async-handler": "^1.2.0",
     "express-validator": "^6.14.0",
     "helmet": "^5.0.2",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.2.6",
-    "mongoose-autopopulate": "^0.16.0",
+    "mongoose": "^6.3.3",
+    "mongoose-autopopulate": "^0.16.1",
     "morgan": "^1.10.0",
-    "per-env": "^1.0.2"
+    "per-env": "^1.0.2",
+    "require-directory": "^2.1.1"
   },
   "devDependencies": {
-    "dotenv": "^16.0.0",
-    "dotenv-cli": "^5.0.0",
-    "eslint": "^8.11.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-plugin-import": "^2.25.4",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-react": "^7.29.4",
-    "eslint-plugin-react-hooks": "^4.3.0",
-    "nodemon": "^2.0.15"
+    "dotenv": "^16.0.1",
+    "dotenv-cli": "^5.1.0",
+    "eslint": "^8.15.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "nodemon": "^2.0.16"
   }
 }

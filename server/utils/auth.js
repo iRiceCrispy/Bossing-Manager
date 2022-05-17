@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { jwtConfig } = require('../config');
-const { User } = require('../db/models');
+const { User } = require('../models');
 
 const { secret, expiresIn } = jwtConfig;
 
@@ -8,9 +8,9 @@ const { secret, expiresIn } = jwtConfig;
 const setTokenCookie = (res, user) => {
   // Create the token.
   const token = jwt.sign({
-    data: user.toSafeObject(),
+    data: user.toPrivate(),
   }, secret, {
-    expiresIn: parseInt(expiresIn), // 604,800 seconds = 1 week
+    expiresIn: Number(expiresIn), // 604,800 seconds = 1 week
   });
 
   const isProduction = process.env.NODE_ENV === 'production';
@@ -58,7 +58,7 @@ unauthorizedError.status = 401;
 // If there is no current user, return an error
 const requireAuth = [
   restoreUser,
-  (req, _res, next) => {
+  (req, res, next) => {
     if (req.user) return next();
 
     return next(unauthorizedError);

@@ -1,109 +1,76 @@
-import { csrfFetch } from './csrf';
+import axios from 'axios';
+import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 
-const LOAD = 'parties/LOAD';
-const CREATE = 'parties/CREATE';
-const EDIT = 'parties/EDIT';
-const REMOVE = 'parties/REMOVE';
+export const fetchParties = createAsyncThunk(
+  'parties/fetch',
+  async () => {
+    const res = await axios.get('/api/parties');
 
-const load = parties => ({
-  type: LOAD,
-  parties,
+    return res.data;
+  },
+);
+
+export const createParty = createAsyncThunk(
+  'parties/create',
+  async (party, { rejectWithValue }) => {
+    try {
+      const res = await axios.post('/api/parties', party);
+
+      return res.data;
+    }
+    catch (err) {
+      return rejectWithValue(err.response.data.errors);
+    }
+  },
+);
+
+export const updateParty = createAsyncThunk(
+  'parties/update',
+  async (party, { rejectWithValue }) => {
+    try {
+      const { id } = party;
+      const res = await axios.put(`/api/parties/${id}`, party);
+
+      return res.data;
+    }
+    catch (err) {
+      return rejectWithValue(err.response.data.errors);
+    }
+  },
+);
+
+export const deleteParty = createAsyncThunk(
+  'parties/delete',
+  async (id) => {
+    const res = await axios.delete(`/api/parties/${id}`);
+
+    return res.data;
+  },
+);
+
+const partiesAdapter = createEntityAdapter();
+
+const initialState = partiesAdapter.getInitialState();
+
+const partiesSlice = createSlice({
+  name: 'parties',
+  initialState,
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchParties.fulfilled, partiesAdapter.setMany)
+      .addCase(createParty.fulfilled, (state, { payload }) => {
+        partiesAdapter.addOne(state, payload);
+      })
+      .addCase(updateParty.fulfilled, (state, { payload }) => {
+        partiesAdapter.upsertOne(state, payload);
+      })
+      .addCase(deleteParty.fulfilled, (state, { payload }) => {
+        const { id } = payload;
+        partiesAdapter.removeOne(state, id);
+      });
+  },
 });
 
-const create = party => ({
-  type: CREATE,
-  party,
-});
+export const partiesSelectors = partiesAdapter.getSelectors(state => state.parties);
 
-const edit = party => ({
-  type: EDIT,
-  party,
-});
-
-const remove = id => ({
-  type: REMOVE,
-  id,
-});
-
-export const loadParties = () => async dispatch => {
-  const res = await fetch('/api/parties');
-
-  if (res.ok) {
-    const parties = await res.json();
-    dispatch(load(parties));
-
-    return parties;
-  }
-
-  return res;
-};
-
-export const createParty = data => async dispatch => {
-  const res = await csrfFetch('/api/parties', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  });
-
-  if (res.ok) {
-    const party = await res.json();
-    dispatch(create(party));
-
-    return party;
-  }
-
-  return res;
-};
-
-export const editParty = (id, data) => async dispatch => {
-  const res = await csrfFetch(`/api/parties/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-  });
-
-  if (res.ok) {
-    const party = await res.json();
-    dispatch(edit(party));
-
-    return party;
-  }
-
-  return res;
-};
-
-export const removeParty = id => async dispatch => {
-  const res = await csrfFetch(`/api/parties/${id}`, {
-    method: 'DELETE',
-  });
-
-  if (res.ok) {
-    const party = await res.json();
-    dispatch(remove(party.id));
-
-    return party;
-  }
-
-  return res;
-};
-
-const reducer = (state = {}, action) => {
-  switch (action.type) {
-    case LOAD:
-      return action.parties;
-    case CREATE:
-      state[action.party.id] = action.party;
-
-      return { ...state };
-    case EDIT:
-      state[action.party.id] = { ...state[action.party.id], ...action.party };
-
-      return { ...state };
-    case REMOVE:
-      delete state[action.id];
-
-      return { ...state };
-    default:
-      return state;
-  }
-};
-
-export default reducer;
+export default partiesSlice.reducer;

@@ -1,39 +1,44 @@
+const { hashSync } = require('bcryptjs');
+const mongoose = require('../config/database');
 const { User, Party, Drop } = require('../models');
 
 const seed = async () => {
   const users = await User.insertMany([{
     username: 'demo1',
     email: 'demo1@user.gg',
-    password: 'password',
+    hashedPassword: hashSync('password'),
   }, {
     username: 'demo2',
     email: 'demo2@user.gg',
-    password: 'password2',
+    hashedPassword: hashSync('password2'),
   }, {
     username: 'demo3',
     email: 'demo3@user.gg',
-    password: 'password3',
+    hashedPassword: hashSync('password3'),
   }, {
     username: 'demo4',
     email: 'demo4@user.gg',
-    password: 'password4',
+    hashedPassword: hashSync('password4'),
   }, {
     username: 'demo5',
     email: 'demo5@user.gg',
-    password: 'password5',
+    hashedPassword: hashSync('password5'),
   }, {
     username: 'demo6',
     email: 'demo6@user.gg',
-    password: 'password6',
+    hashedPassword: hashSync('password6'),
   }, {
     username: 'demo7',
     email: 'demo7@user.gg',
-    password: 'password7',
+    hashedPassword: hashSync('password7'),
   }, {
     username: 'demo8',
     email: 'demo8@user.gg',
-    password: 'password8',
-  }]);
+    hashedPassword: hashSync('password8'),
+  }]).then((data) => {
+    console.log(`Seeded ${data.length} users`);
+    return data;
+  });
 
   const parties = await Party.insertMany([{
     name: 'Black Mage party',
@@ -65,7 +70,10 @@ const seed = async () => {
     memberIds: [
       users[1].id, users[0].id,
     ],
-  }]);
+  }]).then((data) => {
+    console.log(`Seeded ${data.length} parties`);
+    return data;
+  });
 
   await Drop.insertMany([{
     partyId: parties[0].id,
@@ -127,13 +135,23 @@ const seed = async () => {
     itemName: 'Berserked',
     image: 'https://orangemushroom.files.wordpress.com/2018/08/badge-of-genesis.png',
     members: parties[4].memberIds.map(memberId => ({ userId: memberId })),
-  }]);
+  }]).then((data) => {
+    console.log(`Seeded ${data.length} drops`);
+    return data;
+  });
+
+  mongoose.disconnect();
 };
 
 const unseed = async () => {
-  await Drop.collection.drop();
-  await Party.collection.drop();
-  await User.collection.drop();
+  await Drop.deleteMany({})
+    .then(({ deletedCount }) => console.log(`Deleted ${deletedCount} drops`));
+  await Party.deleteMany({})
+    .then(({ deletedCount }) => console.log(`Deleted ${deletedCount} parties`));
+  await User.deleteMany({})
+    .then(({ deletedCount }) => console.log(`Deleted ${deletedCount} users`));
+
+  mongoose.disconnect();
 };
 
 module.exports = { seed, unseed };

@@ -1,25 +1,28 @@
 import React, { useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import TagsDropDown from '../FormFields/TagsDropDown';
 import ValidationError from '../FormFields/ValidationError';
-import { createParty, editParty } from '../../store/parties';
+import { getSessionUser } from '../../store/session';
+import { usersSelectors } from '../../store/users';
+import { createParty, updateParty, partiesSelectors } from '../../store/parties';
 import './forms.scss';
 
 const PartyForm = ({ edit }) => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { id } = useParams();
-  const party = useSelector(state => state.parties[id]);
+  const party = useSelector(state => partiesSelectors.selectById(state, id));
   const [name, setName] = useState(edit ? party.name : '');
   const [members, setMembers] = useState(edit
     ? party.members.map(member => ({ id: member.id, value: member.username }))
     : []);
-  const [errors, setErrors] = useState([]);
-  const sessionUser = useSelector(state => state.session.user);
-  const users = Object.values(useSelector(state => state.users));
+  const [errors, setErrors] = useState({});
+  const sessionUser = useSelector(getSessionUser);
+  const users = useSelector(usersSelectors.selectAll);
 
-  const submitForm = e => {
+  const submitForm = (e) => {
     e.preventDefault();
     setErrors({});
 
@@ -31,13 +34,12 @@ const PartyForm = ({ edit }) => {
       };
 
       dispatch(createParty(newParty))
-        .then(pt => {
-          history.replace(`/dashboard/parties/${pt.id}`);
+        .unwrap()
+        .then((res) => {
+          navigate(`/dashboard/parties/${res.id}`, { replace: true });
         })
-        .catch(async res => {
-          const data = await res.json();
-
-          if (data?.errors) setErrors(data.errors);
+        .catch((err) => {
+          setErrors(err);
         });
     }
     else {
@@ -47,45 +49,46 @@ const PartyForm = ({ edit }) => {
 
       if (nameChanged || membersChanged) {
         const editedParty = {
+          ...party,
           name,
           memberIds: members.map(member => member.id),
         };
 
-        dispatch(editParty(party.id, editedParty))
-          .then(pt => {
-            history.replace(`/dashboard/parties/${pt.id}`);
-          }).catch(async res => {
-            const data = await res.json();
-
-            if (data?.errors) setErrors(data.errors);
+        dispatch(updateParty(editedParty))
+          .unwrap()
+          .then((res) => {
+            navigate(`/dashboard/parties/${res.id}`, { replace: true });
+          })
+          .catch((err) => {
+            setErrors(err);
           });
       }
-      else history.replace(`/dashboard/parties/${id}`);
+      else navigate(`/dashboard/parties/${id}`);
     }
   };
 
   return (
-    <form id='partyForm' className='form' onSubmit={submitForm}>
+    <form id="partyForm" className="form" onSubmit={submitForm}>
       <header>
-        <h2 className='formTitle'>{edit ? 'Edit party' : 'Create new a party'}</h2>
+        <h2 className="formTitle">{edit ? 'Edit party' : 'Create new a party'}</h2>
       </header>
       <main>
-        <div className='inputContainer partyName'>
-          <label htmlFor='partyName'>Party Name</label>
+        <div className="inputContainer partyName">
+          <label htmlFor="partyName">Party Name</label>
           <input
-            id='partyName'
-            type='text'
+            id="partyName"
+            type="text"
             value={name}
-            placeholder='Party Name'
+            placeholder="Party Name"
             onChange={e => setName(e.target.value)}
           />
           <ValidationError message={errors.name} />
         </div>
-        <div className='tags'>
-          <label htmlFor='partyMembers'>Members</label>
+        <div className="tags">
+          <label htmlFor="partyMembers">Members</label>
           <TagsDropDown
-            id='partyMembers'
-            placeholder='Members'
+            id="partyMembers"
+            placeholder="Members"
             options={users.map(user => ({ id: user.id, value: user.username }))}
             results={members}
             setResult={setMembers}
@@ -94,10 +97,18 @@ const PartyForm = ({ edit }) => {
         </div>
       </main>
       <footer>
-        <button className='btn light' type='submit'>{edit ? 'Confirm' : 'Create Party'}</button>
+        <button className="btn light" type="submit">{edit ? 'Confirm' : 'Create Party'}</button>
       </footer>
     </form>
   );
+};
+
+PartyForm.propTypes = {
+  edit: PropTypes.bool,
+};
+
+PartyForm.defaultProps = {
+  edit: false,
 };
 
 export default PartyForm;

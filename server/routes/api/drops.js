@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth, unauthorizedError } = require('../../utils/auth');
-const { Party, Drop } = require('../../db/models');
+const { Party, Drop } = require('../../models');
 
 const router = express.Router();
 
@@ -21,7 +21,7 @@ const validateDrop = [
     .isURL()
     .withMessage('Please provid a valid URL')
     .bail()
-    .custom(image => {
+    .custom((image) => {
       if (!image.length || image.endsWith('.jpg') || image.endsWith('.jpeg') || image.endsWith('.png')) {
         return true;
       }
@@ -45,7 +45,7 @@ const validateSale = [
     .isURL()
     .withMessage('Please provid a valid URL')
     .bail()
-    .custom(image => {
+    .custom((image) => {
       if (!image.length || image.endsWith('.jpg') || image.endsWith('.jpeg') || image.endsWith('.png')) {
         return true;
       }
@@ -68,12 +68,7 @@ router.get('/', asyncHandler(async (req, res) => {
     ],
   });
 
-  const data = drops.reduce((accum, drop) => {
-    accum[drop.id] = drop.toJSON();
-    return accum;
-  }, {});
-
-  res.json(data);
+  res.json(drops);
 }));
 
 // Update a drop
@@ -165,7 +160,7 @@ router.delete('/:id/sale', asyncHandler(async (req, res, next) => {
   drop.sold = false;
   delete drop.price;
   delete drop.saleImage;
-  drop.members.forEach(member => {
+  drop.members.forEach((member) => {
     member.isPaid = false;
   });
 

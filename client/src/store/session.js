@@ -1,104 +1,98 @@
-import { csrfFetch } from './csrf';
+import axios from 'axios';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-const LOGIN = 'session/login';
-const LOGOUT = 'session/logout';
+export const restoreSession = createAsyncThunk(
+  'session/restore',
+  async () => {
+    const res = await axios.get('/api/session');
 
-const loginUser = user => ({
-  type: LOGIN,
-  user,
+    return res.data;
+  },
+);
+
+export const signup = createAsyncThunk(
+  'session/signup',
+  async ({ username, email, password }, { rejectWithValue }) => {
+    try {
+      const res = await axios.post('/api/users', {
+        username,
+        email,
+        password,
+      });
+
+      return res.data;
+    }
+    catch (err) {
+      return rejectWithValue(err.response.data.errors);
+    }
+  },
+);
+
+export const login = createAsyncThunk(
+  'session/login',
+  async ({ credential, password }, { rejectWithValue }) => {
+    try {
+      const res = await axios.post('/api/session', {
+        credential,
+        password,
+      });
+
+      return res.data;
+    }
+    catch (err) {
+      return rejectWithValue(err.response.data.errors);
+    }
+  },
+);
+
+export const demo = createAsyncThunk(
+  'session/login/demo',
+  async () => {
+    const res = await axios.post('/api/session/demo');
+
+    return res.data;
+  },
+);
+
+export const logout = createAsyncThunk(
+  'session/logout',
+  async () => {
+    const res = await axios.delete('/api/session');
+
+    return res.data;
+  },
+);
+
+const initialState = {
+  user: null,
+};
+
+const sessionSlice = createSlice({
+  name: 'session',
+  initialState,
+  extraReducers: (builder) => {
+    builder
+      .addCase(restoreSession.fulfilled, (state, action) => {
+        state.user = action.payload;
+      })
+      .addCase(restoreSession.rejected, (state) => {
+        state.user = null;
+      })
+      .addCase(signup.fulfilled, (state, action) => {
+        state.user = action.payload;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.user = action.payload;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.user = null;
+      })
+      .addCase(demo.fulfilled, (state, action) => {
+        state.user = action.payload;
+      });
+  },
 });
 
-const logoutUser = () => ({
-  type: LOGOUT,
-});
+export const getSessionUser = state => state.session.user;
 
-export const login = data => async dispatch => {
-  const { credential, password } = data;
-
-  const res = await csrfFetch('/api/session', {
-    method: 'POST',
-    body: JSON.stringify({ credential, password }),
-  });
-
-  if (res.ok) {
-    const user = await res.json();
-    dispatch(loginUser(user));
-
-    return user;
-  }
-
-  return res;
-};
-
-export const demo = () => async dispatch => {
-  const res = await csrfFetch('/api/session/demo', {
-    method: 'POST',
-  });
-
-  if (res.ok) {
-    const user = await res.json();
-    dispatch(loginUser(user));
-
-    return user;
-  }
-
-  return res;
-};
-
-export const signup = data => async dispatch => {
-  const { username, email, password, confirmPassword } = data;
-
-  const res = await csrfFetch('/api/users', {
-    method: 'POST',
-    body: JSON.stringify({ username, email, password, confirmPassword }),
-  });
-
-  if (res.ok) {
-    const user = await res.json();
-    dispatch(loginUser(user));
-
-    return user;
-  }
-
-  return res;
-};
-
-export const restoreUser = () => async dispatch => {
-  const res = await csrfFetch('/api/session');
-
-  if (res.ok) {
-    const user = await res.json();
-    dispatch(loginUser(user));
-
-    return user;
-  }
-
-  return res;
-};
-
-export const logout = () => async dispatch => {
-  const res = await csrfFetch('/api/session', {
-    method: 'DELETE',
-  });
-
-  if (res.ok) {
-    dispatch(logoutUser());
-
-    return res.json();
-  }
-
-  return res;
-};
-
-const sessionReducer = (state = { user: null }, action) => {
-  switch (action.type) {
-    case LOGIN:
-      return { user: action.user };
-    case LOGOUT:
-      return { user: null };
-    default:
-      return state;
-  }
-};
-
-export default sessionReducer;
+export default sessionSlice.reducer;

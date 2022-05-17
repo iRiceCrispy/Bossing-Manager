@@ -1,19 +1,28 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider as ReduxProvider } from 'react-redux';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import App from './App';
-import configureStore from './store';
-import { restoreCSRF } from './store/csrf';
+import store from './store';
 import './index.css';
+import { fetchUsers } from './store/users';
+import { restoreSession } from './store/session';
 
-const store = configureStore();
+store.dispatch(restoreSession());
+store.dispatch(fetchUsers());
+
+axios.defaults.headers.common = {
+  'Content-Type': 'application/json',
+  'XSRF-Token': Cookies.get('XSRF-TOKEN'),
+};
 
 if (process.env.NODE_ENV !== 'production') {
-  restoreCSRF();
+  axios.get('/api/csrf/restore');
 }
 
 const Root = () => (
@@ -24,11 +33,12 @@ const Root = () => (
   </ReduxProvider>
 );
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById('root'));
+
+root.render(
   <React.StrictMode>
     <Root />
   </React.StrictMode>,
-  document.getElementById('root')
 );
 
 library.add(fas, far);

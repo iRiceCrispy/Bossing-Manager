@@ -1,27 +1,29 @@
 import React, { useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import TagsDropDown from '../FormFields/TagsDropDown';
 import SearchDropDown from '../FormFields/SearchDropDown';
 import ValidationError from '../FormFields/ValidationError';
-import { createDrop, editDrop } from '../../store/drops';
+import { createDrop, updateDrop, dropsSelectors } from '../../store/drops';
+import { partiesSelectors } from '../../store/parties';
 import bossList from '../../util/bossList.json';
 import itemList from '../../util/itemList.json';
 import './forms.scss';
 
 const DropForm = ({ edit }) => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { id } = useParams();
-  const drop = useSelector(state => state.drops[id]);
-  const party = useSelector(state => state.parties[edit ? drop.party.id : id]);
+  const drop = useSelector(state => dropsSelectors.selectById(state, id));
+  const party = useSelector(state => partiesSelectors.selectById(state, edit ? drop.party.id : id));
   const [bossId, setBossId] = useState(edit ? drop.bossName : '');
   const [itemId, setIemId] = useState(edit ? drop.itemName : '');
   const [image, setImage] = useState(edit ? drop.image : '');
   const [members, setMembers] = useState(edit
     ? drop.members.map(mem => ({ id: mem.user.id, value: mem.user.username }))
     : party.members.map(user => ({ id: user.id, value: user.username })));
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
 
   const bosses = Object.entries(bossList).reduce((accum, [key, value]) => {
     accum.push({ id: key, value: value.name });
@@ -37,7 +39,7 @@ const DropForm = ({ edit }) => {
     : undefined;
   const item = itemList[itemId];
 
-  const submitForm = e => {
+  const submitForm = (e) => {
     e.preventDefault();
     setErrors({});
 
@@ -49,14 +51,13 @@ const DropForm = ({ edit }) => {
         memberIds: members.map(member => member.id),
       };
 
-      dispatch(createDrop(party.id, newDrop))
-        .then(drp => {
-          history.replace(`/dashboard/drops/${drp.id}`);
+      dispatch(createDrop({ partyId: party.id, drop: newDrop }))
+        .unwrap()
+        .then((res) => {
+          navigate(`/dashboard/drops/${res.id}`, { replace: true });
         })
-        .catch(async res => {
-          const data = await res.json();
-
-          if (data?.errors) setErrors(data.errors);
+        .catch((err) => {
+          setErrors(err);
         });
     }
     else {
@@ -68,6 +69,7 @@ const DropForm = ({ edit }) => {
 
       if (bossChanged || itemChanged || imageChanged || membersChanged) {
         const editedDrop = {
+          ...drop,
           bossName: bossId,
           itemName: itemId,
           image,
@@ -75,32 +77,30 @@ const DropForm = ({ edit }) => {
 
         };
 
-        dispatch(editDrop(drop.id, editedDrop))
-          .then(drp => {
-            console.log(drp);
-
-            history.replace(`/dashboard/drops/${drp.id}`);
-          }).catch(async res => {
-            const data = await res.json();
-
-            if (data?.errors) setErrors(data.errors);
+        dispatch(updateDrop(editedDrop))
+          .unwrap()
+          .then((res) => {
+            navigate(`/dashboard/drops/${res.id}`, { replace: true });
+          })
+          .catch((err) => {
+            setErrors(err);
           });
       }
-      else history.replace(`/dashboard/drops/${id}`);
+      else navigate(`/dashboard/drops/${id}`, { replace: true });
     }
   };
 
   return (
-    <form id='dropForm' className='form' onSubmit={submitForm}>
+    <form id="dropForm" className="form" onSubmit={submitForm}>
       <header>
-        <h2 className='formTitle'>{edit ? 'Edit drop' : 'Add a drop'}</h2>
+        <h2 className="formTitle">{edit ? 'Edit drop' : 'Add a drop'}</h2>
       </header>
-      <main className='formContent'>
-        <div className='inputContainer bossName'>
-          <label htmlFor='bossName'>Boss Name</label>
+      <main className="formContent">
+        <div className="inputContainer bossName">
+          <label htmlFor="bossName">Boss Name</label>
           <SearchDropDown
-            id='bossName'
-            placeholder='Boss Name'
+            id="bossName"
+            placeholder="Boss Name"
             index={2}
             options={bosses}
             result={boss?.name}
@@ -108,12 +108,12 @@ const DropForm = ({ edit }) => {
           />
           <ValidationError message={errors.bossName} />
         </div>
-        <div className='inputContainer itemName'>
-          <label htmlFor='itemName'>Item Name</label>
+        <div className="inputContainer itemName">
+          <label htmlFor="itemName">Item Name</label>
           <SearchDropDown
-            id='itemName'
-            placeholder='Item Name'
-            index={1}
+            id="itemName"
+            placeholder="Item Name"
+            zIndex={1}
             options={items}
             disabled={!bossId}
             result={item?.name}
@@ -121,22 +121,22 @@ const DropForm = ({ edit }) => {
           />
           <ValidationError message={errors.itemName} />
         </div>
-        <div className='inputContainer image'>
-          <label htmlFor='image'>Image (optional)</label>
+        <div className="inputContainer image">
+          <label htmlFor="image">Image (optional)</label>
           <input
-            id='image'
-            type='text'
+            id="image"
+            type="text"
             value={image}
-            placeholder='https://www.image.com/image.png'
+            placeholder="https://www.image.com/image.png"
             onChange={e => setImage(e.target.value)}
           />
           <ValidationError message={errors.image} />
         </div>
-        <div className='inputContainer members'>
-          <label htmlFor='members'>Members</label>
+        <div className="inputContainer members">
+          <label htmlFor="members">Members</label>
           <TagsDropDown
-            id='members'
-            placeholder='Members'
+            id="members"
+            placeholder="Members"
             options={(edit ? drop.party.members : party.members)
               .map(user => ({ id: user.id, value: user.username }))}
             results={members}
@@ -146,10 +146,18 @@ const DropForm = ({ edit }) => {
         </div>
       </main>
       <footer>
-        <button className='btn light' type='submit'>{edit ? 'Confirm' : 'Create Drop'}</button>
+        <button className="btn light" type="submit">{edit ? 'Confirm' : 'Create Drop'}</button>
       </footer>
     </form>
   );
+};
+
+DropForm.propTypes = {
+  edit: PropTypes.bool,
+};
+
+DropForm.defaultProps = {
+  edit: false,
 };
 
 export default DropForm;

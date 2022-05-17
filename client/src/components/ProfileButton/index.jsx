@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { logout } from '../../store/session';
+import { getSessionUser, logout } from '../../store/session';
 import './ProfileButton.scss';
 
 const ProfileButton = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
-  const user = useSelector(state => state.session.user);
+  const navigate = useNavigate();
+  const user = useSelector(getSessionUser);
   const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
@@ -24,17 +24,22 @@ const ProfileButton = () => {
   }, [showMenu]);
 
   return (
-    <div className='profileContainer'>
+    <div className="profileContainer">
       <button
-        className='btn transparent profileButton'
-        type='button'
-        onClick={() => !showMenu && setShowMenu(true)}
+        className="btn transparent profileButton"
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          setShowMenu(prev => !prev);
+        }}
       >
-        <FontAwesomeIcon icon='fas fa-user' />
+        <FontAwesomeIcon icon="fas fa-user" />
       </button>
       {showMenu && (
         <div
-          className='profileMenu'
+          className="profileMenu"
+          role="menu"
+          tabIndex={-1}
           onClick={e => e.stopPropagation()}
         >
           <p>
@@ -48,17 +53,17 @@ const ProfileButton = () => {
             {user.email}
           </p>
           <button
-            className='btn transparent logout'
-            type='button'
+            className="btn transparent logout"
+            type="button"
             onClick={() => {
               dispatch(logout());
-              history.push('/');
+              navigate('/');
             }}
           >
-            <span className='icon'>
-              <FontAwesomeIcon icon='fas fa-arrow-right-from-bracket' />
+            <span className="icon">
+              <FontAwesomeIcon icon="fas fa-arrow-right-from-bracket" />
             </span>
-            <span className='text'>Log Out</span>
+            <span className="text">Log Out</span>
           </button>
         </div>
       )}

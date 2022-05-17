@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DropDownMenu from './DropDownMenu';
 import './TagsDropDown.css';
@@ -24,7 +25,7 @@ const TagsDropDown = ({ id, placeholder, options, results, setResult }) => {
     return () => document.removeEventListener('click', closeMenu);
   }, [showMenu]);
 
-  const setter = match => {
+  const setter = (match) => {
     setInput('');
     setResult(prev => [...new Set([...prev, match])]
       .sort((a, b) => a.value.localeCompare(b.value)));
@@ -32,36 +33,40 @@ const TagsDropDown = ({ id, placeholder, options, results, setResult }) => {
 
   return (
     <>
-      <div className='tagsContainer'>
+      <div className="tagsContainer">
         {results?.map(result => (
-          <div className='tag' key={result.id}>
-            <span className='value'>
+          <div className="tag" key={result.id}>
+            <span className="value">
               {result.value}
             </span>
             <span
-              className='x'
+              className="x"
+              role="button"
+              tabIndex={0}
               onClick={() => setResult(prev => prev.filter(item => item.value !== result.value))}
             >
-              <FontAwesomeIcon icon='fas fa-xmark' />
+              <FontAwesomeIcon icon="fas fa-xmark" />
             </span>
           </div>
         ))}
       </div>
       <div
-        className='tagsDropdownContainer'
-        onClick={e => {
+        className="tagsDropdownContainer"
+        role="menuitem"
+        tabIndex={0}
+        onClick={(e) => {
           e.stopPropagation();
           setShowMenu(true);
         }}
       >
-        <div className='tagsDropdown'>
+        <div className="tagsDropdown">
           <input
             id={id}
-            className='search'
-            type='text'
+            className="search"
+            type="text"
             value={input}
             placeholder={placeholder}
-            onChange={e => {
+            onChange={(e) => {
               setInput(e.target.value);
             }}
           />
@@ -76,6 +81,30 @@ const TagsDropDown = ({ id, placeholder, options, results, setResult }) => {
       </div>
     </>
   );
+};
+
+TagsDropDown.propTypes = {
+  id: PropTypes.string,
+  placeholder: PropTypes.string,
+  options: PropTypes.arrayOf(
+    PropTypes.exact({
+      id: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+    }),
+  ),
+  results: PropTypes.arrayOf(
+    PropTypes.exact({
+      id: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  setResult: PropTypes.func.isRequired,
+};
+
+TagsDropDown.defaultProps = {
+  id: '',
+  placeholder: '',
+  options: undefined,
 };
 
 export default TagsDropDown;

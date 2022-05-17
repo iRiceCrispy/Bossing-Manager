@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth, unauthorizedError } = require('../../utils/auth');
-const { Party, Drop } = require('../../db/models');
+const { Party, Drop } = require('../../models');
 
 const router = express.Router();
 
@@ -32,7 +32,7 @@ const validateDrop = [
     .exists({ checkFalsy: true })
     .withMessage('Please enter an item.'),
   check('image')
-    .custom(image => {
+    .custom((image) => {
       if (!image.length || image.endsWith('.jpg') || image.endsWith('.jpeg') || image.endsWith('.png')) {
         return true;
       }
@@ -53,12 +53,7 @@ router.get('/', asyncHandler(async (req, res) => {
 
   const parties = await Party.find({ memberIds: user.id });
 
-  const data = parties.reduce((accum, party) => {
-    accum[party.id] = party.toJSON();
-    return accum;
-  }, {});
-
-  res.json(data);
+  res.json(parties);
 }));
 
 // Create a new party, making the current user as party leader automatically

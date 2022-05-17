@@ -1,13 +1,16 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { getSessionUser } from '../../store/session';
+import { partiesSelectors } from '../../store/parties';
+import { dropsSelectors } from '../../store/drops';
 import './Main.scss';
 
 const Main = () => {
-  const sessionUser = useSelector(state => state.session.user);
-  const parties = Object.values(useSelector(state => state.parties));
-  const drops = Object.values(useSelector(state => state.drops));
+  const sessionUser = useSelector(getSessionUser);
+  const parties = useSelector(partiesSelectors.selectAll);
+  const drops = useSelector(dropsSelectors.selectAll);
 
-  const [partiesL, partiesM] = parties.reduce(([l, m], party) => (
+  const [partiesL] = parties.reduce(([l, m], party) => (
     party.leader.id === sessionUser.id ? [[...l, party], m] : [l, [...m, party]]
   ), [[], []]);
 
@@ -18,14 +21,14 @@ const Main = () => {
   const earnings = drops.reduce((sum, drop) => sum + (drop.price || 0), 0).toLocaleString();
 
   return (
-    <div id='main'>
+    <div id="main">
       <h2>Dashboard</h2>
-      <div className='modules'>
-        <section className='parties'>
-          <div className='header'>
-            <h3 className='heading'>Parties</h3>
+      <div className="modules">
+        <section className="parties">
+          <div className="header">
+            <h3 className="heading">Parties</h3>
           </div>
-          <div className='content'>
+          <div className="content">
             <p>
               Currently in
               {' '}
@@ -42,11 +45,11 @@ const Main = () => {
             </p>
           </div>
         </section>
-        <section className='drops'>
-          <div className='header'>
-            <h3 className='heading'>Drops</h3>
+        <section className="drops">
+          <div className="header">
+            <h3 className="heading">Drops</h3>
           </div>
-          <div className='content'>
+          <div className="content">
             <div>
               <p>
                 Total drops:
@@ -67,11 +70,11 @@ const Main = () => {
             </div>
           </div>
         </section>
-        <section className='payments'>
-          <div className='header'>
-            <h3 className='heading'>Payments</h3>
+        <section className="payments">
+          <div className="header">
+            <h3 className="heading">Payments</h3>
           </div>
-          <div className='content'>
+          <div className="content">
             <p>
               Total earned:
               {' '}

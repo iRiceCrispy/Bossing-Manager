@@ -1,30 +1,24 @@
-const LOAD = 'users/LOAD';
+import axios from 'axios';
+import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 
-const load = users => ({
-  type: LOAD,
-  users,
+export const fetchUsers = createAsyncThunk('users/fetch', async () => {
+  const res = await axios.get('/api/users');
+
+  return res.data;
 });
 
-export const loadUsers = () => async dispatch => {
-  const res = await fetch('/api/users');
+const usersAdapter = createEntityAdapter();
 
-  if (res.ok) {
-    const users = await res.json();
-    dispatch(load(users));
+const initialState = usersAdapter.getInitialState();
 
-    return users;
-  }
+const usersSlice = createSlice({
+  name: 'users',
+  initialState,
+  extraReducers: (builder) => {
+    builder.addCase(fetchUsers.fulfilled, usersAdapter.setMany);
+  },
+});
 
-  return res;
-};
+export const usersSelectors = usersAdapter.getSelectors(state => state.users);
 
-const reducer = (state = {}, action) => {
-  switch (action.type) {
-    case LOAD:
-      return action.users;
-    default:
-      return state;
-  }
-};
-
-export default reducer;
+export default usersSlice.reducer;

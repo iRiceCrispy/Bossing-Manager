@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie } = require('../../utils/auth');
-const { User } = require('../../db/models');
+const { User } = require('../../models');
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ const validateSignup = [
   check('email')
     .isEmail()
     .withMessage('Please provide a valid email.')
-    .custom(async email => {
+    .custom(async (email) => {
       const user = await User.findOne({ email });
 
       if (user) throw new Error('Email already registered.');
@@ -25,7 +25,7 @@ const validateSignup = [
     .not()
     .isEmail()
     .withMessage('Username cannot be an email.')
-    .custom(async username => {
+    .custom(async (username) => {
       const user = await User.findOne({ username });
 
       if (user) throw new Error('Username already in use.');
@@ -47,12 +47,7 @@ const validateSignup = [
 router.get('/', asyncHandler(async (req, res) => {
   const users = await User.find();
 
-  const data = users.reduce((accum, user) => {
-    accum[user.id] = user.toSafeObject();
-    return accum;
-  }, {});
-
-  return res.json(data);
+  return res.json(users);
 }));
 
 // Sign up
@@ -67,7 +62,7 @@ router.post('/', validateSignup, asyncHandler(async (req, res) => {
 
   setTokenCookie(res, user);
 
-  return res.json(user.toSafeObject());
+  return res.json(user.toPrivate());
 }));
 
 module.exports = router;

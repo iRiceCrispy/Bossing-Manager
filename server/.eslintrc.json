@@ -1,42 +1,45 @@
 {
-  "extends": ["airbnb", "airbnb/hooks"],
+  "extends": [
+    "airbnb-base"
+  ],
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  },
   "rules": {
-    "no-console": "off",
-    "radix": "off",
-    "func-names": "off",
-    "consistent-return": "off",
-    "no-useless-return": "off",
-    "no-trailing-spaces": "error",
-    "no-underscore-dangle": "off",
-    "no-param-reassign": "off",
-    "no-unused-vars": [
-      "warn",
+    "arrow-parens": [
+      2,
+      "as-needed",
       {
-        "argsIgnorePattern": "^_"
-      }
-    ],
-    "max-len": [
-      "error",
-      {
-        "code": 100,
-        "ignoreStrings": true,
-        "ignoreTemplateLiterals": true,
-        "ignoreRegExpLiterals": true
+        "requireForBlockBody": true
       }
     ],
     "brace-style": [
       "error",
-      "stroustrup",
+      "stroustrup"
+    ],
+    "consistent-return": "off",
+    "no-console": "off",
+    "no-plusplus": [
+      "error",
       {
-        "allowSingleLine": true
+        "allowForLoopAfterthoughts": true
       }
     ],
-    "comma-dangle": ["error", "always-multiline"],
-    "function-call-argument-newline": ["error", "never"],
-    "function-paren-newline": ["error", "never"],
-    "arrow-parens": [2, "as-needed"],
-    "import/extensions": "off",
-    "import/no-dynamic-require": "off",
-    "global-require": "off"
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "object-curly-newline": [
+      "error",
+      {
+        "ImportDeclaration": "never"
+      }
+    ]
   }
 }
