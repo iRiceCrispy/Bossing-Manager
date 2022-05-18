@@ -7,7 +7,7 @@ import blackmage from '../../assets/Black_Mage.png';
 import './Splash.scss';
 
 const Splash = () => {
-  const user = useSelector(getSessionUser);
+  const sessionUser = useSelector(getSessionUser);
 
   return (
     <div id="splash">
@@ -20,10 +20,10 @@ const Splash = () => {
             </Link>
           </div>
           <div className="authButtons">
-            {user ? (
+            {sessionUser ? (
               <>
                 <Link className="btn transparent dashboard" to="/dashboard">Dashboard</Link>
-                <ProfileButton user={user} />
+                <ProfileButton user={sessionUser} />
               </>
             ) : (
               <>
@@ -41,7 +41,11 @@ const Splash = () => {
             <h2>
               Track and manage your hard earned boss drops!
             </h2>
-            <Link className="btn dark large" to="/signup">Get started!</Link>
+            {sessionUser ? (
+              <Link className="btn dark large" to="/signup">Go to Dashboard</Link>
+            ) : (
+              <Link className="btn dark large" to="/signup">Get started!</Link>
+            )}
           </div>
         </div>
       </header>
