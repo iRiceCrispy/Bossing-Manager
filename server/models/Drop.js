@@ -62,7 +62,8 @@ const dropSchema = new mongoose.Schema({
         itemName: ret.itemName,
         image: ret.image,
         sold: ret.sold,
-        price: ret.price,
+        price: ret.price || null,
+        split: ret.split,
         saleImage: ret.saleImage,
         party: ret.party,
         members: ret.members,
@@ -91,6 +92,10 @@ dropSchema.virtual('members.user', {
   foreignField: '_id',
   justOne: true,
   autopopulate: true,
+});
+
+dropSchema.virtual('split').get(function getSplit() {
+  return Math.floor(this.price / this.members.length);
 });
 
 dropSchema.plugin(autopopulate);

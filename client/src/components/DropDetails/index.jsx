@@ -104,7 +104,7 @@ const DropDetails = () => {
           <p className="price">
             {drop.price.toLocaleString()}
           </p>
-          <p className="split">{Math.floor(drop.price / members.length).toLocaleString()}</p>
+          <p className="split">{drop.split.toLocaleString()}</p>
           <img className="saleConfirmation" src={drop.saleImage} alt="" />
         </div>
         )}
