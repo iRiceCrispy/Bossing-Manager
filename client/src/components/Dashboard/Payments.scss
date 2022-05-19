@@ -6,4 +6,57 @@
   h2 {
     margin-bottom: 48px;
   }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+
+    .pending,
+    .completed {
+      background-color: var(--color-base2);
+      border-radius: 4px;
+      padding: 36px;
+
+      .heading {
+        font-size: 18px;
+        font-weight: bold;
+        padding-bottom: 12px;
+        margin-bottom: 36px;
+        border-bottom: 1px solid var(--color-text);
+      }
+
+      .payments {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 36px;
+
+        .payment {
+          width: 300px;
+          background-color: var(--color-base);
+          padding: 12px;
+          border-radius: 4px;
+
+          .itemName {
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+
+            img {
+              width: 32px;
+              height: 32px;
+              object-fit: contain;
+              object-position: center;
+            }
+          }
+
+          .split::after {
+            content: ' Mesos';
+          }
+        }
+      }
+    }
+  }
 }

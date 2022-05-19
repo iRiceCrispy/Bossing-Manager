@@ -1,7 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { dropsSelectors } from '../../store/drops';
 import { getSessionUser } from '../../store/session';
+import items from '../../util/itemList.json';
 import './Payments.scss';
 
 const Payments = () => {
@@ -23,21 +25,50 @@ const Payments = () => {
       <h2>Payments</h2>
       <div className="content">
         <div className="pending">
-          <p>Pending</p>
-          {pendingPayments.map(drop => (
-            <div className="payment" key={drop.id}>
-              {drop.itemName}
-              {drop.split.toLocaleString()}
-            </div>
-          ))}
+          <p className="heading">Pending</p>
+          <ul className="payments">
+            {pendingPayments.map((drop) => {
+              const { id, itemName, split } = drop;
+              const item = items[itemName];
+
+              return (
+                <li className="payment" key={drop.id}>
+                  <Link to={`../drops/${id}`}>
+                    <div className="itemName">
+                      {itemName}
+                      <img src={item.image} alt={item.name} />
+                    </div>
+                    <div className="split">
+                      {split.toLocaleString()}
+                    </div>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
         </div>
         <div className="completed">
-          <p>Completed</p>
-          {completedPayments.map(drop => (
-            <div className="payment" key={drop.id}>
-              {drop.itemName}
-            </div>
-          ))}
+          <p className="heading">Completed</p>
+          <ul className="payments">
+            {completedPayments.map((drop) => {
+              const { id, itemName, split } = drop;
+              const item = items[itemName];
+
+              return (
+                <li className="payment" key={drop.id}>
+                  <Link to={`../drops/${id}`}>
+                    <div className="itemName">
+                      {itemName}
+                      <img src={item.image} alt={item.name} />
+                    </div>
+                    <div className="split">
+                      {split.toLocaleString()}
+                    </div>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </div>
     </div>
