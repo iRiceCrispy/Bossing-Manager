@@ -51,7 +51,7 @@ const DropDetails = () => {
             {boss.name}
             <span className="isSold">{sold ? '[Sold]' : '[Pending]'}</span>
             {isLeader && (
-              <div className="paymentOptions">
+              <span className="paymentOptions">
                 {sold ? (
                   <button
                     className="btn transparent"
@@ -69,7 +69,7 @@ const DropDetails = () => {
                     Mark as Sold
                   </button>
                 )}
-              </div>
+              </span>
             )}
             <img className="bossImg" src={boss.image} alt="" />
           </p>
