@@ -50,22 +50,26 @@ const DropDetails = () => {
           <p className="bossName">
             {boss.name}
             <span className="isSold">{sold ? '[Sold]' : '[Pending]'}</span>
-            {sold ? (
-              <button
-                className="btn transparent"
-                type="button"
-                onClick={() => dispatch(deleteSale(drop.id))}
-              >
-                Undo
-              </button>
-            ) : (
-              <button
-                className="btn transparent"
-                type="button"
-                onClick={() => setShowSale(true)}
-              >
-                Mark as Sold
-              </button>
+            {isLeader && (
+              <div className="paymentOptions">
+                {sold ? (
+                  <button
+                    className="btn transparent"
+                    type="button"
+                    onClick={() => dispatch(deleteSale(drop.id))}
+                  >
+                    Undo
+                  </button>
+                ) : (
+                  <button
+                    className="btn transparent"
+                    type="button"
+                    onClick={() => setShowSale(true)}
+                  >
+                    Mark as Sold
+                  </button>
+                )}
+              </div>
             )}
             <img className="bossImg" src={boss.image} alt="" />
           </p>
