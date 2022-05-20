@@ -22,8 +22,36 @@ const io = new Server(server, {
   },
 });
 
+const getOnlineUsers = () => {
+  const sockets = Array.from(io.sockets.sockets).map(socket => socket[1]);
+  const users = sockets.filter(socket => socket.userId).map(socket => socket.userId);
+
+  return users;
+};
+
 io.on('connection', (socket) => {
-  console.log(socket.id);
+  socket.on('login', (userId) => {
+    socket.userId = userId;
+
+    io.emit('userStatus');
+  });
+
+  socket.on('logout', () => {
+    delete socket.userId;
+
+    io.emit('userStatus');
+  });
+
+  socket.on('disconnect', () => {
+    io.emit('userStatus');
+  });
+});
+
+app.use((req, res, next) => {
+  req.io = io;
+  req.getOnlineUsers = getOnlineUsers;
+
+  return next();
 });
 
 app.use(morgan('dev'));

@@ -1,12 +1,15 @@
 import axios from 'axios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import socket from '../socket';
 
 export const restoreSession = createAsyncThunk(
   'session/restore',
   async () => {
     const res = await axios.get('/api/session');
+    const user = res.data;
 
-    return res.data;
+    socket.emit('login', user.id);
+    return user;
   },
 );
 
@@ -19,8 +22,10 @@ export const signup = createAsyncThunk(
         email,
         password,
       });
+      const user = res.data;
 
-      return res.data;
+      socket.emit('login', user.id);
+      return user;
     }
     catch (err) {
       return rejectWithValue(err.response.data.errors);
@@ -36,8 +41,10 @@ export const login = createAsyncThunk(
         credential,
         password,
       });
+      const user = res.data;
 
-      return res.data;
+      socket.emit('login', user.id);
+      return user;
     }
     catch (err) {
       return rejectWithValue(err.response.data.errors);
@@ -49,8 +56,10 @@ export const demo = createAsyncThunk(
   'session/login/demo',
   async () => {
     const res = await axios.post('/api/session/demo');
+    const user = res.data;
 
-    return res.data;
+    socket.emit('login', user.id);
+    return user;
   },
 );
 
@@ -58,8 +67,10 @@ export const logout = createAsyncThunk(
   'session/logout',
   async () => {
     const res = await axios.delete('/api/session');
+    const user = res.data;
 
-    return res.data;
+    socket.emit('logout');
+    return user;
   },
 );
 

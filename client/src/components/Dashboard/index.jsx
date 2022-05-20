@@ -8,6 +8,7 @@ import Main from './Main';
 import Parties from './Parties';
 import Drops from './Drops';
 import Payments from './Payments';
+import Users from '../Users';
 import PartyDetails from '../PartyDetails';
 import DropDetails from '../DropDetails';
 import PartyForm from '../Forms/PartyForm';
@@ -69,6 +70,14 @@ const Dashboard = () => {
               Payments
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              className="menuItem"
+              to="users"
+            >
+              Users
+            </NavLink>
+          </li>
         </ul>
       </nav>
       <div className="topbar">
@@ -91,6 +100,7 @@ const Dashboard = () => {
           <Route path="drops/:id" element={<DropDetails />} />
           <Route path="drops/:id/edit" element={<DropForm edit />} />
           <Route path="payments" element={<Payments />} />
+          <Route path="users" element={<Users />} />
         </Routes>
       </div>
     </div>
