@@ -1,4 +1,6 @@
 const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
 const morgan = require('morgan');
 const cors = require('cors');
 const csurf = require('csurf');
@@ -13,6 +15,16 @@ require('./models');
 const isProduction = environment === 'production';
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: true,
+  },
+});
+
+io.on('connection', (socket) => {
+  console.log(socket.id);
+});
 
 app.use(morgan('dev'));
 app.use(cookieParser());
@@ -61,4 +73,4 @@ app.use((err, req, res, _next) => {
   });
 });
 
-module.exports = app;
+module.exports = server;
