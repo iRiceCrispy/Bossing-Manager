@@ -10,7 +10,7 @@ const { environment } = require('./config');
 const routes = require('./routes');
 
 require('./config/database');
-require('./models');
+const { Party } = require('./models');
 
 const isProduction = environment === 'production';
 
@@ -30,13 +30,23 @@ const getOnlineUsers = () => {
 };
 
 io.on('connection', (socket) => {
-  socket.on('login', (userId) => {
+  socket.on('login', async (userId) => {
     socket.userId = userId;
+    const parties = await Party.find({ memberIds: userId });
+
+    parties.forEach((party) => {
+      socket.join(party.id);
+    });
 
     io.emit('userStatus');
   });
 
-  socket.on('logout', () => {
+  socket.on('logout', async () => {
+    const parties = await Party.find({ memberIds: socket.userId });
+
+    parties.forEach((party) => {
+      socket.leave(party.id);
+    });
     delete socket.userId;
 
     io.emit('userStatus');
