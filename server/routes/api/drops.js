@@ -73,7 +73,7 @@ router.get('/', asyncHandler(async (req, res) => {
 
 // Update a drop
 router.put('/:id', validateDrop, asyncHandler(async (req, res, next) => {
-  const { user } = req;
+  const { user, io } = req;
   const { id } = req.params;
   const {
     bossName,
@@ -93,12 +93,14 @@ router.put('/:id', validateDrop, asyncHandler(async (req, res, next) => {
 
   await drop.save();
 
+  io.to(drop.party.id).emit('updateDrops');
+
   res.json(drop);
 }));
 
 // Delete a drop
 router.delete('/:id', asyncHandler(async (req, res, next) => {
-  const { user } = req;
+  const { user, io } = req;
   const { id } = req.params;
 
   const drop = await Drop.findById(id).populate('party');
@@ -107,12 +109,14 @@ router.delete('/:id', asyncHandler(async (req, res, next) => {
 
   await drop.remove();
 
+  io.to(drop.party.id).emit('updateDrops');
+
   res.json(drop);
 }));
 
 // Marking drop as sold
 router.post('/:id/sale', validateSale, asyncHandler(async (req, res, next) => {
-  const { user } = req;
+  const { user, io } = req;
   const { id } = req.params;
   const { price, saleImage } = req.body;
 
@@ -125,13 +129,15 @@ router.post('/:id/sale', validateSale, asyncHandler(async (req, res, next) => {
   drop.saleImage = saleImage;
 
   await drop.save();
+
+  io.to(drop.party.id).emit('updateDrops');
 
   res.json(drop);
 }));
 
 // Update sale
 router.put('/:id/sale', validateSale, asyncHandler(async (req, res, next) => {
-  const { user } = req;
+  const { user, io } = req;
   const { id } = req.params;
   const { price, saleImage } = req.body;
 
@@ -145,12 +151,14 @@ router.put('/:id/sale', validateSale, asyncHandler(async (req, res, next) => {
 
   await drop.save();
 
+  io.to(drop.party.id).emit('updateDrops');
+
   res.json(drop);
 }));
 
 // Delete sale
 router.delete('/:id/sale', asyncHandler(async (req, res, next) => {
-  const { user } = req;
+  const { user, io } = req;
   const { id } = req.params;
 
   const drop = await Drop.findById(id).populate('party');
@@ -166,12 +174,14 @@ router.delete('/:id/sale', asyncHandler(async (req, res, next) => {
 
   await drop.save();
 
+  io.to(drop.party.id).emit('updateDrops');
+
   res.json(drop);
 }));
 
 // Mark member payment
 router.post('/:dropId/members/:memberId/payment', asyncHandler(async (req, res, next) => {
-  const { user } = req;
+  const { user, io } = req;
   const { dropId, memberId } = req.params;
 
   const drop = await Drop.findById(dropId).populate('party');
@@ -184,12 +194,14 @@ router.post('/:dropId/members/:memberId/payment', asyncHandler(async (req, res, 
 
   await drop.save();
 
+  io.to(drop.party.id).emit('updateDrops');
+
   res.json(drop);
 }));
 
 // Unmark member payment
 router.delete('/:dropId/members/:memberId/payment', asyncHandler(async (req, res, next) => {
-  const { user } = req;
+  const { user, io } = req;
   const { dropId, memberId } = req.params;
 
   const drop = await Drop.findById(dropId).populate('party');
@@ -201,6 +213,8 @@ router.delete('/:dropId/members/:memberId/payment', asyncHandler(async (req, res
   member.isPaid = false;
 
   await drop.save();
+
+  io.to(drop.party.id).emit('updateDrops');
 
   res.json(drop);
 }));

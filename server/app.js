@@ -38,6 +38,8 @@ io.on('connection', (socket) => {
       socket.join(party.id);
     });
 
+    console.log(userId, socket.rooms);
+
     io.emit('userStatus');
   });
 

@@ -101,7 +101,7 @@ router.delete('/:id', asyncHandler(async (req, res, next) => {
 
 // Create a new drop for a party
 router.post('/:id/drops', validateDrop, asyncHandler(async (req, res, next) => {
-  const { user } = req;
+  const { user, io } = req;
   const { id } = req.params;
   const {
     bossName,
@@ -122,6 +122,8 @@ router.post('/:id/drops', validateDrop, asyncHandler(async (req, res, next) => {
     members: memberIds.map(memberId => ({ userId: memberId })),
   });
   const data = await Drop.findById(drop.id);
+
+  io.to(data.party.id).emit('updateDrops');
 
   res.json(data);
 }));
