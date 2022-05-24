@@ -89,7 +89,7 @@ const DropDetails = () => {
                   {member.id === sessionUser.id ? 'You' : member.user.username}
                   {' '}
                 </p>
-                {drop.sold && (
+                {isLeader && drop.sold && (
                   <button
                     className="btn transparent payButton"
                     type="button"
