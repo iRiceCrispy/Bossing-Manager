@@ -58,18 +58,30 @@ router.get('/', asyncHandler(async (req, res) => {
 
 // Create a new party, making the current user as party leader automatically
 router.post('/', validateParty, asyncHandler(async (req, res) => {
-  const { user } = req;
+  const { user, io } = req;
   const { name, memberIds } = req.body;
 
   const party = await Party.create({ name, leaderId: user.id, memberIds });
   const data = await Party.findById(party.id);
+
+  const sockets = [];
+
+  io.sockets.sockets.forEach((socket) => {
+    if (memberIds.includes(socket.userId)) sockets.push(socket);
+  });
+
+  sockets.forEach((socket) => {
+    socket.join(party.id);
+  });
+
+  io.to(party.id).emit('updateParties');
 
   res.json(data);
 }));
 
 // Update a party
 router.put('/:id', validateParty, asyncHandler(async (req, res, next) => {
-  const { user } = req;
+  const { user, io } = req;
   const { id } = req.params;
   const { name, memberIds } = req.body;
 
@@ -82,12 +94,14 @@ router.put('/:id', validateParty, asyncHandler(async (req, res, next) => {
 
   await party.save();
 
+  io.to(party.id).emit('updateParties');
+
   res.json(party);
 }));
 
 // Delete a party
 router.delete('/:id', asyncHandler(async (req, res, next) => {
-  const { user } = req;
+  const { user, io } = req;
   const { id } = req.params;
 
   const party = await Party.findById(id);
@@ -96,12 +110,14 @@ router.delete('/:id', asyncHandler(async (req, res, next) => {
 
   await party.remove();
 
+  io.to(party.id).emit('updateParties');
+
   res.json(party);
 }));
 
 // Create a new drop for a party
 router.post('/:id/drops', validateDrop, asyncHandler(async (req, res, next) => {
-  const { user } = req;
+  const { user, io } = req;
   const { id } = req.params;
   const {
     bossName,
@@ -122,6 +138,8 @@ router.post('/:id/drops', validateDrop, asyncHandler(async (req, res, next) => {
     members: memberIds.map(memberId => ({ userId: memberId })),
   });
   const data = await Drop.findById(drop.id);
+
+  io.to(data.party.id).emit('updateDrops');
 
   res.json(data);
 }));

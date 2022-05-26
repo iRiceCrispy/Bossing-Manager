@@ -1,4 +1,6 @@
 const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
 const morgan = require('morgan');
 const cors = require('cors');
 const csurf = require('csurf');
@@ -8,11 +10,59 @@ const { environment } = require('./config');
 const routes = require('./routes');
 
 require('./config/database');
-require('./models');
+const { Party } = require('./models');
 
 const isProduction = environment === 'production';
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: true,
+  },
+});
+
+const getOnlineUsers = () => {
+  const sockets = Array.from(io.sockets.sockets).map(socket => socket[1]);
+  const users = sockets.filter(socket => socket.userId).map(socket => socket.userId);
+
+  return users;
+};
+
+io.on('connection', (socket) => {
+  socket.on('login', async (userId) => {
+    socket.userId = userId;
+    const parties = await Party.find({ memberIds: userId });
+
+    parties.forEach((party) => {
+      socket.join(party.id);
+    });
+
+    io.emit('userStatus');
+  });
+
+  socket.on('logout', async () => {
+    const parties = await Party.find({ memberIds: socket.userId });
+
+    parties.forEach((party) => {
+      socket.leave(party.id);
+    });
+    delete socket.userId;
+
+    io.emit('userStatus');
+  });
+
+  socket.on('disconnect', () => {
+    io.emit('userStatus');
+  });
+});
+
+app.use((req, res, next) => {
+  req.io = io;
+  req.getOnlineUsers = getOnlineUsers;
+
+  return next();
+});
 
 app.use(morgan('dev'));
 app.use(cookieParser());
@@ -61,4 +111,4 @@ app.use((err, req, res, _next) => {
   });
 });
 
-module.exports = app;
+module.exports = server;

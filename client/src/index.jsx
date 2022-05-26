@@ -10,11 +10,6 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 import App from './App';
 import store from './store';
 import './index.css';
-import { fetchUsers } from './store/users';
-import { restoreSession } from './store/session';
-
-store.dispatch(restoreSession());
-store.dispatch(fetchUsers());
 
 axios.defaults.headers.common = {
   'Content-Type': 'application/json',

@@ -45,7 +45,18 @@ const validateSignup = [
 ];
 
 router.get('/', asyncHandler(async (req, res) => {
-  const users = await User.find();
+  const { getOnlineUsers } = req;
+  const users = (await User.find()).map(user => JSON.parse(JSON.stringify(user)));
+  const onlineUsers = getOnlineUsers();
+
+  users.forEach((user) => {
+    if (onlineUsers.includes(user.id)) {
+      user.status = 'online';
+    }
+    else {
+      user.status = 'offline';
+    }
+  });
 
   return res.json(users);
 }));

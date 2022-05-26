@@ -57,7 +57,7 @@ const partiesSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
-      .addCase(fetchParties.fulfilled, partiesAdapter.setMany)
+      .addCase(fetchParties.fulfilled, partiesAdapter.setAll)
       .addCase(createParty.fulfilled, (state, { payload }) => {
         partiesAdapter.addOne(state, payload);
       })

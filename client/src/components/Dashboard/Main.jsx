@@ -1,14 +1,18 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { getSessionUser } from '../../store/session';
+import { usersSelectors } from '../../store/users';
 import { partiesSelectors } from '../../store/parties';
 import { dropsSelectors } from '../../store/drops';
 import './Main.scss';
 
 const Main = () => {
   const sessionUser = useSelector(getSessionUser);
+  const users = useSelector(usersSelectors.selectAll);
   const parties = useSelector(partiesSelectors.selectAll);
   const drops = useSelector(dropsSelectors.selectAll);
+
+  const onlineUsers = users.filter(user => user.status === 'online');
 
   const [partiesL] = parties.reduce(([l, m], party) => (
     party.leader.id === sessionUser.id ? [[...l, party], m] : [l, [...m, party]]
@@ -79,6 +83,22 @@ const Main = () => {
               Total earned:
               {' '}
               {earnings}
+            </p>
+          </div>
+        </section>
+        <section className="users">
+          <div className="header">
+            <h3 className="heading">Users</h3>
+          </div>
+          <div className="content">
+            <p>
+              {onlineUsers.length}
+              {' '}
+              out of
+              {' '}
+              {users.length}
+              {' '}
+              users online.
             </p>
           </div>
         </section>
