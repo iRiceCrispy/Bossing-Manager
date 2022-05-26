@@ -23,18 +23,20 @@ const App = () => {
     })();
   }, [dispatch]);
 
-  socket.on('userStatus', () => {
-    dispatch(fetchUsers());
-  });
+  useEffect(() => {
+    socket.on('userStatus', () => {
+      dispatch(fetchUsers());
+    });
 
-  socket.on('updateParties', () => {
-    dispatch(fetchParties());
-    dispatch(fetchDrops());
-  });
+    socket.on('updateParties', () => {
+      dispatch(fetchParties());
+      dispatch(fetchDrops());
+    });
 
-  socket.on('updateDrops', () => {
-    dispatch(fetchDrops());
-  });
+    socket.on('updateDrops', () => {
+      dispatch(fetchDrops());
+    });
+  }, [dispatch]);
 
   return (
     <div className="app">

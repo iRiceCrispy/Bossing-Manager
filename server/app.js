@@ -22,16 +22,13 @@ const io = new Server(server, {
   },
 });
 
-const getOnlineUsers = () => {
-  const sockets = Array.from(io.sockets.sockets).map(socket => socket[1]);
-  const users = sockets.filter(socket => socket.userId).map(socket => socket.userId);
-
-  return users;
-};
+const sockets = {};
 
 io.on('connection', (socket) => {
   socket.on('login', async (userId) => {
     socket.userId = userId;
+    sockets[userId] = socket;
+
     const parties = await Party.find({ memberIds: userId });
 
     parties.forEach((party) => {
@@ -47,19 +44,21 @@ io.on('connection', (socket) => {
     parties.forEach((party) => {
       socket.leave(party.id);
     });
-    delete socket.userId;
+    delete sockets[socket.userId];
 
     io.emit('userStatus');
   });
 
   socket.on('disconnect', () => {
+    delete sockets[socket.userId];
+
     io.emit('userStatus');
   });
 });
 
 app.use((req, res, next) => {
   req.io = io;
-  req.getOnlineUsers = getOnlineUsers;
+  req.sockets = sockets;
 
   return next();
 });

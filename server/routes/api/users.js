@@ -45,9 +45,9 @@ const validateSignup = [
 ];
 
 router.get('/', asyncHandler(async (req, res) => {
-  const { getOnlineUsers } = req;
+  const { sockets } = req;
   const users = (await User.find()).map(user => JSON.parse(JSON.stringify(user)));
-  const onlineUsers = getOnlineUsers();
+  const onlineUsers = Object.keys(sockets);
 
   users.forEach((user) => {
     if (onlineUsers.includes(user.id)) {

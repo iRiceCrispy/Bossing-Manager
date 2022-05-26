@@ -58,30 +58,31 @@ router.get('/', asyncHandler(async (req, res) => {
 
 // Create a new party, making the current user as party leader automatically
 router.post('/', validateParty, asyncHandler(async (req, res) => {
-  const { user, io } = req;
+  const { user, sockets } = req;
   const { name, memberIds } = req.body;
 
   const party = await Party.create({ name, leaderId: user.id, memberIds });
   const data = await Party.findById(party.id);
 
-  const sockets = [];
+  const socket = sockets[user.id];
+  const socketsInParty = [];
 
-  io.sockets.sockets.forEach((socket) => {
-    if (memberIds.includes(socket.userId)) sockets.push(socket);
+  Object.values(sockets).forEach((s) => {
+    if (memberIds.includes(s.userId)) socketsInParty.push(s);
   });
 
-  sockets.forEach((socket) => {
-    socket.join(party.id);
+  socketsInParty.forEach((s) => {
+    s.join(party.id);
   });
 
-  io.to(party.id).emit('updateParties');
+  socket.to(party.id).emit('updateParties');
 
   res.json(data);
 }));
 
 // Update a party
 router.put('/:id', validateParty, asyncHandler(async (req, res, next) => {
-  const { user, io } = req;
+  const { user, sockets } = req;
   const { id } = req.params;
   const { name, memberIds } = req.body;
 
@@ -94,14 +95,15 @@ router.put('/:id', validateParty, asyncHandler(async (req, res, next) => {
 
   await party.save();
 
-  io.to(party.id).emit('updateParties');
+  const socket = sockets[user.id];
+  socket.to(party.id).emit('updateParties');
 
   res.json(party);
 }));
 
 // Delete a party
 router.delete('/:id', asyncHandler(async (req, res, next) => {
-  const { user, io } = req;
+  const { user, sockets } = req;
   const { id } = req.params;
 
   const party = await Party.findById(id);
@@ -110,14 +112,15 @@ router.delete('/:id', asyncHandler(async (req, res, next) => {
 
   await party.remove();
 
-  io.to(party.id).emit('updateParties');
+  const socket = sockets[user.id];
+  socket.to(party.id).emit('updateParties');
 
   res.json(party);
 }));
 
 // Create a new drop for a party
 router.post('/:id/drops', validateDrop, asyncHandler(async (req, res, next) => {
-  const { user, io } = req;
+  const { user, sockets } = req;
   const { id } = req.params;
   const {
     bossName,
@@ -139,35 +142,10 @@ router.post('/:id/drops', validateDrop, asyncHandler(async (req, res, next) => {
   });
   const data = await Drop.findById(drop.id);
 
-  io.to(data.party.id).emit('updateDrops');
+  const socket = sockets[user.id];
+  socket.to(data.party.id).emit('updateDrops');
 
   res.json(data);
 }));
-
-// Split party member invite/removal from party edit later
-// router.post('/:id/members', asyncHandler(async (req, res) => {
-//   const { id } = req.params;
-//   const { memberId } = req.body;
-
-//   const party = await Party.findById(id);
-
-//   party.members.push(memberId);
-
-//   await party.save();
-
-//   res.json(party);
-// }));
-
-// router.delete('/:partyId/members/:memberId', asyncHandler(async (req, res) => {
-//   const { partyId, memberId } = req.params;
-
-//   const party = await Party.findById(partyId);
-
-//   party.members.pull(memberId);
-
-//   await party.save();
-
-//   res.json(party);
-// }));
 
 module.exports = router;
