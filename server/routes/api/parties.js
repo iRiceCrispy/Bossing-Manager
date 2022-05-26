@@ -58,18 +58,30 @@ router.get('/', asyncHandler(async (req, res) => {
 
 // Create a new party, making the current user as party leader automatically
 router.post('/', validateParty, asyncHandler(async (req, res) => {
-  const { user } = req;
+  const { user, io } = req;
   const { name, memberIds } = req.body;
 
   const party = await Party.create({ name, leaderId: user.id, memberIds });
   const data = await Party.findById(party.id);
+
+  const sockets = [];
+
+  io.sockets.sockets.forEach((socket) => {
+    if (memberIds.includes(socket.userId)) sockets.push(socket);
+  });
+
+  sockets.forEach((socket) => {
+    socket.join(party.id);
+  });
+
+  io.to(party.id).emit('updateParties');
 
   res.json(data);
 }));
 
 // Update a party
 router.put('/:id', validateParty, asyncHandler(async (req, res, next) => {
-  const { user } = req;
+  const { user, io } = req;
   const { id } = req.params;
   const { name, memberIds } = req.body;
 
@@ -82,12 +94,14 @@ router.put('/:id', validateParty, asyncHandler(async (req, res, next) => {
 
   await party.save();
 
+  io.to(party.id).emit('updateParties');
+
   res.json(party);
 }));
 
 // Delete a party
 router.delete('/:id', asyncHandler(async (req, res, next) => {
-  const { user } = req;
+  const { user, io } = req;
   const { id } = req.params;
 
   const party = await Party.findById(id);
@@ -95,6 +109,8 @@ router.delete('/:id', asyncHandler(async (req, res, next) => {
   if (party.leaderId.toString() !== user.id) return next(unauthorizedError);
 
   await party.remove();
+
+  io.to(party.id).emit('updateParties');
 
   res.json(party);
 }));

@@ -15,7 +15,7 @@ const usersSlice = createSlice({
   name: 'users',
   initialState,
   extraReducers: (builder) => {
-    builder.addCase(fetchUsers.fulfilled, usersAdapter.setMany);
+    builder.addCase(fetchUsers.fulfilled, usersAdapter.setAll);
   },
 });
 

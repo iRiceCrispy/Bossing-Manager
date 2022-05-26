@@ -98,7 +98,7 @@ const dropsSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
-      .addCase(fetchDrops.fulfilled, dropsAdapter.setMany)
+      .addCase(fetchDrops.fulfilled, dropsAdapter.setAll)
       .addCase(createDrop.fulfilled, (state, { payload }) => {
         dropsAdapter.addOne(state, payload);
       })

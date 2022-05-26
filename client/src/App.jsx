@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import socket from './socket';
 import { fetchUsers } from './store/users';
+import { fetchParties } from './store/parties';
 import { fetchDrops } from './store/drops';
 import { restoreSession } from './store/session';
 import Auth from './components/Auth';
@@ -26,8 +27,12 @@ const App = () => {
     dispatch(fetchUsers());
   });
 
+  socket.on('updateParties', () => {
+    dispatch(fetchParties());
+    dispatch(fetchDrops());
+  });
+
   socket.on('updateDrops', () => {
-    console.log('hiiiiiiiiiii');
     dispatch(fetchDrops());
   });
 
