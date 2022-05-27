@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Link, NavLink, Route, Routes } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Link, NavLink, Navigate, Route, Routes } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import socket from '../../socket';
+import { getSessionUser } from '../../store/session';
+import { fetchUsers } from '../../store/users';
 import { fetchParties } from '../../store/parties';
 import { fetchDrops } from '../../store/drops';
 import ProfileButton from '../ProfileButton';
@@ -17,16 +20,35 @@ import './Dashboard.scss';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
+  const sessionUser = useSelector(getSessionUser);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     (async () => {
+      await dispatch(fetchUsers());
       await dispatch(fetchParties());
       await dispatch(fetchDrops());
 
       setIsLoaded(true);
     })();
   }, [dispatch]);
+
+  useEffect(() => {
+    socket.on('userStatus', () => {
+      dispatch(fetchUsers());
+    });
+
+    socket.on('updateParties', () => {
+      dispatch(fetchParties());
+      dispatch(fetchDrops());
+    });
+
+    socket.on('updateDrops', () => {
+      dispatch(fetchDrops());
+    });
+  }, [dispatch]);
+
+  if (!sessionUser) return <Navigate to="/" />;
 
   return isLoaded && (
     <div id="dashboard">

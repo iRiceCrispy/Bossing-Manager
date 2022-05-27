@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import socket from './socket';
-import { fetchUsers } from './store/users';
-import { fetchParties } from './store/parties';
-import { fetchDrops } from './store/drops';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 import { restoreSession } from './store/session';
 import Auth from './components/Auth';
 import Dashboard from './components/Dashboard';
@@ -12,30 +10,17 @@ import Splash from './components/Splash';
 
 const App = () => {
   const dispatch = useDispatch();
-  document.addEventListener('keydown', (e) => {
-    if (e.target.nodeName === 'INPUT' && e.key === 'Enter') e.preventDefault();
-  });
+  // document.addEventListener('keydown', (e) => {
+  //   if (e.target.nodeName === 'INPUT' && e.key === 'Enter') e.preventDefault();
+  // });
 
   useEffect(() => {
-    (async () => {
-      await dispatch(restoreSession());
-      await dispatch(fetchUsers());
-    })();
-  }, [dispatch]);
+    axios.defaults.headers.common = {
+      'Content-Type': 'application/json',
+      'XSRF-Token': Cookies.get('XSRF-TOKEN'),
+    };
 
-  useEffect(() => {
-    socket.on('userStatus', () => {
-      dispatch(fetchUsers());
-    });
-
-    socket.on('updateParties', () => {
-      dispatch(fetchParties());
-      dispatch(fetchDrops());
-    });
-
-    socket.on('updateDrops', () => {
-      dispatch(fetchDrops());
-    });
+    dispatch(restoreSession());
   }, [dispatch]);
 
   return (

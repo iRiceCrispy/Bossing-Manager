@@ -35,7 +35,7 @@ io.on('connection', (socket) => {
       socket.join(party.id);
     });
 
-    io.emit('userStatus');
+    socket.broadcast.emit('userStatus');
   });
 
   socket.on('logout', async () => {
@@ -46,13 +46,13 @@ io.on('connection', (socket) => {
     });
     delete sockets[socket.userId];
 
-    io.emit('userStatus');
+    socket.broadcast.emit('userStatus');
   });
 
   socket.on('disconnect', () => {
     delete sockets[socket.userId];
 
-    io.emit('userStatus');
+    socket.broadcast.emit('userStatus');
   });
 });
 

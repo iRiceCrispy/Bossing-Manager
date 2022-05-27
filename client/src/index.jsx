@@ -3,18 +3,12 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider as ReduxProvider } from 'react-redux';
 import axios from 'axios';
-import Cookies from 'js-cookie';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import App from './App';
 import store from './store';
 import './index.css';
-
-axios.defaults.headers.common = {
-  'Content-Type': 'application/json',
-  'XSRF-Token': Cookies.get('XSRF-TOKEN'),
-};
 
 if (process.env.NODE_ENV !== 'production') {
   axios.get('/api/csrf/restore');
