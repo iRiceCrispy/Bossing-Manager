@@ -27,8 +27,11 @@ export const signup = createAsyncThunk(
       socket.emit('login', user.id);
       return user;
     }
-    catch (err) {
-      return rejectWithValue(err.response.data.errors);
+    catch ({ response }) {
+      if (response.status === 403) {
+        return rejectWithValue('Form error');
+      }
+      return rejectWithValue(response.data.errors);
     }
   },
 );
@@ -46,8 +49,11 @@ export const login = createAsyncThunk(
       socket.emit('login', user.id);
       return user;
     }
-    catch (err) {
-      return rejectWithValue(err.response.data.errors);
+    catch ({ response }) {
+      if (response.status === 403) {
+        return rejectWithValue('Form error');
+      }
+      return rejectWithValue(response.data.errors);
     }
   },
 );

@@ -23,7 +23,13 @@ const SignupForm = () => {
         navigate('/dashboard');
       })
       .catch((err) => {
-        setErrors(err);
+        if (err === 'Form error') {
+          alert('Something went wrong when submitting the form. Please try again.');
+          window.location.reload();
+        }
+        else {
+          setErrors(err);
+        }
       });
   };
 

@@ -21,7 +21,13 @@ const LoginForm = () => {
         navigate('/dashboard');
       })
       .catch((err) => {
-        setErrors(err);
+        if (err === 'Form error') {
+          alert('Something went wrong when submitting the form. Please try again.');
+          window.location.reload();
+        }
+        else {
+          setErrors(err);
+        }
       });
   };
 
@@ -32,7 +38,8 @@ const LoginForm = () => {
         navigate('/dashboard');
       })
       .catch(() => {
-        setErrors({ login: 'There is an error logging in. Please refresh the page.' });
+        alert('Something went wrong when submitting the form. Please try again.');
+        window.location.reload();
       });
   };
 
