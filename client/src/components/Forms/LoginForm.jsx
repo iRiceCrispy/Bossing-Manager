@@ -27,8 +27,12 @@ const LoginForm = () => {
 
   const demoLogin = () => {
     dispatch(demo())
+      .unwrap()
       .then(() => {
         navigate('/dashboard');
+      })
+      .catch(() => {
+        setErrors({ login: 'There is an error logging in. Please refresh the page.' });
       });
   };
 
