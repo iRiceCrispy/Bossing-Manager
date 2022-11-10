@@ -73,7 +73,8 @@ router.get('/', asyncHandler(async (req, res) => {
 
 // Update a drop
 router.put('/:id', validateDrop, asyncHandler(async (req, res, next) => {
-  const { user, sockets } = req;
+  const socket = req.app.get('socket');
+  const { user } = req;
   const { id } = req.params;
   const {
     bossName,
@@ -93,7 +94,6 @@ router.put('/:id', validateDrop, asyncHandler(async (req, res, next) => {
 
   await drop.save();
 
-  const socket = sockets[user.id];
   socket.to(drop.party.id).emit('updateDrops');
 
   res.json(drop);
@@ -101,7 +101,8 @@ router.put('/:id', validateDrop, asyncHandler(async (req, res, next) => {
 
 // Delete a drop
 router.delete('/:id', asyncHandler(async (req, res, next) => {
-  const { user, sockets } = req;
+  const socket = req.app.get('socket');
+  const { user } = req;
   const { id } = req.params;
 
   const drop = await Drop.findById(id).populate('party');
@@ -110,7 +111,6 @@ router.delete('/:id', asyncHandler(async (req, res, next) => {
 
   await drop.remove();
 
-  const socket = sockets[user.id];
   socket.to(drop.party.id).emit('updateDrops');
 
   res.json(drop);
@@ -118,7 +118,8 @@ router.delete('/:id', asyncHandler(async (req, res, next) => {
 
 // Marking drop as sold
 router.post('/:id/sale', validateSale, asyncHandler(async (req, res, next) => {
-  const { user, sockets } = req;
+  const socket = req.app.get('socket');
+  const { user } = req;
   const { id } = req.params;
   const { price, saleImage } = req.body;
 
@@ -132,7 +133,6 @@ router.post('/:id/sale', validateSale, asyncHandler(async (req, res, next) => {
 
   await drop.save();
 
-  const socket = sockets[user.id];
   socket.to(drop.party.id).emit('updateDrops');
 
   res.json(drop);
@@ -140,7 +140,8 @@ router.post('/:id/sale', validateSale, asyncHandler(async (req, res, next) => {
 
 // Update sale
 router.put('/:id/sale', validateSale, asyncHandler(async (req, res, next) => {
-  const { user, sockets } = req;
+  const socket = req.app.get('socket');
+  const { user } = req;
   const { id } = req.params;
   const { price, saleImage } = req.body;
 
@@ -154,7 +155,6 @@ router.put('/:id/sale', validateSale, asyncHandler(async (req, res, next) => {
 
   await drop.save();
 
-  const socket = sockets[user.id];
   socket.to(drop.party.id).emit('updateDrops');
 
   res.json(drop);
@@ -162,7 +162,8 @@ router.put('/:id/sale', validateSale, asyncHandler(async (req, res, next) => {
 
 // Delete sale
 router.delete('/:id/sale', asyncHandler(async (req, res, next) => {
-  const { user, sockets } = req;
+  const socket = req.app.get('socket');
+  const { user } = req;
   const { id } = req.params;
 
   const drop = await Drop.findById(id).populate('party');
@@ -178,7 +179,6 @@ router.delete('/:id/sale', asyncHandler(async (req, res, next) => {
 
   await drop.save();
 
-  const socket = sockets[user.id];
   socket.to(drop.party.id).emit('updateDrops');
 
   res.json(drop);
@@ -186,7 +186,8 @@ router.delete('/:id/sale', asyncHandler(async (req, res, next) => {
 
 // Mark member payment
 router.post('/:dropId/members/:memberId/payment', asyncHandler(async (req, res, next) => {
-  const { user, sockets } = req;
+  const socket = req.app.get('socket');
+  const { user } = req;
   const { dropId, memberId } = req.params;
 
   const drop = await Drop.findById(dropId).populate('party');
@@ -199,7 +200,6 @@ router.post('/:dropId/members/:memberId/payment', asyncHandler(async (req, res, 
 
   await drop.save();
 
-  const socket = sockets[user.id];
   socket.to(drop.party.id).emit('updateDrops');
 
   res.json(drop);
@@ -207,7 +207,8 @@ router.post('/:dropId/members/:memberId/payment', asyncHandler(async (req, res, 
 
 // Unmark member payment
 router.delete('/:dropId/members/:memberId/payment', asyncHandler(async (req, res, next) => {
-  const { user, sockets } = req;
+  const socket = req.app.get('socket');
+  const { user } = req;
   const { dropId, memberId } = req.params;
 
   const drop = await Drop.findById(dropId).populate('party');
@@ -220,7 +221,6 @@ router.delete('/:dropId/members/:memberId/payment', asyncHandler(async (req, res
 
   await drop.save();
 
-  const socket = sockets[user.id];
   socket.to(drop.party.id).emit('updateDrops');
 
   res.json(drop);

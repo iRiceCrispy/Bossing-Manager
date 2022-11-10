@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { parse } = require('cookie');
 const { jwtConfig } = require('../config');
 const { User } = require('../models');
 
@@ -65,9 +66,25 @@ const requireAuth = [
   },
 ];
 
+const socketAuth = (socket, next) => {
+  const { token } = parse(socket.handshake.headers.cookie);
+
+  return jwt.verify(token, secret, null, async (err, jwtPayload) => {
+    if (err) {
+      return next(err);
+    }
+
+    const { id } = jwtPayload.data;
+    socket.userId = id;
+
+    return next();
+  });
+};
+
 module.exports = {
   setTokenCookie,
   restoreUser,
   requireAuth,
   unauthorizedError,
+  socketAuth,
 };

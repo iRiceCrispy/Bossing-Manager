@@ -7,6 +7,7 @@ import { getSessionUser, restoreSession } from './store/session';
 import Auth from './components/Auth';
 import Dashboard from './components/Dashboard';
 import Splash from './components/Splash';
+import socket from './socket';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,11 @@ const App = () => {
       setIsLoaded(true);
     })();
   }, [dispatch]);
+
+  useEffect(() => {
+    if (sessionUser && !socket.connected) socket.connect();
+    if (!sessionUser && socket.connected) socket.close();
+  });
 
   return isLoaded && (
     <div className="app">

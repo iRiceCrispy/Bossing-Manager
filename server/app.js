@@ -6,6 +6,7 @@ const cors = require('cors');
 const csurf = require('csurf');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
+const { socketAuth } = require('./utils/auth');
 const { environment } = require('./config');
 const routes = require('./routes');
 
@@ -19,49 +20,31 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: true,
+    credentials: true,
   },
 });
 
-const sockets = {};
+io.use(socketAuth);
+io.on('connection', async (socket) => {
+  console.log(socket.id, 'has connected');
+  app.set('socket', socket);
 
-io.on('connection', (socket) => {
-  socket.on('login', async (userId) => {
-    socket.userId = userId;
-    sockets[userId] = socket;
+  const parties = await Party.find({ memberIds: socket.userId });
 
-    const parties = await Party.find({ memberIds: userId });
-
-    parties.forEach((party) => {
-      socket.join(party.id);
-    });
-
-    socket.broadcast.emit('userStatus');
+  parties.forEach((party) => {
+    socket.join(party.id);
   });
 
-  socket.on('logout', async () => {
-    const parties = await Party.find({ memberIds: socket.userId });
-
-    parties.forEach((party) => {
-      socket.leave(party.id);
-    });
-    delete sockets[socket.userId];
-
-    socket.broadcast.emit('userStatus');
-  });
+  socket.broadcast.emit('userStatus');
 
   socket.on('disconnect', () => {
-    delete sockets[socket.userId];
+    console.log(socket.id, 'has disconnected');
 
     socket.broadcast.emit('userStatus');
   });
 });
 
-app.use((req, res, next) => {
-  req.io = io;
-  req.sockets = sockets;
-
-  return next();
-});
+app.set('io', io);
 
 app.use(morgan('dev'));
 app.use(cookieParser());
