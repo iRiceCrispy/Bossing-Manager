@@ -38,7 +38,7 @@ const seed = async () => {
   }]).then((data) => {
     console.log(`Seeded ${data.length} users`);
     return data;
-  });
+  }).catch(err => console.log(err));
 
   const parties = await Party.insertMany([{
     name: 'Black Mage party',
@@ -73,7 +73,7 @@ const seed = async () => {
   }]).then((data) => {
     console.log(`Seeded ${data.length} parties`);
     return data;
-  });
+  }).catch(err => console.log(err));
 
   await Drop.insertMany([{
     partyId: parties[0].id,
@@ -138,7 +138,7 @@ const seed = async () => {
   }]).then((data) => {
     console.log(`Seeded ${data.length} drops`);
     return data;
-  });
+  }).catch(err => console.log(err));
 
   mongoose.disconnect();
 };

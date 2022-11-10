@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const { environment, mongoUrl } = require('./index');
+const { environment, database: { uri, options } } = require('./index');
 
-mongoose.connect(mongoUrl[environment])
+mongoose.connect(uri, options[environment])
   .catch((err) => {
     console.error(`MongoDB initial connection error: \n${err}`);
   });
