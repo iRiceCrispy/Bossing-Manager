@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import TagsDropDown from '../FormFields/TagsDropDown';
+import Autocomplete from '../FormFields/Autocomplete';
 import ValidationError from '../FormFields/ValidationError';
 import { getSessionUser } from '../../store/session';
 import { usersSelectors } from '../../store/users';
@@ -85,11 +85,11 @@ const PartyForm = ({ edit }) => {
         </div>
         <div className="tags">
           <label htmlFor="partyMembers">Members</label>
-          <TagsDropDown
-            id="partyMembers"
+          <Autocomplete
+            multiple
             placeholder="Members"
             options={users.map(user => ({ id: user.id, value: user.username }))}
-            results={members}
+            defaultTags={members}
             setResult={setMembers}
           />
           <ValidationError message={errors.memberIds} />

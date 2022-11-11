@@ -1,26 +1,22 @@
 import React from 'react';
-import './DropDownMenu.css';
+import './DropDownMenu.scss';
 
-const DropDownMenu = ({ matches, setter, setShowMenu }) => (
-  <div className="dropdownMenu">
-    {matches?.length
-      ? matches.map(match => (
-        <div
+const DropDown = ({ options, nullText = 'No options', onClick }) => (
+  <ul className="dropdownMenu">
+    {options?.length
+      ? options.map(option => (
+        <li
           className="dropdownOption"
-          key={match.id}
+          key={option.id}
           role="menuitem"
           tabIndex={0}
-          onClick={(e) => {
-            e.stopPropagation();
-            setter(match);
-            setShowMenu(false);
-          }}
+          onClick={() => onClick(option)}
         >
-          {match.value}
-        </div>
+          {option.value}
+        </li>
       ))
-      : <div className="noResults">No results found.</div>}
-  </div>
+      : <div className="noResults">{nullText}</div>}
+  </ul>
 );
 
-export default DropDownMenu;
+export default DropDown;

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import TagsDropDown from '../FormFields/TagsDropDown';
-import SearchDropDown from '../FormFields/SearchDropDown';
+import Autocomplete from '../FormFields/Autocomplete';
 import ValidationError from '../FormFields/ValidationError';
 import { createDrop, updateDrop, dropsSelectors } from '../../store/drops';
 import { partiesSelectors } from '../../store/parties';
@@ -97,25 +96,20 @@ const DropForm = ({ edit }) => {
       <main className="formContent">
         <div className="inputContainer bossName">
           <label htmlFor="bossName">Boss Name</label>
-          <SearchDropDown
-            id="bossName"
-            placeholder="Boss Name"
-            index={2}
+          <Autocomplete
             options={bosses}
-            result={boss?.name}
+            placeholder="Boss Name"
+            defaultValue={boss?.name}
             setResult={setBossId}
           />
           <ValidationError message={errors.bossName} />
         </div>
         <div className="inputContainer itemName">
           <label htmlFor="itemName">Item Name</label>
-          <SearchDropDown
-            id="itemName"
+          <Autocomplete
             placeholder="Item Name"
-            zIndex={1}
             options={items}
-            disabled={!bossId}
-            result={item?.name}
+            defaultValue={item?.name}
             setResult={setIemId}
           />
           <ValidationError message={errors.itemName} />
@@ -133,12 +127,12 @@ const DropForm = ({ edit }) => {
         </div>
         <div className="inputContainer members">
           <label htmlFor="members">Members</label>
-          <TagsDropDown
-            id="members"
+          <Autocomplete
+            multiple
             placeholder="Members"
             options={(edit ? drop.party.members : party.members)
               .map(user => ({ id: user.id, value: user.username }))}
-            results={members}
+            defaultTags={members}
             setResult={setMembers}
           />
           <ValidationError message={errors.memberIds} />
