@@ -1,0 +1,29 @@
+.dropdownMenu {
+  width: 100%;
+  padding: 4px 0;
+  background-color: inherit;
+  color: inherit;
+  box-shadow: 0 0 1px black;
+  border-radius: 4px;
+  overflow: hidden;
+
+  .options {
+    max-height: 150px;
+    overflow: auto;
+
+    .option,
+    .noResults {
+      line-height: 25px;
+      padding: 0 8px;
+      font-size: inherit;
+    }
+
+    .option {
+      cursor: pointer;
+
+      &:hover {
+        background-color: gray;
+      }
+    }
+  }
+}

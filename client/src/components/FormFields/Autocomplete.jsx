@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import DropDownMenu from './DropDownMenu';
+import DropdownMenu from './DropdownMenu';
 import './Autocomplete.scss';
 
 const Autocomplete = ({ multiple, options, placeholder, defaultTags = [], defaultValue = '', setResult }) => {
@@ -31,6 +31,7 @@ const Autocomplete = ({ multiple, options, placeholder, defaultTags = [], defaul
   const updateInput = (e) => {
     setInput(e.target.value);
     setResult(null);
+    setShowMenu(true);
   };
 
   const updateResult = (option) => {
@@ -50,12 +51,12 @@ const Autocomplete = ({ multiple, options, placeholder, defaultTags = [], defaul
 
   return (
     <div
-      className="autocomplete"
+      className={`autocomplete${multiple ? ' multiple' : ''}`}
       ref={ref}
     >
-      <div className="autoContainer">
+      <div className="searchContainer">
         {multiple && (
-          <div className="tags">
+          <>
             {tags.map(tag => (
               <div key={tag.id} className="tag">
                 <span className="value">{tag.value}</span>
@@ -69,20 +70,19 @@ const Autocomplete = ({ multiple, options, placeholder, defaultTags = [], defaul
                 </span>
               </div>
             ))}
-          </div>
+          </>
         )}
         <input
-          className="search"
+          className="searchbar"
           placeholder={placeholder}
           value={input}
           onClick={() => setShowMenu(!showMenu)}
           onChange={updateInput}
         />
-        {showMenu && (
-          <DropDownMenu options={matches} onClick={multiple ? addTag : updateResult} />
-        )}
       </div>
-
+      {showMenu && (
+        <DropdownMenu options={matches} onClick={multiple ? addTag : updateResult} />
+      )}
     </div>
   );
 };
