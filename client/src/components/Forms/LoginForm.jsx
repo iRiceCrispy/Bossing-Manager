@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import InputField from '../FormFields/InputField';
 import ValidationError from '../FormFields/ValidationError';
 import { demo, login } from '../../store/session';
 
@@ -46,29 +47,30 @@ const LoginForm = () => {
   return (
     <form id="loginForm" className="form" onSubmit={handleSubmit}>
       <header><h2>Log In</h2></header>
-      <div className="content">
+      <main>
         <div className="loginError">
           <ValidationError message={errors.login} />
         </div>
-        <label>
-          Username/Email
-          <input
-            type="text"
+        <div className="formField credential">
+          <InputField
+            id="credential"
+            label="Username / Email"
             value={credential}
             onChange={e => setCredential(e.target.value)}
           />
           <ValidationError message={errors.credential} />
-        </label>
-        <label>
-          Password
-          <input
+        </div>
+        <div className="formField password">
+          <InputField
+            id="password"
+            label="Password"
             type="password"
             value={password}
             onChange={e => setPassword(e.target.value)}
           />
           <ValidationError message={errors.password} />
-        </label>
-      </div>
+        </div>
+      </main>
       <footer>
         <div className="buttons">
           <button className="btn dark" type="submit">Log In</button>

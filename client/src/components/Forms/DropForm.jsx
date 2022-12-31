@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import TagsDropDown from '../FormFields/TagsDropDown';
-import SearchDropDown from '../FormFields/SearchDropDown';
+import Autocomplete from '../FormFields/Autocomplete';
+import InputField from '../FormFields/InputField';
 import ValidationError from '../FormFields/ValidationError';
 import { createDrop, updateDrop, dropsSelectors } from '../../store/drops';
 import { partiesSelectors } from '../../store/parties';
@@ -94,51 +94,48 @@ const DropForm = ({ edit }) => {
       <header>
         <h2 className="formTitle">{edit ? 'Edit drop' : 'Add a drop'}</h2>
       </header>
-      <main className="formContent">
-        <div className="inputContainer bossName">
-          <label htmlFor="bossName">Boss Name</label>
-          <SearchDropDown
+      <main>
+        <div className="formField bossName">
+          <Autocomplete
             id="bossName"
+            label="Boss Name"
             placeholder="Boss Name"
-            index={2}
             options={bosses}
-            result={boss?.name}
+            defaultValue={boss?.name}
             setResult={setBossId}
           />
           <ValidationError message={errors.bossName} />
         </div>
-        <div className="inputContainer itemName">
-          <label htmlFor="itemName">Item Name</label>
-          <SearchDropDown
+        <div className="formField itemName">
+          <Autocomplete
             id="itemName"
+            label="Item Name"
             placeholder="Item Name"
-            zIndex={1}
             options={items}
-            disabled={!bossId}
-            result={item?.name}
+            defaultValue={item?.name}
             setResult={setIemId}
           />
           <ValidationError message={errors.itemName} />
         </div>
-        <div className="inputContainer image">
-          <label htmlFor="image">Image (optional)</label>
-          <input
+        <div className="formField image">
+          <InputField
             id="image"
-            type="text"
-            value={image}
+            label="Image (optional)"
             placeholder="https://www.image.com/image.png"
+            value={image}
             onChange={e => setImage(e.target.value)}
           />
           <ValidationError message={errors.image} />
         </div>
-        <div className="inputContainer members">
-          <label htmlFor="members">Members</label>
-          <TagsDropDown
+        <div className="formField members">
+          <Autocomplete
+            multiple
             id="members"
+            label="Members"
             placeholder="Members"
             options={(edit ? drop.party.members : party.members)
               .map(user => ({ id: user.id, value: user.username }))}
-            results={members}
+            defaultTags={members}
             setResult={setMembers}
           />
           <ValidationError message={errors.memberIds} />

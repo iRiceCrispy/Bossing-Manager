@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import InputField from '../FormFields/InputField';
 import ValidationError from '../FormFields/ValidationError';
 import { addSale } from '../../store/drops';
 import './forms.scss';
 
 const SaleForm = ({ drop, setShowForm }) => {
   const dispatch = useDispatch();
-  const [price, setPrice] = useState('0');
+  const [price, setPrice] = useState('');
   const [image, setImage] = useState('');
   const [errors, setErrors] = useState({});
 
   const changePrice = (e) => {
     if (!e.target.value.match(/^(|[,\d])+$/)) return;
 
-    setPrice(+(e.target.value).replace(/,/g, ''));
+    setPrice(e.target.value.replace(/,/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ','));
   };
 
   const submitForm = (e) => {
@@ -21,7 +22,7 @@ const SaleForm = ({ drop, setShowForm }) => {
     setErrors({});
 
     const newSale = {
-      price,
+      price: +price.replace(/,/g, '') || 0,
       saleImage: image,
     };
 
@@ -39,26 +40,22 @@ const SaleForm = ({ drop, setShowForm }) => {
         <h2 className="formTitle">Input sales info.</h2>
       </header>
       <main>
-        <div className="inputContainer price">
-          <label htmlFor="price">Price</label>
-          <input
+        <div className="formField price">
+          <InputField
             id="price"
-            type="text"
-            value={price.toLocaleString()}
-            onChange={changePrice}
+            label="Price"
             placeholder="0"
-            onFocus={() => price <= 0 && setPrice('')}
-            onBlur={() => !price && setPrice('0')}
+            value={price}
+            onChange={changePrice}
           />
           <ValidationError message={errors.price} />
         </div>
-        <div className="inputContainer saleImage">
-          <label htmlFor="saleImage">Image (optional)</label>
-          <input
+        <div className="formField saleImage">
+          <InputField
             id="image"
-            type="text"
-            value={image}
+            label="Image (optional)"
             placeholder="https://www.image.com/image.png"
+            value={image}
             onChange={e => setImage(e.target.value)}
           />
           <ValidationError message={errors.saleImage} />

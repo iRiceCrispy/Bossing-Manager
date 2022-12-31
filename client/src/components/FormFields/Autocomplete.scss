@@ -1,0 +1,65 @@
+.autocomplete {
+  width: 100%;
+
+  .searchContainer {
+    width: 100%;
+    padding: 4px;
+    height: max-content;
+    font-size: 14px;
+    color: black;
+    background-color: white;
+    border-radius: 4px;
+    position: relative;
+
+    .searchbar {
+      margin: 0;
+      padding: 0 4px;
+      border: none;
+      background-color: transparent;
+      font-size: inherit;
+    }
+
+    .dropdownMenu {
+      position: absolute;
+      top: calc(100% + 1px);
+      left: 0;
+      right: 0;
+      z-index: 100;
+      margin: 1px 0;
+    }
+  }
+
+  &.multiple {
+    .searchContainer {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 4px;
+
+      .tag {
+        width: fit-content;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background-color: var(--color-base);
+        color: white;
+        padding: 4px 6px;
+        border-radius: 4px;
+        user-select: none;
+
+        .value {
+          font-size: 12px;
+        }
+
+        .x:hover {
+          cursor: pointer;
+        }
+      }
+
+      .searchbar {
+        min-width: 100px;
+        flex: 1;
+      }
+    }
+  }
+}

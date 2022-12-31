@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import TagsDropDown from '../FormFields/TagsDropDown';
+import Autocomplete from '../FormFields/Autocomplete';
+import InputField from '../FormFields/InputField';
 import ValidationError from '../FormFields/ValidationError';
 import { getSessionUser } from '../../store/session';
 import { usersSelectors } from '../../store/users';
@@ -72,24 +73,24 @@ const PartyForm = ({ edit }) => {
         <h2 className="formTitle">{edit ? 'Edit party' : 'Create new a party'}</h2>
       </header>
       <main>
-        <div className="inputContainer partyName">
-          <label htmlFor="partyName">Party Name</label>
-          <input
+        <div className="formField partyName">
+          <InputField
             id="partyName"
-            type="text"
-            value={name}
+            label="Party Name"
             placeholder="Party Name"
+            value={name}
             onChange={e => setName(e.target.value)}
           />
           <ValidationError message={errors.name} />
         </div>
-        <div className="tags">
-          <label htmlFor="partyMembers">Members</label>
-          <TagsDropDown
-            id="partyMembers"
+        <div className="formField members">
+          <Autocomplete
+            multiple
+            id="members"
+            label="Members"
             placeholder="Members"
             options={users.map(user => ({ id: user.id, value: user.username }))}
-            results={members}
+            defaultTags={members}
             setResult={setMembers}
           />
           <ValidationError message={errors.memberIds} />
