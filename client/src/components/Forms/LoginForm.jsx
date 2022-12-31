@@ -47,14 +47,14 @@ const LoginForm = () => {
   return (
     <form id="loginForm" className="form" onSubmit={handleSubmit}>
       <header><h2>Log In</h2></header>
-      <div className="content">
+      <main>
         <div className="loginError">
           <ValidationError message={errors.login} />
         </div>
         <div className="formField credential">
           <InputField
             id="credential"
-            label="Username/Email"
+            label="Username / Email"
             value={credential}
             onChange={e => setCredential(e.target.value)}
           />
@@ -70,7 +70,7 @@ const LoginForm = () => {
           />
           <ValidationError message={errors.password} />
         </div>
-      </div>
+      </main>
       <footer>
         <div className="buttons">
           <button className="btn dark" type="submit">Log In</button>

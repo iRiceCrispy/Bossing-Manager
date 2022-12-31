@@ -37,7 +37,7 @@ const SignupForm = () => {
   return (
     <form id="signupForm" className="form" onSubmit={handleSubmit}>
       <header><h2>Sign Up</h2></header>
-      <div className="content">
+      <main>
         <div className="formField email">
           <InputField
             id="email"
@@ -76,7 +76,7 @@ const SignupForm = () => {
           />
           <ValidationError message={errors.confirmPassword} />
         </div>
-      </div>
+      </main>
       <footer>
         <div className="buttons">
           <button className="btn light" type="submit">Sign Up</button>
