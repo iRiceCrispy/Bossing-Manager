@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Autocomplete from '../FormFields/Autocomplete';
+import InputField from '../FormFields/InputField';
 import ValidationError from '../FormFields/ValidationError';
 import { getSessionUser } from '../../store/session';
 import { usersSelectors } from '../../store/users';
@@ -72,18 +73,17 @@ const PartyForm = ({ edit }) => {
         <h2 className="formTitle">{edit ? 'Edit party' : 'Create new a party'}</h2>
       </header>
       <main>
-        <div className="inputContainer partyName">
-          <label htmlFor="partyName">Party Name</label>
-          <input
+        <div className="formField partyName">
+          <InputField
             id="partyName"
-            type="text"
-            value={name}
+            label="Party Name"
             placeholder="Party Name"
+            value={name}
             onChange={e => setName(e.target.value)}
           />
           <ValidationError message={errors.name} />
         </div>
-        <div className="inputContainer members">
+        <div className="formField members">
           <Autocomplete
             multiple
             id="members"

@@ -31,11 +31,6 @@
       color: var(--color-text);
       text-shadow: 0 0 2px var(--color-text);
     }
-
-    .btn.filled {
-      background-color: var(--color-text);
-      color: var(--color-base2);
-    }
   }
 
   .authImage,
@@ -53,15 +48,14 @@
   #signupForm {
     width: 50%;
     margin-left: 10%;
+
+    .inputContainer {
+      max-width: 400px;
+      min-width: 250px;
+    }
   }
 
   form {
-    input {
-      height: 24px;
-      border-radius: 4px;
-      border: 1px solid black;
-    }
-
     .content {
       margin: 32px 0;
       position: relative;
