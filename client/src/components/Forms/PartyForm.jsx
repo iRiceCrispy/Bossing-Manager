@@ -83,10 +83,11 @@ const PartyForm = ({ edit }) => {
           />
           <ValidationError message={errors.name} />
         </div>
-        <div className="tags">
-          <label htmlFor="partyMembers">Members</label>
+        <div className="inputContainer members">
           <Autocomplete
             multiple
+            id="members"
+            label="Members"
             placeholder="Members"
             options={users.map(user => ({ id: user.id, value: user.username }))}
             defaultTags={members}

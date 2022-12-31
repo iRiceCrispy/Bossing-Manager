@@ -95,18 +95,20 @@ const DropForm = ({ edit }) => {
       </header>
       <main className="formContent">
         <div className="inputContainer bossName">
-          <label htmlFor="bossName">Boss Name</label>
           <Autocomplete
-            options={bosses}
+            id="bossName"
+            label="Boss Name"
             placeholder="Boss Name"
+            options={bosses}
             defaultValue={boss?.name}
             setResult={setBossId}
           />
           <ValidationError message={errors.bossName} />
         </div>
         <div className="inputContainer itemName">
-          <label htmlFor="itemName">Item Name</label>
           <Autocomplete
+            id="itemName"
+            label="Item Name"
             placeholder="Item Name"
             options={items}
             defaultValue={item?.name}
@@ -126,9 +128,10 @@ const DropForm = ({ edit }) => {
           <ValidationError message={errors.image} />
         </div>
         <div className="inputContainer members">
-          <label htmlFor="members">Members</label>
           <Autocomplete
             multiple
+            id="members"
+            label="Members"
             placeholder="Members"
             options={(edit ? drop.party.members : party.members)
               .map(user => ({ id: user.id, value: user.username }))}
