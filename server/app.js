@@ -17,12 +17,14 @@ const isProduction = environment === 'production';
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: true,
-    credentials: true,
-  },
-});
+const io = isProduction
+  ? new Server(server)
+  : new Server(server, {
+    cors: {
+      origin: true,
+      credentials: true,
+    },
+  });
 
 io.use(socketAuth);
 io.on('connection', async (socket) => {
