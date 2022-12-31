@@ -32,7 +32,7 @@ const App = () => {
   useEffect(() => {
     if (sessionUser && !socket.connected) socket.connect();
     if (!sessionUser && socket.connected) socket.close();
-  });
+  }, [sessionUser]);
 
   return isLoaded && (
     <div className="app">

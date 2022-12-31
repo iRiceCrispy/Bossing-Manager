@@ -1,0 +1,13 @@
+**/.git
+**/.gitignore
+
+**/.eslintrc.json
+
+**/.env*
+
+**/node_modules
+
+Dockerfile*
+docker-compose*
+
+README.md
