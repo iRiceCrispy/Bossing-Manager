@@ -12,6 +12,7 @@ const store = configureStore({
     parties,
     drops,
   },
+  devTools: process.env.NODE_ENV !== 'production',
 });
 
 export default store;
