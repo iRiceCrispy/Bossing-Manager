@@ -13,12 +13,13 @@ export const restoreSession = createAsyncThunk(
 
 export const signup = createAsyncThunk(
   'session/signup',
-  async ({ username, email, password }, { rejectWithValue }) => {
+  async ({ username, email, password, confirmPassword }, { rejectWithValue }) => {
     try {
       const res = await axios.post('/api/users', {
         username,
         email,
         password,
+        confirmPassword,
       });
       const user = res.data;
 
