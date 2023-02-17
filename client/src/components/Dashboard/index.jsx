@@ -111,12 +111,12 @@ const Dashboard = () => {
           <Route path="/" element={<Main />} />
           <Route path="parties" element={<Parties />} />
           <Route path="parties/:id" element={<PartyDetails />} />
-          <Route path="parties/:id/edit" element={<PartyForm edit />} />
-          <Route path="parties/:id/add-drop" element={<DropForm />} />
-          <Route path="parties/create" element={<PartyForm />} />
+          <Route path="parties/:id/edit" element={<PartyForm key="edit" edit />} />
+          <Route path="parties/:id/add-drop" element={<DropForm key="create" />} />
+          <Route path="parties/create" element={<PartyForm key="create" />} />
           <Route path="drops" element={<Drops />} />
           <Route path="drops/:id" element={<DropDetails />} />
-          <Route path="drops/:id/edit" element={<DropForm edit />} />
+          <Route path="drops/:id/edit" element={<DropForm key="edit" edit />} />
           <Route path="payments" element={<Payments />} />
           <Route path="users" element={<Users />} />
         </Routes>
