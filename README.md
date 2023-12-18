@@ -2,7 +2,7 @@
 
 ## Overview
 
-[Chaos Mano](https://chaos-mano.herokuapp.com/) is a boss drop tracker app for a popular MMORPG game [Maplestory](https://maplestory.nexon.net/). Users can utilize this app to easily manage their boss drops within their parties by keeping track of what items are pending/sold, and which member in the party has recieved/waiting on their payment.
+[Chaos Mano](https://chaosmano.iricecrispy.dev/) is a boss drop tracker app for a popular MMORPG game [Maplestory](https://maplestory.nexon.net/). Users can utilize this app to easily manage their boss drops within their parties by keeping track of what items are pending/sold, and which member in the party has recieved/waiting on their payment.
 
 ## Application Architecture
 
